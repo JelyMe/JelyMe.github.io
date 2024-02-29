@@ -43,11 +43,14 @@ storeScroll();
 
 var idx = null
 
+var fullData = null
+
 fetch("searchIndex.json").then((res) => {return res.json()}).then((data) => {
+  fullData = data
   idx = lunr(function () {
-    this.ref('StdNum')
+    this.ref('id')
     this.field('StdTitle')
-  
+    
     data.forEach(function (doc) {
       this.add(doc)
     }, this)
@@ -61,7 +64,7 @@ document.querySelector('.search-input').addEventListener('keydown', (event) => {
   if(idx != null){
     searchResults.innerHTML = ""
     idx.search(searchTerm+"~2").forEach((result) =>{
-      searchResults.innerHTML += "<h2>" + result.ref + "</h2>"
+      searchResults.innerHTML += "<h3 href=''>" + fullData[result.ref]["StdTitle"] + " - " + fullData[result.ref]["StdNum"] + " - " + fullData[result.ref]["StdCredits"] + "</h3>"
     })
   }
   if (searchTerm.includes('spin')) {
