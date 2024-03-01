@@ -49,7 +49,9 @@ fetch("searchIndex.json").then((res) => {return res.json()}).then((data) => {
   fullData = data
   idx = lunr(function () {
     this.ref('id')
-    this.field('StdTitle')
+    this.field('title')
+    this.field('subject')
+    this.field('number')
     
     data.forEach(function (doc) {
       this.add(doc)
@@ -63,8 +65,8 @@ document.querySelector('.search-input').addEventListener('keydown', (event) => {
   const downloadButton = document.querySelector('.download-button');
   if(idx != null){
     searchResults.innerHTML = ""
-    idx.search(searchTerm+"~2").forEach((result) =>{
-      searchResults.innerHTML += "<h3 href=''>" + fullData[result.ref]["StdTitle"] + " - " + fullData[result.ref]["StdNum"] + " - " + fullData[result.ref]["StdCredits"] + "</h3>"
+    idx.search(searchTerm).forEach((result) =>{
+      searchResults.innerHTML += "<h3 href=''>" + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] + " - " + fullData[result.ref]["credits"] + "</h3>"
     })
   }
   if (searchTerm.includes('spin')) {
