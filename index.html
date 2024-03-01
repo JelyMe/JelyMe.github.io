@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
-    <script src="js.js" defer></script>
-</head>
-<body>
 
-<header class="flex-c-c full-viewport-width">
-  <h1 class="text-white">OUR EXAMS</h1>
-</header>
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>OUR EXAMS</title>
+      <link rel="stylesheet" href="style.css">
+      <script src="https://unpkg.com/lunr/lunr.js"></script>
+      <script src="js.js" defer></script>
+  </head>
 
-<div class="search-bar">
-    <input type="text" name="search" placeholder="Search for paper by name or id." class="search-input" autocomplete="on" style="width: 300px;"/>
-    <div class="search-results"></div>
-<div class="content"></div>
-<div class="content"></div>
-<div class="flex-c-c">
-  <br>
-  <br>
-  <button class="download-button"> Download </button>
+  <body>
 
-</div>
-<p class="text-black">Designed & Created by cool people</p>
-</body>
+    <header class="flex-c-c full-viewport-width">
+      <h1 class="text-white">OUR EXAMS</h1>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" name="search" placeholder="Search for paper by name or id." class="search-input" autocomplete="on" style="width: 300px;"/>
+    </div>
+
+    <div class="search-results">
+      <!-- Empty for now, JS will add elements based on search results -->
+    </div>
+    
+    <div class="flex-c-c">
+      <button class="download-button"> Download </button>
+    </div>
+
+    <p class="text-black">Designed & Created by cool people</p>
+
+  </body>
+
 </html>

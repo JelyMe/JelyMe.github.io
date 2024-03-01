@@ -4,6 +4,20 @@
   margin: 0;
 }
 
+header {
+  background-color: rgb(66, 135, 245);
+  height: 10vh;
+  font-family: Verdana, sans-serif;
+  margin-bottom: 10px;
+}
+
+body {
+  font-family: system-ui;
+  background: #ffffff;
+  color: white;
+  text-align: center;
+}
+
 .flex-c-c {
   display: flex;
   justify-content: center;
@@ -22,22 +36,11 @@
   width: 100vw;
 }
 
-header {
-  background-color: rgb(66, 135, 245);
-  height: 10vh;
-  font-family: Verdana, sans-serif;
-  margin-bottom: 10px;
-}
-
-body {
-  font-family: system-ui;
-  background: #ffffff;
-  color: white;
-  text-align: center;
-}
-
 .search-bar {
   position: relative;
+
+  margin-top: 5vh;
+  margin-bottom: 5vh;
 }
 
 .search-input {
@@ -54,15 +57,19 @@ body {
 .search-results {
   border-radius: 10px;
   border: 1px solid #ccc;
-  padding: 10px;
-  margin-top: 10px;
-  width: 550px;
-  height: 200px;
+
+  padding: 2vw;
   margin-left: auto;
   margin-right: auto;
+
+  width: 80vw;
+  height: 200px;
+
   color: black;
+
   overflow: hidden;
   overflow-y: scroll;
+
   scroll-behavior: smooth;
 }
 
@@ -85,6 +92,10 @@ body {
 	background: var(--scroll-amount);
 }
 
+.search-results-text {
+  padding-bottom: 2vh;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -103,10 +114,16 @@ body {
   margin-bottom: auto;
   padding: 10px 10px;
   border-radius: 7px;
+
+  transition: 0.2s transform ease-in-out;
 }
 
-.download-button:active {
-  background-color: rgb(36, 96, 165);
+.download-button:hover {
+  transform: scale(1.05);
+
+  cursor: pointer;
+
+  background-color: rgb(33, 109, 196);
 }
 
 .download-button.spinning {
