@@ -39,19 +39,23 @@ body {
 .search-bar {
   position: relative;
 
-  margin-top: 5vh;
-  margin-bottom: 5vh;
+  margin-top: 3vh;
+  margin-bottom: 3vh;
 }
 
 .search-input {
-  width: 350px;
-  height: 35px;
+  width: 25vw;
+  height: 5vh;
+
   border-radius: 20px;
   border: 1px solid #ccc;
+
   padding: 5px 10px;
   margin-left: auto;
   margin-right: auto;
+
   text-align: center;
+  font-size: 1.5vw;
 }
 
 .search-results {
@@ -61,9 +65,10 @@ body {
   padding: 2vw;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 3vh;
 
   width: 80vw;
-  height: 200px;
+  height: 50vh;
 
   color: black;
 
@@ -103,17 +108,18 @@ body {
 
 .download-button {
   border: none;
+  border-radius: 7px;
+  
   background-color: rgb(66, 135, 245);
   
   color: white;
   font-family: Verdana, sans-serif;
   font-size: 1.5vw;
-  margin-top: 10px;
+
   margin-left: auto;
   margin-right: auto;
   margin-bottom: auto;
   padding: 10px 10px;
-  border-radius: 7px;
 
   transition: 0.2s transform ease-in-out;
 }
