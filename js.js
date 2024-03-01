@@ -66,7 +66,9 @@ document.querySelector('.search-input').addEventListener('keydown', (event) => {
   if(idx != null){
     searchResults.innerHTML = ""
     idx.search(searchTerm).forEach((result) =>{
-      searchResults.innerHTML += "<h3 href=''>" + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] + " - " + fullData[result.ref]["credits"] + "</h3>"
+      searchResults.innerHTML += "<h3 href='' class='search-results-text'>" 
+                          + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] 
+                          + " - " + fullData[result.ref]["credits"] + "</h3>"
     })
   }
   if (searchTerm.includes('spin')) {
