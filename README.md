@@ -1,6 +1,6 @@
 ﻿# OI LISTEN UP THESE ARE THE RULES
 
- 1. camelCase is the goat. All variables, ids, classes need to become camel case.
+ 1. camelCase is the not goat. All variables, ids, classes need to become dashed-form.
 
  2. Every object needs to be somewhat modular so that we can copy paste without problems.
 
