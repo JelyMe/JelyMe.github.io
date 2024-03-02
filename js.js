@@ -20,16 +20,19 @@ function interpolate(color1, color2, percent) {
 
 const debounce = (fn) => {
   let frame;
+
   return (...params) => {
     if (frame) { 
       cancelAnimationFrame(frame);
     }
+
     frame = requestAnimationFrame(() => {
       fn(...params);
     });
 
   } 
 };
+
 //MODIFIED BORROWED CODE
 const searchResults = document.querySelector('.search-results')
 
@@ -37,7 +40,9 @@ const storeScroll = () => {
   var scrollamount = (searchResults.scrollTop/searchResults.scrollHeight);
   searchResults.style.setProperty("--scroll-amount", interpolate("#4287f5","#460c85", scrollamount));
 }
+
 searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
+
 storeScroll();
 //END BORROWED CODE
 
@@ -47,8 +52,9 @@ var fullData = null
 
 var subjectList = null
 
-fetch("searchIndex.json").then((res) => {return res.json()}).then((data) => {
-  fullData = data
+fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
+  fullData = data;
+
   idx = lunr(function () {
     this.ref('id')
     this.field('title')
@@ -68,40 +74,44 @@ fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
-  if(event.keyCode == 13){
-    if(searchText.value == autocomplete.innerHTML){
+
+  if (event.keyCode == 13) {
+    if (searchText.value == autocomplete.innerHTML) {
+
       const downloadButton = document.querySelector('.download-button');
-        if(idx != null){
-        searchResults.innerHTML = ""
-        idx.search(searchText.value).forEach((result) =>{
+      
+      if (idx != null) {
+        searchResults.innerHTML = "";
+
+        idx.search(searchText.value).forEach((result) => {
           searchResults.innerHTML += "<h3 class='search-results-text'>" 
                               + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] 
                               + " - " + fullData[result.ref]["credits"] + "</h3>"
-        })
-      }
-      if (searchText.value.includes('spin')) {
-        downloadButton.classList.add('spinning');
-      } 
-      else {
-        downloadButton.classList.remove('spinning');
+        });
       }
     }
-    else{
+    else {
       searchText.value = autocomplete.innerHTML;
     }
   }
+
   autocomplete.innerHTML = searchText.value;
-  if(searchText.value.length != 0)
+
+  if (searchText.value.length != 0)
   {
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
-      if(subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()){
+
+      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()){
         autocomplete.innerHTML = subject;
         searchText.value = subject.substr(0,searchText.value.length);
-        break
+
+        break;
       }
     }
   }
-  else autocomplete.innerHTML = "Search";
+  else {
+    autocomplete.innerHTML = "Search";
+  }
 });
 
