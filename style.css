@@ -33,6 +33,12 @@ body {
   align-items: center;
 }
 
+.flex-s-s {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+}
+
 .flex-s-c {
   display: flex;
   justify-content: start;
@@ -113,10 +119,12 @@ body {
 
   color: black;
 
-  overflow: hidden;
+  overflow-x: hidden;
   overflow-y: scroll;
 
   scroll-behavior: smooth;
+
+  row-gap: 4vh;
 }
 
 .search-results::-webkit-scrollbar-track
@@ -139,7 +147,7 @@ body {
 }
 
 .search-results-card {
-  height: 32%;
+  height: 40%;
   width: 100%;
 
   padding-left: 0px;
@@ -149,6 +157,14 @@ body {
 
   background-color: rgb(217,217,217);
 }
+
+/* .search-results-card:first-child {
+  margin-top: 8vh;
+}
+
+.search-results-card:not(:last-child) {
+  margin-bottom: 2vh;
+} */
 
 .standard-info {
   width: 52%;
@@ -203,8 +219,8 @@ body {
 .download-plus {
   border-radius: 20px 100px 100px 20px;;
 
-  width: calc(5.8vw + 5.8vh);
-  height: calc(4.6vw + 4.6vh);
+  width: 20%;
+  height: 100%;
 
   background-color: rgb(66, 135, 245)
 }
@@ -212,8 +228,8 @@ body {
 .download-plus::before {
   content: "+";
 
-  width: calc(4.8vw + 4.8vh);
-  height: calc(4.8vw + 4.8vh);
+  width: calc(6vw + 6vh);
+  height: calc(6.5vw + 6.5vh);
 
   font-size: calc(4.8vw + 4.8vh);
 
