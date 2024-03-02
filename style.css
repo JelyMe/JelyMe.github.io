@@ -8,14 +8,26 @@
   src: url("Fonts/Inter/static/Inter-Light.ttf");
 }
 
+@font-face {
+  font-family: Madimi-One;
+  src: url("Fonts/Madimi-One/MadimiOne-Regular.ttf");
+}
+
 .inter-light {
   font-family: Inter-Light;
 }
 
+.madimi {
+  font-family: Madimi-One;
+}
+
 header {
   background-color: rgb(66, 135, 245);
-  height: 10vh;
-  font-family: Verdana, sans-serif;
+
+  height: 12vh;
+
+  font-size: 3.8vh;
+
   margin-bottom: 10px;
 }
 
@@ -84,34 +96,46 @@ body {
 
 #search-bar-wrapper{
   display: flex;
-  margin:3vh;
-  width: 100%;
   justify-content: center;
+
+  margin-bottom: 5vh;
+  margin-top: 2vh;
+
+  width: 100vw;
 }
 
 #search-bar {
   display: block;
   position: relative;
-  width:20%;
+  width: 20vw;
 }
 
 #search-text{
   border:0;
+  border-bottom: solid;
+
+  padding: 6px 5px 0px 5px;
+  
   font-size: 1em;
+  font-family: Inter-Light;
+  
   width: 100%;
   height: 100%;
-  padding: 5px;
-  border-bottom: solid;
+
   background-color: rgba(0,0,0,0);
+
   outline: 0;
-  font-family: Inter-Light;
 }
+
 #search-text::selection{
   background-color: rgba(0,0,0,0);
 }
+
 #autocomplete{
   position: absolute;
+
   margin: 5px;
+
   border:0;
   font-size: 1em;
   width: 100%;
@@ -242,6 +266,10 @@ body {
 
   background-color: rgb(66, 135, 245)
 }
+
+.download-plus:hover {
+  background-color: rgb(0, 98, 255);
+}
   
 .download-plus::before {
   content: "+";
@@ -262,39 +290,4 @@ body {
 
 .search-results-text {
   padding-bottom: 2vh;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.download-button {
-  border: none;
-  border-radius: 7px;
-
-  background-color: rgb(66, 135, 245);
-  
-  color: white;
-  font-family: Verdana, sans-serif;
-  font-size: 1.5vw;
-
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: auto;
-  padding: 10px 10px;
-
-  transition: 0.2s transform ease-in-out;
-}
-
-.download-button:hover {
-  transform: scale(1.05);
-
-  cursor: pointer;
-
-  background-color: rgb(33, 109, 196);
-}
-
-.download-button.spinning {
-  animation: spin 1s linear infinite; /* Apply spin animation */
 }
