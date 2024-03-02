@@ -1,6 +1,8 @@
 ﻿# OI LISTEN UP THESE ARE THE RULES
 
- 1. camelCase is the not goat. Ids, classes need to become dashed-form. Variables that is not in HTML or CSS can be named in camelCase
+ 1. camelCase is the not goat. Ids, classes need to become dashed-form. Variables that is not in HTML or CSS can be named in camelCase.
+ 
+ 2. Make sure that the CSS styling is grouped by attribute to avoid clustered CSS code! For example, all the code that has to do with fonts are grouped together in a class, and all the border stuff is grouped together, and so on! 
 
  3. Every object needs to be somewhat modular so that we can copy paste without problems.
 
