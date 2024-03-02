@@ -13,6 +13,11 @@
   src: url("Fonts/Madimi-One/MadimiOne-Regular.ttf");
 }
 
+@font-face {
+  font-family: Inconsolata;
+  src: url("Fonts/Inconsolata-Regular.otf")
+}
+
 .inter-light {
   font-family: Inter-Light;
 }
@@ -22,7 +27,7 @@
 }
 
 header {
-  background-color: rgb(66, 135, 245);
+  background-color: #1851ce;
 
   height: 12vh;
 
@@ -215,6 +220,7 @@ body {
   width: 60%;
   height: 70%;
   padding: 1%;
+  font-family: Inter-Light;
 }
 
 .standard-info-numbers {
@@ -249,6 +255,7 @@ body {
 
   text-align: left;
   display: flex;
+  font-family: Inconsolata;
 }
 
 .standard-info-description p {
@@ -281,7 +288,7 @@ body {
   
   margin-left: auto;
 
-  background-color: rgb(66, 135, 245);
+  background-color: #1851ce;
 }
   
 .download-plus::before {
