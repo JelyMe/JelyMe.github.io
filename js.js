@@ -45,6 +45,8 @@ var idx = null
 
 var fullData = null
 
+var subjectList = null
+
 fetch("searchIndex.json").then((res) => {return res.json()}).then((data) => {
   fullData = data
   idx = lunr(function () {
@@ -59,9 +61,13 @@ fetch("searchIndex.json").then((res) => {return res.json()}).then((data) => {
   })
 })
 
+fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
+  subjectList = data
+})
+
 document.querySelector('.search-input').addEventListener('keydown', (event) => {
-  if(event.keyCode == 13){
   const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+  if(event.keyCode == 13){
   const downloadButton = document.querySelector('.download-button');
   if(idx != null){
     searchResults.innerHTML = ""
@@ -77,5 +83,9 @@ document.querySelector('.search-input').addEventListener('keydown', (event) => {
     downloadButton.classList.remove('spinning');
   }
 }
+ subjectList.forEach((subject) =>{
+  if(subject.toLowerCase().startsWith(searchTerm))
+  console.log(subject)
+ })
 });
 
