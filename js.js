@@ -65,27 +65,43 @@ fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data
 })
 
-document.querySelector('.search-input').addEventListener('keydown', (event) => {
-  const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+document.querySelector('#search-text').addEventListener('keyup', (event) => {
+  const searchText = document.querySelector('#search-text');
+  const autocomplete = document.querySelector('#autocomplete');
   if(event.keyCode == 13){
-  const downloadButton = document.querySelector('.download-button');
-  if(idx != null){
-    searchResults.innerHTML = ""
-    idx.search(searchTerm).forEach((result) =>{
-      searchResults.innerHTML += "<h3 href='' class='search-results-text'>" 
-                          + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] 
-                          + " - " + fullData[result.ref]["credits"] + "</h3>"
-    })
+    if(searchText.value == autocomplete.innerHTML){
+      const downloadButton = document.querySelector('.download-button');
+        if(idx != null){
+        searchResults.innerHTML = ""
+        idx.search(searchText.value).forEach((result) =>{
+          searchResults.innerHTML += "<h3 class='search-results-text'>" 
+                              + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] 
+                              + " - " + fullData[result.ref]["credits"] + "</h3>"
+        })
+      }
+      if (searchText.value.includes('spin')) {
+        downloadButton.classList.add('spinning');
+      } 
+      else {
+        downloadButton.classList.remove('spinning');
+      }
+    }
+    else{
+      searchText.value = autocomplete.innerHTML;
+    }
   }
-  if (searchTerm.includes('spin')) {
-    downloadButton.classList.add('spinning');
-  } else {
-    downloadButton.classList.remove('spinning');
+  autocomplete.innerHTML = searchText.value;
+  if(searchText.value.length != 0)
+  {
+    for (let index = 0; index < subjectList.length; index++) {
+      const subject = subjectList[index];
+      if(subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()){
+        autocomplete.innerHTML = subject;
+        searchText.value = subject.substr(0,searchText.value.length);
+        break
+      }
+    }
   }
-}
- subjectList.forEach((subject) =>{
-  if(subject.toLowerCase().startsWith(searchTerm))
-  console.log(subject)
- })
+  else autocomplete.innerHTML = "Search";
 });
 
