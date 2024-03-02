@@ -79,15 +79,42 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     if (searchText.value == autocomplete.innerHTML) {
 
       const downloadButton = document.querySelector('.download-button');
-      
-      if (idx != null) {
-        searchResults.innerHTML = "";
-
-        idx.search(searchText.value).forEach((result) => {
-          searchResults.innerHTML += "<h3 class='search-results-text'>" 
-                              + fullData[result.ref]["title"] + " - " + fullData[result.ref]["number"] 
-                              + " - " + fullData[result.ref]["credits"] + "</h3>"
-        });
+        if(idx != null){
+        searchResults.innerHTML = ""
+        idx.search(searchText.value).forEach((result) =>{
+          searchResults.innerHTML += `<div class="search-results-card flex-c-c">
+          <div class="standard-info flex-c-s flex-column">
+            <div class="standard-info-numbers flex-se-c">
+              <h1 class="standard-info-id inter-light">
+                `+fullData[result.ref]["number"]+`
+              </h1>
+              <h4 class="standard-info-time-period inter-light">
+              `+fullData[result.ref]["year-range"]+`
+              </h4>
+            </div>
+            <div class="standard-info-description">
+              <p>`+fullData[result.ref]["title"]+`</p>
+            </div>
+          </div>
+  
+          <div class="split-bar"></div>
+  
+          <div class="standard-credits">
+            <h1 class="standard-credits-text inter-light">
+            `+fullData[result.ref]["credits"]+`
+            </h1>
+          </div>
+  
+          <div class="download-plus"></div>
+  
+        </div>`
+        })
+      }
+      if (searchText.value.includes('spin')) {
+        downloadButton.classList.add('spinning');
+      } 
+      else {
+        downloadButton.classList.remove('spinning');
       }
     }
     else {
