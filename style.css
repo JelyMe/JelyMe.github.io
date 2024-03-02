@@ -4,6 +4,15 @@
   margin: 0;
 }
 
+@font-face {
+  font-family: Inter-Light;
+  src: url("Fonts/Inter/static/Inter-Light.ttf");
+}
+
+.inter-light {
+  font-family: Inter-Light;
+}
+
 header {
   background-color: rgb(66, 135, 245);
   height: 10vh;
@@ -22,6 +31,38 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.flex-s-c {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.flex-c-s {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.flex-se-c {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.flex-sb-c {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .text-white {
@@ -67,7 +108,7 @@ body {
   margin-right: auto;
   margin-bottom: 3vh;
 
-  width: 80vw;
+  width: 50vw;
   height: 50vh;
 
   color: black;
@@ -97,6 +138,94 @@ body {
 	background: var(--scroll-amount);
 }
 
+.search-results-card {
+  height: 32%;
+  width: 100%;
+
+  padding-left: 0px;
+  padding-right: 0px;
+
+  border-radius: 20px 100px 100px 20px;
+
+  background-color: rgb(217,217,217);
+}
+
+.standard-info {
+  width: 52%;
+}
+
+.standard-info-numbers {
+  padding-left: 3%;
+
+  font-size: calc(1vw + 1vh);
+
+  text-align: left;
+}
+
+.standard-info-id {
+  margin-right: 2vw;
+}
+
+.standard-info-time-period {
+  color: rgb(93, 93, 93);
+}
+
+.standard-info-description {
+  width: 100%;
+  height: 10%;
+
+  padding-left: 3%;
+
+  text-align: left;
+}
+
+.standard-info-description p {
+  font-size: calc(0.7vw + 0.7vh);
+}
+
+.split-bar {
+  height: 80%;
+  width: 0.25%;
+
+  border-radius: 20px;
+
+  margin-right: 4vw;
+
+  background-color: rgb(93, 93, 93);
+}
+
+.standard-credits {
+  font-size: calc(1.25vw + 1.25vh);
+
+  margin-right: 4vw;
+}
+
+.download-plus {
+  border-radius: 20px 100px 100px 20px;;
+
+  width: calc(5.8vw + 5.8vh);
+  height: calc(4.6vw + 4.6vh);
+
+  background-color: rgb(66, 135, 245)
+}
+  
+.download-plus::before {
+  content: "+";
+
+  width: calc(4.8vw + 4.8vh);
+  height: calc(4.8vw + 4.8vh);
+
+  font-size: calc(4.8vw + 4.8vh);
+
+  font-weight:bold;
+  font-family:courier;
+  color:white;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
 .search-results-text {
   padding-bottom: 2vh;
 }
@@ -109,7 +238,7 @@ body {
 .download-button {
   border: none;
   border-radius: 7px;
-  
+
   background-color: rgb(66, 135, 245);
   
   color: white;
