@@ -31,13 +31,17 @@
 }
 
 header {
-  background-color: #1851ce;
-
   height: 12vh;
 
   font-size: 3.8vh;
 
   margin-bottom: 10px;
+
+  /* box-shadow: inset 0 200px 5000px rgba(0, 81, 255, 0.4); */
+  background-color: rgba(0, 81, 255, 0.4);
+  box-shadow: 0px 10px 15px 10px rgb(0 0 0 / 50%);
+
+  backdrop-filter: blur(2px);
 }
 
 body {
@@ -193,7 +197,7 @@ body {
 
 .search-results::-webkit-scrollbar
 {
-	width: 10px;
+	width: 0.3vw;
 }
 
 .search-results::-webkit-scrollbar-thumb
