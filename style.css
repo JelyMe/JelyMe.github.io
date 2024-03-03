@@ -120,6 +120,7 @@ body {
   display: block;
   position: relative;
   width: 20vw;
+  overflow: hidden;
 }
 
 #search-text{
@@ -139,10 +140,13 @@ body {
   caret-color: white;
   background-color: rgba(0,0,0,0);
   color:white;
+
+  overflow: hidden;
 }
 
 #search-text::selection{
-  background-color: rgba(0,0,0,0);
+  background-color: #1851ce33;
+  border-radius: 0.1em;
 }
 
 #autocomplete{
