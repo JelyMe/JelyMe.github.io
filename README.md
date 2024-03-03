@@ -1,6 +1,6 @@
-﻿# OI LISTEN UP THESE ARE THE RULES
+﻿# Conventions Used Within This Codebase
 
- 1. camelCase is the not goat. Ids, classes need to become dashed-form. Variables that is not in HTML or CSS can be named in camelCase.
+ 1. For all languages that is not HTML and CSS, use camelCase for all names, including variables and functions. For HTML and CSS, classes and IDs must be named where each word is separated by a dash, and all the letters have to be lowercase.
  
  2. Make sure that the CSS styling is grouped by attribute to avoid clustered CSS code! For example, all the code that has to do with fonts are grouped together in a class, and all the border stuff is grouped together, and so on! 
 
@@ -8,12 +8,15 @@
 
  4. ~~all backend must be spaghetti~~ It's about the front end user experience, if it doesn't feel nice, fix it.
 
- 5. Good enough is not good enough. If it works for a basic prototype good on you but we need something polished here, which is unrealistically optimistic but we'll try right?
+ 5. The if statements need to be written in a form like this:
+      if (expression) {
+        //code
+      }
 
  6. Don't delete other's stuff without asking what it was used for, it might be important to their vision of the project.
 
  7. **COMMENT EVERYTHING**
 
- 8. All of these rules apply in retrospect, with a grace period obviously, (we will refactor the code at school)
+ 8. All of these rules apply in retrospect, with a grace period. The refactoring should be done before you push to this repo.
 
 ### HAVE FUN
