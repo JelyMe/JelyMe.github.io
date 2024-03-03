@@ -76,40 +76,43 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const autocomplete = document.querySelector('#autocomplete');
 
   if (event.keyCode == 13) {
-    if (searchText.value == autocomplete.innerHTML) {
+    if (searchText.value == autocomplete.innerHTML) {     
+      if (idx != null) {
+        searchResults.innerHTML = "";
 
-      const downloadButton = document.querySelector('.download-button');
-        if(idx != null){
-        searchResults.innerHTML = ""
         idx.search(searchText.value).forEach((result) =>{
-          searchResults.innerHTML += `<div class="search-results-card flex-c-c">
-          <div class="standard-info flex-c-s flex-column">
-            <div class="standard-info-numbers flex-se-c">
-              <h1 class="standard-info-id inter-light">
-                `+fullData[result.ref]["number"]+`
+          searchResults.innerHTML += 
+          `<div class="search-results-card flex-c-c">
+            <div class="standard-info flex-c-s flex-column">
+              <div class="standard-info-numbers flex-se-c">
+                <h1 class="standard-info-id inter-light">
+                  `+fullData[result.ref]["number"]+`
+                </h1>
+                <h4 class="standard-info-time-period inter-light">
+                `+fullData[result.ref]["year-range"]+`
+                </h4>
+              </div>
+              <div class="standard-info-description inconsolata">
+                <p>`+fullData[result.ref]["title"]+`</p>
+              </div>
+            </div>
+    
+            <div class="split-bar"></div>
+    
+            <div class="standard-credits">
+              <h1 class="standard-credits-text inter-light">
+              `+fullData[result.ref]["credits"]+`
               </h1>
-              <h4 class="standard-info-time-period inter-light">
-              `+fullData[result.ref]["year-range"]+`
-              </h4>
             </div>
-            <div class="standard-info-description">
-              <p>`+fullData[result.ref]["title"]+`</p>
-            </div>
-          </div>
+    
+            <button class="download-plus"></button>
   
-          <div class="split-bar"></div>
-  
-          <div class="standard-credits">
-            <h1 class="standard-credits-text inter-light">
-            `+fullData[result.ref]["credits"]+`
-            </h1>
-          </div>
-  
-          <div class="download-plus"></div>
-  
-        </div>`
+          </div>`
         })
       }
+      
+      const downloadButton = document.querySelector('.download-button');
+
       if (searchText.value.includes('spin')) {
         downloadButton.classList.add('spinning');
       } 
@@ -141,4 +144,18 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     autocomplete.innerHTML = "Search";
   }
 });
+
+// const resultsBox = document.querySelector(".search-results");
+
+// resultsBox.addEventListener("scroll", () => {
+//   const searchResultsCard = document.querySelectorAll(".search-results-card");
+  
+//   searchResultsCard.forEach((card) => {
+//     console.log(card.scrollTop);
+    
+//     // const scrollTop = resultsBox.scrollTop;
+
+//     // card.style.opacity = 1 - scrollTop / 1;
+//   });
+// });
 

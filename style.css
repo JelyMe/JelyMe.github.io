@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: Inconsolata;
-  src: url("Fonts/Inconsolata-Regular.otf")
+  src: url("Fonts/Inconsolata/Inconsolata-Regular.otf")
 }
 
 .inter-light {
@@ -24,6 +24,10 @@
 
 .madimi {
   font-family: Madimi-One;
+}
+
+.inconsolata {
+  font-family: Inconsolata;
 }
 
 header {
@@ -166,7 +170,7 @@ body {
   margin-bottom: 3vh;
 
   width: 50vw;
-  height: 50vh;
+  height: 60vh;
 
   color: black;
 
@@ -174,7 +178,6 @@ body {
   overflow-y: auto;
 
   scroll-behavior: smooth;
-  
 
   row-gap: 4vh;
 }
@@ -206,15 +209,13 @@ body {
   border-radius: 20px 100px 100px 20px;
 
   background-color: rgb(217,217,217);
+  
+  transition: background-color 0.2s ease-in-out;
 }
 
-/* .search-results-card:first-child {
-  margin-top: 8vh;
+.search-results-card:hover {
+  background-color: rgb(170, 167, 167);
 }
-
-.search-results-card:not(:last-child) {
-  margin-bottom: 2vh;
-} */
 
 .standard-info {
   width: 60%;
@@ -255,7 +256,6 @@ body {
 
   text-align: left;
   display: flex;
-  font-family: Inconsolata;
 }
 
 .standard-info-description p {
@@ -281,7 +281,8 @@ body {
 }
 
 .download-plus {
-  border-radius: 0px 100px 100px 0px;;
+  border-radius: 0px 100px 100px 0px;
+  border: none;
 
   width: 20%;
   height: 100%;
@@ -289,6 +290,12 @@ body {
   margin-left: auto;
 
   background-color: #1851ce;
+
+  transition: background-color 0.2s ease-in-out;
+}
+
+.download-plus:hover {
+  background-color: rgb(0, 69, 148);
 }
   
 .download-plus::before {
@@ -306,45 +313,6 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-}
-
-.search-results-text {
-  padding-bottom: 2vh;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.download-button {
-  border: none;
-  border-radius: 7px;
-
-  background-color: rgb(66, 135, 245);
-  
-  color: white;
-  font-family: Verdana, sans-serif;
-  font-size: 1.5vw;
-
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: auto;
-  padding: 10px 10px;
-
-  transition: 0.2s transform ease-in-out;
-}
-
-.download-button:hover {
-  transform: scale(1.05);
-
-  cursor: pointer;
-
-  background-color: rgb(33, 109, 196);
-}
-
-.download-button.spinning {
-  animation: spin 1s linear infinite; /* Apply spin animation */
 }
 
 
