@@ -120,7 +120,6 @@ body {
   display: block;
   position: relative;
   width: 20vw;
-  overflow: hidden;
 }
 
 #search-text{
@@ -134,8 +133,9 @@ body {
   padding: 5px;
 
   border:0;
-  border-bottom: solid white;
   outline: 0;
+
+  border-bottom: solid white;
 
   caret-color: white;
   background-color: rgba(0,0,0,0);
