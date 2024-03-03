@@ -117,8 +117,6 @@ body {
 }
 
 #search-bar {
-  border-bottom: 2px solid white;
-
   display: block;
   position: relative;
   width: 20vw;
