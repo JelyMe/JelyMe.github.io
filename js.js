@@ -101,7 +101,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     
             <div class="standard-credits">
               <h1 class="standard-credits-text inter-light">
-              `+fullData[result.ref]["credits"]+`
+              `+fullData[result.ref]["level"]+`
               </h1>
             </div>
     
