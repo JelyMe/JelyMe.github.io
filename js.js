@@ -110,15 +110,6 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
           </div>`
         })
       }
-      
-      const downloadButton = document.querySelector('.download-button');
-
-      if (searchText.value.includes('spin')) {
-        downloadButton.classList.add('spinning');
-      } 
-      else {
-        downloadButton.classList.remove('spinning');
-      }
     }
     else {
       searchText.value = autocomplete.innerHTML;

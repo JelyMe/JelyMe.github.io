@@ -184,8 +184,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 
-  scroll-behavior: smooth;
-
   row-gap: 4vh;
 }
 
