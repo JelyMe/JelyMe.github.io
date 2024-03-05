@@ -44,16 +44,6 @@ const storeScroll = () => {
 searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
 
 storeScroll();
-
-function downloadURI(uri, name) {
-  var link = document.createElement("a");
-  link.download = name;
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  delete link;
-}
 //END BORROWED CODE
 
 var idx = null
@@ -117,7 +107,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
               </h1>
             </div>
     
-            <button class="download-plus"></button>
+            <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/` + fullData[result.ref]["number"] + `-2021.pdf')"></button>
   
           </div>`
         })
