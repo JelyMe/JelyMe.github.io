@@ -44,6 +44,16 @@ const storeScroll = () => {
 searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
 
 storeScroll();
+
+function downloadURI(uri, name) {
+  var link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  delete link;
+}
 //END BORROWED CODE
 
 var idx = null
@@ -66,6 +76,8 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
     }, this)
   })
 })
+
+//open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
 
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data
