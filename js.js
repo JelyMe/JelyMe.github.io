@@ -67,6 +67,8 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   })
 })
 
+//open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
+
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data
 })
@@ -114,7 +116,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
               </h1>
             </div>
     
-            <button class="download-plus"></button>
+            <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/` + fullData[result.ref]["number"] + `-2021.pdf')"></button>
   
           </div>`
 

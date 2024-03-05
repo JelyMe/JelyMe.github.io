@@ -30,6 +30,11 @@
   font-family: Inconsolata;
 }
 
+.nasalization{
+  font-family: nasalization, sans-serif;
+  font-style: normal;
+}
+
 header {
   height: 12vh;
 
