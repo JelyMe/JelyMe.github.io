@@ -31,7 +31,8 @@
 }
 
 .nasalization{
-  font-family: Nasalization;
+  font-family: nasalization, sans-serif;
+  font-style: normal;
 }
 
 header {
