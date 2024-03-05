@@ -56,10 +56,10 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   fullData = data;
 
   idx = lunr(function () {
-    this.ref('id')
-    this.field('title')
-    this.field('subject')
-    this.field('number')
+    this.ref('id');
+    this.field('title');
+    this.field('subject');
+    this.field('number');
     
     data.forEach(function (doc) {
       this.add(doc)
@@ -73,14 +73,23 @@ fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data
 })
 
+const loadingWheel = document.querySelector(".loading-wheel");
+
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
-
-  if (event.keyCode == 13) {
+  
+  if (event.keyCode == 13) { //Enter key
     if (searchText.value == autocomplete.innerHTML) {     
       if (idx != null) {
+        console.log("Hello1")
+        searchResults.style.display = "none";
+        console.log("Hello2")
+        loadingWheel.style.display = "flex";
+        console.log("Hello")
+        
         searchResults.innerHTML = "";
+
 
         idx.search(searchText.value).forEach((result) =>{
           searchResults.innerHTML += 
@@ -95,7 +104,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
                 </h4>
               </div>
               <div class="standard-info-description inconsolata">
-                <p>`+fullData[result.ref]["title"]+`</p>
+                <p>`+fullData[result.ref]["title"]+`| Credits: `+fullData[result.ref]["credits"]+`</p>
               </div>
             </div>
     
@@ -110,6 +119,9 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
             <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/` + fullData[result.ref]["number"] + `-2021.pdf')"></button>
   
           </div>`
+
+          searchResults.style.display = "flex";
+          loadingWheel.style.display = "none";
         })
       }
     }
@@ -137,18 +149,3 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     autocomplete.innerHTML = "Search";
   }
 });
-
-// const resultsBox = document.querySelector(".search-results");
-
-// resultsBox.addEventListener("scroll", () => {
-//   const searchResultsCard = document.querySelectorAll(".search-results-card");
-  
-//   searchResultsCard.forEach((card) => {
-//     console.log(card.scrollTop);
-    
-//     // const scrollTop = resultsBox.scrollTop;
-
-//     // card.style.opacity = 1 - scrollTop / 1;
-//   });
-// });
-
