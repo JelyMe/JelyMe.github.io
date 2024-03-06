@@ -116,7 +116,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
               </h1>
             </div>
     
-            <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/` + fullData[result.ref]["number"] + `-2021.pdf')"></button>
+            <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
   
           </div>`
 

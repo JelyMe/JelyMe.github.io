@@ -36,11 +36,11 @@
 }
 
 header {
-  height: 12vh;
+  height: 14vh;
 
   font-size: 3.8vh;
 
-  margin-bottom: 10px;
+  transform: translate(0,-3vh);
 
   /* box-shadow: inset 0 200px 5000px rgba(0, 81, 255, 0.4); */
   background-color: rgba(0, 81, 255, 0.25);
@@ -51,9 +51,11 @@ header {
 
 body {
   font-family: system-ui;
-  background: radial-gradient(circle, rgba(43,58,75,1) 0%, rgba(0,0,0,1) 100%);
   color: white;
   text-align: center;
+
+  background: radial-gradient(circle, rgba(43,58,75,1) 0%, rgba(0,0,0,1) 100%);
+  transition: all 1s;
 }
 
 .flex-c-c {
@@ -114,9 +116,6 @@ body {
 
 #search-bar-wrapper{
   display: flex;
-  margin-top: 3vh;
-  margin-bottom: 3vh;
-  width: 100%;
   justify-content: center;
 
   margin-bottom: 5vh;
@@ -128,6 +127,7 @@ body {
 #search-bar {
   display: block;
   position: relative;
+
   width: 20vw;
 }
 
@@ -166,11 +166,13 @@ body {
   border:0;
   font-size: 1em;
 
+  top: 6px;
+
   z-index: -1;
+  
   color:rgb(255, 255, 255);
   text-align: left;
   font-family: Inter-Light;
-  top: 6px;
 }
 
 .loading-wheel {
@@ -212,6 +214,18 @@ body {
   overflow-y: auto;
 
   row-gap: 4vh;
+}
+
+@media (max-aspect-ratio: 13/16) {
+  .search-results{
+    width: 95vw;
+  }
+  #search-bar{
+    width:60vw;
+  }
+  header{
+    font-size: 7vw;
+  }
 }
 
 .search-results::-webkit-scrollbar-track
