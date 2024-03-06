@@ -104,7 +104,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
                 </h4>
               </div>
               <div class="standard-info-description inconsolata">
-                <p>`+fullData[result.ref]["title"]+`| Credits: `+fullData[result.ref]["credits"]+`</p>
+                <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
               </div>
             </div>
     
@@ -119,7 +119,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
             <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
   
           </div>`
-
+          
           searchResults.style.display = "flex";
           loadingWheel.style.display = "none";
         })
