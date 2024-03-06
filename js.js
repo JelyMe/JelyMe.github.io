@@ -52,25 +52,10 @@ var fullData = null;
 
 var subjectList = null;
 
-fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
-  fullData = data;
-
-  idx = lunr(function () {
-    this.ref('id');
-    this.field('title');
-    this.field('subject');
-    this.field('number');
-    
-    data.forEach(function (doc) {
-      this.add(doc)
-    }, this)
-  })
-})
-
 //open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
 
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
-  subjectList = data
+  subjectList = data;
 })
 
 
@@ -80,13 +65,30 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const loadingWheel = document.querySelector(".loading-wheel");
   
   if (event.keyCode == 13) { //Enter key
-    if (searchText.value == autocomplete.innerHTML) {     
-      if (idx != null) {
-        console.log("Enter");
-        searchResults.style.display = "none";
-        console.log("Search Results Hidden");
-        loadingWheel.style.display = "flex";
-        console.log("Loading Wheel displayed");
+    if (searchText.value == autocomplete.innerHTML) {
+
+      console.log("Enter");
+      searchResults.style.display = "none";
+      console.log("Search Results Hidden");
+      loadingWheel.style.display = "flex";
+      console.log("Loading Wheel displayed");
+      
+      fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
+          
+        idx = lunr(function () {
+          this.ref('id');
+          this.field('title');
+          this.field('subject');
+          this.field('number');
+            
+          data.forEach(function (doc) {
+            this.add(doc)
+          }, this)
+        })
+          
+        fullData = data;
+
+        console.log("Completed");
 
         searchResults.innerHTML = "";
 
@@ -106,26 +108,26 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
                 <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
               </div>
             </div>
-    
+      
             <div class="split-bar"></div>
-    
+      
             <div class="standard-credits">
               <h1 class="standard-credits-text inter-light">
-              `+fullData[result.ref]["level"]+`
+                `+fullData[result.ref]["level"]+`
               </h1>
             </div>
-    
+      
             <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
-  
+    
           </div>`
-        })
-        
+        });
+          
         console.log("Out");
         loadingWheel.style.display = "none";
         console.log("Loading wheel hidden");
         searchResults.style.display = "flex";
         console.log("Search results shown");
-      }
+      });
     }
     else {
       searchText.value = autocomplete.innerHTML;
