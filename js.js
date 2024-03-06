@@ -46,11 +46,11 @@ searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true 
 storeScroll();
 //END BORROWED CODE
 
-var idx = null
+var idx = null;
 
-var fullData = null
+var fullData = null;
 
-var subjectList = null
+var subjectList = null;
 
 fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   fullData = data;
@@ -73,25 +73,24 @@ fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data
 })
 
-const loadingWheel = document.querySelector(".loading-wheel");
 
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
+  const loadingWheel = document.querySelector(".loading-wheel");
   
   if (event.keyCode == 13) { //Enter key
     if (searchText.value == autocomplete.innerHTML) {     
       if (idx != null) {
-        console.log("Hello1")
+        console.log("Enter");
         searchResults.style.display = "none";
-        console.log("Hello2")
+        console.log("Search Results Hidden");
         loadingWheel.style.display = "flex";
-        console.log("Hello")
-        
+        console.log("Loading Wheel displayed");
+
         searchResults.innerHTML = "";
 
-
-        idx.search(searchText.value).forEach((result) =>{
+        idx.search(searchText.value).forEach((result) => {
           searchResults.innerHTML += 
           `<div class="search-results-card flex-c-c">
             <div class="standard-info flex-c-s flex-column">
@@ -119,10 +118,13 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
             <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
   
           </div>`
-          
-          searchResults.style.display = "flex";
-          loadingWheel.style.display = "none";
         })
+        
+        console.log("Out");
+        loadingWheel.style.display = "none";
+        console.log("Loading wheel hidden");
+        searchResults.style.display = "flex";
+        console.log("Search results shown");
       }
     }
     else {
@@ -137,7 +139,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
 
-      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()){
+      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
         autocomplete.innerHTML = subject;
         searchText.value = subject.substr(0,searchText.value.length);
 
