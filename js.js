@@ -56,8 +56,22 @@ var subjectList = null;
 
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data;
-})
+});
 
+fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {  
+  idx = lunr(function () {
+    this.ref('id');
+    this.field('title');
+    this.field('subject');
+    this.field('number');
+      
+    data.forEach(function (doc) {
+      this.add(doc)
+    }, this)
+  })
+    
+  fullData = data;
+});
 
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
@@ -66,68 +80,62 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   
   if (event.keyCode == 13) { //Enter key
     if (searchText.value == autocomplete.innerHTML) {
-
       console.log("Enter");
-      searchResults.style.display = "none";
+       searchResults.style.display = "none";
       console.log("Search Results Hidden");
       loadingWheel.style.display = "flex";
       console.log("Loading Wheel displayed");
+      console.log("Completed");
+
+      new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            if (idx != null) {
+              searchResults.innerHTML = "";
       
-      fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
-          
-        idx = lunr(function () {
-          this.ref('id');
-          this.field('title');
-          this.field('subject');
-          this.field('number');
+              idx.search(searchText.value).forEach((result) => {
+                searchResults.innerHTML += 
+                `<div class="search-results-card flex-c-c">
+                  <div class="standard-info flex-c-s flex-column">
+                    <div class="standard-info-numbers flex-se-c">
+                      <h1 class="standard-info-id inter-light">
+                        `+fullData[result.ref]["number"]+`
+                      </h1>
+                      <h4 class="standard-info-time-period inter-light">
+                      `+fullData[result.ref]["year-range"]+`
+                      </h4>
+                    </div>
+                    <div class="standard-info-description inconsolata">
+                      <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                    </div>
+                  </div>
             
-          data.forEach(function (doc) {
-            this.add(doc)
-          }, this)
-        })
+                  <div class="split-bar"></div>
+            
+                  <div class="standard-credits">
+                    <h1 class="standard-credits-text inter-light">
+                      `+fullData[result.ref]["level"]+`
+                    </h1>
+                  </div>
+            
+                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
           
-        fullData = data;
+                </div>`
+              });
 
-        console.log("Completed");
-
-        searchResults.innerHTML = "";
-
-        idx.search(searchText.value).forEach((result) => {
-          searchResults.innerHTML += 
-          `<div class="search-results-card flex-c-c">
-            <div class="standard-info flex-c-s flex-column">
-              <div class="standard-info-numbers flex-se-c">
-                <h1 class="standard-info-id inter-light">
-                  `+fullData[result.ref]["number"]+`
-                </h1>
-                <h4 class="standard-info-time-period inter-light">
-                `+fullData[result.ref]["year-range"]+`
-                </h4>
-              </div>
-              <div class="standard-info-description inconsolata">
-                <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
-              </div>
-            </div>
-      
-            <div class="split-bar"></div>
-      
-            <div class="standard-credits">
-              <h1 class="standard-credits-text inter-light">
-                `+fullData[result.ref]["level"]+`
-              </h1>
-            </div>
-      
-            <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
-    
-          </div>`
-        });
-          
-        console.log("Out");
-        loadingWheel.style.display = "none";
-        console.log("Loading wheel hidden");
-        searchResults.style.display = "flex";
-        console.log("Search results shown");
-      });
+              resolve();
+            }
+          }, 2);
+        }
+      ).then(
+        () => {
+          console.log("Out");
+          loadingWheel.style.display = "none";
+          console.log("Loading wheel hidden");
+          searchResults.style.display = "flex";
+          console.log("Search results shown");
+        }
+      );
     }
     else {
       searchText.value = autocomplete.innerHTML;
