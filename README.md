@@ -9,9 +9,12 @@
  4. ~~all backend must be spaghetti~~ It's about the front end user experience, if it doesn't feel nice, fix it.
 
  5. The if statements need to be written in a form like this:
-      if (expression) {
-        //code
-      }
+     ```javascript
+    if (expression)
+    {
+       //code
+    }
+    ```
 
  6. Don't delete other's stuff without asking what it was used for, it might be important to their vision of the project.
 
