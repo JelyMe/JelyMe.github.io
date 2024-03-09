@@ -56,78 +56,93 @@ var subjectList = null;
 
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data;
-})
+});
 
+fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {  
+  idx = lunr(function () {
+    this.ref('id');
+    this.field('title');
+    this.field('subject');
+    this.field('number');
+      
+    data.forEach(function (doc) {
+      this.add(doc)
+    }, this)
+  })
+    
+  fullData = data;
+});
 
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
   const loadingWheel = document.querySelector(".loading-wheel");
+  const examsNotFound = document.querySelector(".subject-not-found-block");
   
   if (event.keyCode == 13) { //Enter key
     if (searchText.value == autocomplete.innerHTML) {
-
-      console.log("Enter");
+      examsNotFound.style.display = "none";
       searchResults.style.display = "none";
-      console.log("Search Results Hidden");
       loadingWheel.style.display = "flex";
-      console.log("Loading Wheel displayed");
-      
-      fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
-          
-        idx = lunr(function () {
-          this.ref('id');
-          this.field('title');
-          this.field('subject');
-          this.field('number');
+
+      new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            searchResults.innerHTML = "";
+
+            let subjectExams = idx.search(searchText.value);
+
+            console.log(subjectExams);
+
+            if (subjectExams.length > 0) {
+              subjectExams.forEach((result) => {
+                searchResults.innerHTML += 
+                `<div class="search-results-card flex-c-c">
+                  <div class="standard-info flex-c-s flex-column">
+                    <div class="standard-info-numbers flex-se-c">
+                      <h1 class="standard-info-id inter-light">
+                        `+fullData[result.ref]["number"]+`
+                      </h1>
+                      <h4 class="standard-info-time-period inter-light">
+                      `+fullData[result.ref]["year-range"]+`
+                      </h4>
+                    </div>
+                    <div class="standard-info-description inconsolata">
+                      <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                    </div>
+                  </div>
             
-          data.forEach(function (doc) {
-            this.add(doc)
-          }, this)
-        })
+                  <div class="split-bar"></div>
+            
+                  <div class="standard-credits">
+                    <h1 class="standard-credits-text inter-light">
+                      `+fullData[result.ref]["level"]+`
+                    </h1>
+                  </div>
+            
+                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
           
-        fullData = data;
+                </div>`
+              });
+              
+              resolve();
+            }
+            else if (subjectExams.length === 0) {
+              console.log("not found");
+              examsNotFound.style.display = "flex";
+              searchResults.style.display = "none";
+              loadingWheel.style.display = "none";
+            }
 
-        console.log("Completed");
-
-        searchResults.innerHTML = "";
-
-        idx.search(searchText.value).forEach((result) => {
-          searchResults.innerHTML += 
-          `<div class="search-results-card flex-c-c">
-            <div class="standard-info flex-c-s flex-column">
-              <div class="standard-info-numbers flex-se-c">
-                <h1 class="standard-info-id inter-light">
-                  `+fullData[result.ref]["number"]+`
-                </h1>
-                <h4 class="standard-info-time-period inter-light">
-                `+fullData[result.ref]["year-range"]+`
-                </h4>
-              </div>
-              <div class="standard-info-description inconsolata">
-                <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
-              </div>
-            </div>
-      
-            <div class="split-bar"></div>
-      
-            <div class="standard-credits">
-              <h1 class="standard-credits-text inter-light">
-                `+fullData[result.ref]["level"]+`
-              </h1>
-            </div>
-      
-            <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
-    
-          </div>`
-        });
-          
-        console.log("Out");
-        loadingWheel.style.display = "none";
-        console.log("Loading wheel hidden");
-        searchResults.style.display = "flex";
-        console.log("Search results shown");
-      });
+          }, 50);
+        }
+      ).then(
+        () => {
+          examsNotFound.style.display = "none";
+          loadingWheel.style.display = "none";
+          searchResults.style.display = "flex";
+        }
+      );
     }
     else {
       searchText.value = autocomplete.innerHTML;
