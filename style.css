@@ -413,12 +413,11 @@ body {
 
 .subject-not-found-block h1 {
   font-size: max(1.3em,2vw);
-  color: rgb(255, 41, 41);
 }
 
 .subject-not-found-block p {
   font-size: max(.8em,1.4vw);
-  color: rgb(255, 66, 66);
+  color: rgb(150, 150, 150);
 }
 
 
