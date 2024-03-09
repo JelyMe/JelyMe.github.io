@@ -77,23 +77,25 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
   const loadingWheel = document.querySelector(".loading-wheel");
+  const examsNotFound = document.querySelector(".subject-not-found-block");
   
   if (event.keyCode == 13) { //Enter key
     if (searchText.value == autocomplete.innerHTML) {
-      console.log("Enter");
-       searchResults.style.display = "none";
-      console.log("Search Results Hidden");
+      examsNotFound.style.display = "none";
+      searchResults.style.display = "none";
       loadingWheel.style.display = "flex";
-      console.log("Loading Wheel displayed");
-      console.log("Completed");
 
       new Promise(
         (resolve, reject) => {
           setTimeout(() => {
-            if (idx != null) {
-              searchResults.innerHTML = "";
-      
-              idx.search(searchText.value).forEach((result) => {
+            searchResults.innerHTML = "";
+
+            let subjectExams = idx.search(searchText.value);
+
+            console.log(subjectExams);
+
+            if (subjectExams.length > 0) {
+              subjectExams.forEach((result) => {
                 searchResults.innerHTML += 
                 `<div class="search-results-card flex-c-c">
                   <div class="standard-info flex-c-s flex-column">
@@ -122,18 +124,23 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
           
                 </div>`
               });
-
+              
               resolve();
             }
-          }, 2);
+            else if (subjectExams.length === 0) {
+              console.log("not found");
+              examsNotFound.style.display = "flex";
+              searchResults.style.display = "none";
+              loadingWheel.style.display = "none";
+            }
+
+          }, 50);
         }
       ).then(
         () => {
-          console.log("Out");
+          examsNotFound.style.display = "none";
           loadingWheel.style.display = "none";
-          console.log("Loading wheel hidden");
           searchResults.style.display = "flex";
-          console.log("Search results shown");
         }
       );
     }
