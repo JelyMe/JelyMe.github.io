@@ -10,8 +10,7 @@
 
  5. The if statements need to be written in a form like this:
      ```javascript
-    if (expression)
-    {
+    if (expressio) {
        //code
     }
     ```
