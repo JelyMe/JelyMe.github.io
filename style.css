@@ -401,23 +401,25 @@ body {
     margin-right: auto;
     margin-bottom: 3vh;
 
-    box-shadow: 0px 0px 5px 5px rgb(0 0 0 / 20%);
+    background-color: rgba(255, 0, 0, 0.1);
+    box-shadow: 0px 0px 5px 5px rgba(255, 0, 0, 0.13);
 	
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(2px);
 	
-    border: 2px rgb(35 44 62) solid;
+    border: 2px rgb(255, 81, 33) solid;
     border-radius: 5vw;
 	
     gap: 2vh;
 }
 
 .subject-not-found-block h1 {
+  color: red;
   font-size: max(1.3em,2vw);
 }
 
 .subject-not-found-block p {
   font-size: max(.8em,1.4vw);
-  color: rgb(150, 150, 150);
+  color: rgb(255, 100, 100);
 }
 
 
