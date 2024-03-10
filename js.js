@@ -73,17 +73,20 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   fullData = data;
 });
 
+const contributorsScreen = document.querySelector(".contributors-screen");
+const examsNotFound = document.querySelector(".subject-not-found-block");
+const loadingWheel = document.querySelector(".loading-wheel");
+
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
-  const loadingWheel = document.querySelector(".loading-wheel");
-  const examsNotFound = document.querySelector(".subject-not-found-block");
   
   if (event.keyCode == 13) { //Enter key
     if (searchText.value == autocomplete.innerHTML) {
       examsNotFound.style.display = "none";
       searchResults.style.display = "none";
       loadingWheel.style.display = "flex";
+      contributorsScreen.style.display = "none";
 
       new Promise(
         (resolve, reject) => {
@@ -128,10 +131,10 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
               resolve();
             }
             else if (subjectExams.length === 0) {
-              console.log("not found");
               examsNotFound.style.display = "flex";
               searchResults.style.display = "none";
               loadingWheel.style.display = "none";
+              contributorsScreen.style.display = "none";
             }
 
           }, 50);
@@ -141,6 +144,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
           examsNotFound.style.display = "none";
           loadingWheel.style.display = "none";
           searchResults.style.display = "flex";
+          contributorsScreen.style.display = "none";
         }
       );
     }
@@ -167,4 +171,13 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   else {
     autocomplete.innerHTML = "Search";
   }
+});
+
+const contributorsButton = document.querySelector(".contributors-button");
+
+contributorsButton.addEventListener("click", () => {
+  examsNotFound.style.display = "none";
+  searchResults.style.display = "none";
+  loadingWheel.style.display = "none";
+  contributorsScreen.style.display = "flex";
 });

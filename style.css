@@ -422,6 +422,54 @@ body {
   color: rgb(255, 100, 100);
 }
 
+.contributors-screen {
+  display: none;
+
+  height: 65vh;
+  width: 50vw;
+
+  margin-left: auto;
+  margin-right:  auto;
+  margin-bottom: 3vh;
+  padding-left: 2vw;
+  padding-right: 2vw;
+
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.13);
+	
+  backdrop-filter: blur(2px);
+  
+	border: 2px rgb(78, 78, 78) solid;
+  border-radius: 5vw;
+}
+
+.contributors-screen h1 {
+  letter-spacing: 0.2vw;
+
+  font-size: 3vw;
+}
+
+.contributors {
+  gap: 0.5vw;
+}
+
+.contributors button {
+  border: none;
+  border-bottom: 1px white solid;
+
+  background-color: rgba(0, 0, 0, 0);
+
+  color: white;
+}
+
+.contributors button:hover {
+  cursor: pointer;
+}
+
+.contributors img {
+  width: 4vh;
+}
+
 
 /*--------------------------Stolen Code------------------------*/
 .stars {
