@@ -534,6 +534,24 @@ body {
   }
 }
 
+.donate-button {
+  border: none;
+  border-bottom: 1px white solid;
+  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-left: 1em; /* Adjust margin as needed */
+  font-family: "Comic Sans MS", cursive;
+  font-size: 18px; /* Adjust font size as needed */
+}
+
+
+.donate-button:hover {
+  cursor: pointer;
+}
+
+
 @keyframes b {
   0% {
       -webkit-transform: translateY(0);
