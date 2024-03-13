@@ -180,7 +180,7 @@ contributorsButton.addEventListener("click", (e) => {
     contributorsScreen.style.display = "none";
     searchResults.style.display = "flex"; // Display search results
   } else {
-    e.stopPropagation()
+    e.stopImmediatePropagation()
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "none";
