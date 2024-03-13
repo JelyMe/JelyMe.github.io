@@ -176,8 +176,13 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
 const contributorsButton = document.querySelector(".contributors-button");
 
 contributorsButton.addEventListener("click", () => {
-  examsNotFound.style.display = "none";
-  searchResults.style.display = "none";
-  loadingWheel.style.display = "none";
-  contributorsScreen.style.display = "flex";
+  if (contributorsScreen.style.display === "flex") {
+    contributorsScreen.style.display = "none";
+    searchResults.style.display = "flex"; // Display search results
+  } else {
+    examsNotFound.style.display = "none";
+    searchResults.style.display = "none";
+    loadingWheel.style.display = "none";
+    contributorsScreen.style.display = "flex";
+  }
 });
