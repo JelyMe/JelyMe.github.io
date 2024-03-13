@@ -175,14 +175,22 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
 const contributorsButton = document.querySelector(".contributors-button");
 
-contributorsButton.addEventListener("click", () => {
+contributorsButton.addEventListener("click", (e) => {
   if (contributorsScreen.style.display === "flex") {
     contributorsScreen.style.display = "none";
     searchResults.style.display = "flex"; // Display search results
   } else {
+    e.stopPropagation()
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "none";
     contributorsScreen.style.display = "flex";
   }
 });
+
+document.body.addEventListener("click",()=>{
+  if (contributorsScreen.style.display === "flex") {
+    contributorsScreen.style.display = "none";
+    searchResults.style.display = "flex"; // Display search results
+  }
+})

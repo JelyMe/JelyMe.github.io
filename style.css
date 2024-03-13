@@ -128,7 +128,7 @@ body {
   display: block;
   position: relative;
 
-  width: 20vw;
+  width: 35vw;
 }
 
 #search-text{
@@ -219,6 +219,7 @@ body {
 @media (max-aspect-ratio: 13/16) {
   .search-results{
     width: 95vw;
+    height: 55vh;
   }
   #search-bar{
     width:60vw;
@@ -469,7 +470,6 @@ body {
 .contributors img {
   width: 4vh;
 }
-
 
 /*-------------------------Stolen Code------------------------*/
 .stars {
