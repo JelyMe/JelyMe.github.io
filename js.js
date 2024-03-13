@@ -14,7 +14,7 @@ function interpolate(color1, color2, percent) {
   const g = Math.round(g1 + (g2 - g1) * percent);
   const b = Math.round(b1 + (b2 - b1) * percent);
 
-  // Convert the interpolated RGB values back to a hex color
+  // Convert the interpolated RGB values back t o a hex color
   return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
