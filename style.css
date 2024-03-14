@@ -413,30 +413,59 @@ body {
 .contributors-screen {
   display: none;
 
+  flex-direction: column;
+  justify-content: start;
+
   height: 65vh;
   width: 50vw;
 
   margin-left: auto;
   margin-right:  auto;
   margin-bottom: 3vh;
-  padding-left: 2vw;
-  padding-right: 2vw;
+  padding-left: 0.1vw;
+  padding-right: 0.1vw;
 
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(126, 126, 126, 0.1);
   box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.13);
 	
   backdrop-filter: blur(2px);
   
 	border: 2px rgb(78, 78, 78) solid;
-  border-radius: 5vw;
+  border-radius: 2.5vw;
+
+  overflow: auto;
 }
 
 .contributors-screen h1 {
-  letter-spacing: 0.2vw;
-
-  font-size: 3vw;
+  margin-top: 2.5%;
+  letter-spacing: 0.1vw;
+  text-align: left;
+  font-size: max(3vw, 3vh);
+  font-weight: 600;
+  width: 90%;
 }
-
+.contributors-screen p {
+  text-align: left;
+  font-size: max(2vw, 2vh);
+  font-weight: 500;
+  width: 80%;
+  color: rgb(187, 187, 187);
+}
+.contributors-screen h2 {
+  text-align: left;
+  font-size: max(1vw, 1vh);
+  font-weight: 500;
+  width: 80%;
+  color: rgb(187, 187, 187);
+}
+.contributors-screen a {
+  letter-spacing: 0.1vw;
+  text-align: left;
+  font-size: max(2vw, 2vh);
+  font-weight: 500;
+  width: 80%;
+  color: rgb(0, 81, 255);
+}
 .contributors {
   gap: 0.5vw;
 }
@@ -464,12 +493,15 @@ body {
     height: 55vh;
   }
   .contributors-screen{
+    width: 95vw;
     height: 55vh;
   }
   .subject-not-found-block{
+    width: 95vw;
     height: 55vh;
   }
   .loading-wheel{
+    width: 95vw;
     height: 55vh;
   }
   #search-bar{

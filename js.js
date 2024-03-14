@@ -81,7 +81,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
   
-  if (event.keyCode == 13) { //Enter key
+  if (event.keyCode == 13 && autocomplete.innerHTML != "Search for an external paper") { //Enter key
     if (searchText.value == autocomplete.innerHTML) {
       examsNotFound.style.display = "none";
       searchResults.style.display = "none";
@@ -179,7 +179,7 @@ contributorsButton.addEventListener("click", (e) => {
     contributorsScreen.style.display = "none";
     searchResults.style.display = "flex"; // Display search results
   } else {
-    e.stopImmediatePropagation()
+    e.stopPropagation()
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "none";
