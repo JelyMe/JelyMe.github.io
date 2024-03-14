@@ -92,10 +92,9 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
         (resolve, reject) => {
           setTimeout(() => {
             searchResults.innerHTML = "";
+            console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"))
+            let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
-            let subjectExams = idx.search(searchText.value);
-
-            console.log(subjectExams);
 
             if (subjectExams.length > 0) {
               subjectExams.forEach((result) => {
@@ -137,7 +136,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
               contributorsScreen.style.display = "none";
             }
 
-          }, 50);
+          }, 5);
         }
       ).then(
         () => {
@@ -169,7 +168,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     }
   }
   else {
-    autocomplete.innerHTML = "Search";
+    autocomplete.innerHTML = "Search for an external paper";
   }
 });
 

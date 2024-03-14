@@ -127,7 +127,7 @@ body {
 #search-bar {
   display: block;
   position: relative;
-
+  font-size: min(1em, 2vw);
   width: 35vw;
 }
 
@@ -214,19 +214,6 @@ body {
   overflow-y: auto;
 
   row-gap: 4vh;
-}
-
-@media (max-aspect-ratio: 13/16) {
-  .search-results{
-    width: 95vw;
-    height: 55vh;
-  }
-  #search-bar{
-    width:60vw;
-  }
-  header{
-    font-size: 7vw;
-  }
 }
 
 .search-results::-webkit-scrollbar-track
@@ -469,6 +456,29 @@ body {
 
 .contributors img {
   width: 4vh;
+}
+
+@media (max-aspect-ratio: 13/16) {
+  .search-results{
+    width: 95vw;
+    height: 55vh;
+  }
+  .contributors-screen{
+    height: 55vh;
+  }
+  .subject-not-found-block{
+    height: 55vh;
+  }
+  .loading-wheel{
+    height: 55vh;
+  }
+  #search-bar{
+    width:70vw;
+    font-size: 4vw;
+  }
+  header{
+    font-size: 7vw;
+  }
 }
 
 /*-------------------------Stolen Code------------------------*/
