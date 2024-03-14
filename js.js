@@ -77,10 +77,86 @@ const contributorsScreen = document.querySelector(".contributors-screen");
 const examsNotFound = document.querySelector(".subject-not-found-block");
 const loadingWheel = document.querySelector(".loading-wheel");
 
+//Stupid tab button, it has to be done on the keydown event
+document.querySelector('#search-text').addEventListener('keydown', (event) => {  
+  const searchText = document.querySelector('#search-text');
+  const autocomplete = document.querySelector('#autocomplete');
+  if(event.keyCode == 9){
+    event.preventDefault();
+    if (searchText.value == autocomplete.innerHTML) {
+      examsNotFound.style.display = "none";
+      searchResults.style.display = "none";
+      loadingWheel.style.display = "flex";
+      contributorsScreen.style.display = "none";
+
+      new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            searchResults.innerHTML = "";
+            console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"))
+            let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+
+
+            if (subjectExams.length > 0) {
+              subjectExams.forEach((result) => {
+                searchResults.innerHTML += 
+                `<div class="search-results-card flex-c-c">
+                  <div class="standard-info flex-c-s flex-column">
+                    <div class="standard-info-numbers flex-se-c">
+                      <h1 class="standard-info-id inter-light">
+                        `+fullData[result.ref]["number"]+`
+                      </h1>
+                      <h4 class="standard-info-time-period inter-light">
+                      `+fullData[result.ref]["year-range"]+`
+                      </h4>
+                    </div>
+                    <div class="standard-info-description inconsolata">
+                      <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                    </div>
+                  </div>
+            
+                  <div class="split-bar"></div>
+            
+                  <div class="standard-level">
+                    <h1 class="standard-level-text inter-light">
+                      `+fullData[result.ref]["level"]+`
+                    </h1>
+                  <p>Lvl</p>
+                  </div>
+            
+                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
+          
+                </div>`
+              });
+              
+              resolve();
+            }
+            else if (subjectExams.length === 0) {
+              examsNotFound.style.display = "flex";
+              searchResults.style.display = "none";
+              loadingWheel.style.display = "none";
+              contributorsScreen.style.display = "none";
+            }
+
+          }, 5);
+        }
+      ).then(
+        () => {
+          examsNotFound.style.display = "none";
+          loadingWheel.style.display = "none";
+          searchResults.style.display = "flex";
+          contributorsScreen.style.display = "none";
+        }
+      );
+    }
+    else {
+      searchText.value = autocomplete.innerHTML;
+    }
+}});
+
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
-  
   if (event.keyCode == 13 && autocomplete.innerHTML != "Search for an external paper") { //Enter key
     if (searchText.value == autocomplete.innerHTML) {
       examsNotFound.style.display = "none";
@@ -116,10 +192,11 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
             
                   <div class="split-bar"></div>
             
-                  <div class="standard-credits">
-                    <h1 class="standard-credits-text inter-light">
+                  <div class="standard-level">
+                    <h1 class="standard-level-text inter-light">
                       `+fullData[result.ref]["level"]+`
                     </h1>
+                  <p>Lvl</p>
                   </div>
             
                   <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
@@ -193,3 +270,83 @@ document.body.addEventListener("click",()=>{
     searchResults.style.display = "flex"; // Display search results
   }
 })
+
+document.querySelector("#subject-button").addEventListener("click", ()=>{
+  searchResults.innerHTML = "";
+  console.log("yep")
+  for (let index = 0; index < subjectList.length; index++) {
+    const subject = subjectList[index];
+    searchResults.innerHTML += `<button class="subject-card inter-light" onclick="search('`+subject+`')">`+subject+'</button>\n';
+  }
+})
+
+function search(term){
+  const searchText = document.querySelector('#search-text');
+  const autocomplete = document.querySelector('#autocomplete');
+  autocomplete.innerHTML = term;
+  searchText.value = term;
+  examsNotFound.style.display = "none";
+  searchResults.style.display = "none";
+  loadingWheel.style.display = "flex";
+  contributorsScreen.style.display = "none";
+
+  new Promise(
+    (resolve, reject) => {
+      setTimeout(() => {
+        searchResults.innerHTML = "";
+        console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"))
+        let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+
+
+        if (subjectExams.length > 0) {
+          subjectExams.forEach((result) => {
+            searchResults.innerHTML += 
+            `<div class="search-results-card flex-c-c">
+              <div class="standard-info flex-c-s flex-column">
+                <div class="standard-info-numbers flex-se-c">
+                  <h1 class="standard-info-id inter-light">
+                    `+fullData[result.ref]["number"]+`
+                  </h1>
+                  <h4 class="standard-info-time-period inter-light">
+                  `+fullData[result.ref]["year-range"]+`
+                  </h4>
+                </div>
+                <div class="standard-info-description inconsolata">
+                  <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                </div>
+              </div>
+        
+              <div class="split-bar"></div>
+        
+              <div class="standard-level">
+                <h1 class="standard-level-text inter-light">
+                  `+fullData[result.ref]["level"]+`
+                </h1>
+              <p>Lvl</p>
+              </div>
+        
+              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
+      
+            </div>`
+          });
+          
+          resolve();
+        }
+        else if (subjectExams.length === 0) {
+          examsNotFound.style.display = "flex";
+          searchResults.style.display = "none";
+          loadingWheel.style.display = "none";
+          contributorsScreen.style.display = "none";
+        }
+
+      }, 5);
+    }
+  ).then(
+    () => {
+      examsNotFound.style.display = "none";
+      loadingWheel.style.display = "none";
+      searchResults.style.display = "flex";
+      contributorsScreen.style.display = "none";
+    }
+  );
+}

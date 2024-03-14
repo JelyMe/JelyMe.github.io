@@ -265,7 +265,7 @@ body {
     color: rgb(0, 0, 0);
   }
 
-  .standard-credits {
+  .standard-level {
     color: rgb(0, 0, 0);
   }
 }
@@ -337,7 +337,7 @@ body {
   background-color: rgb(93, 93, 93);
 }
 
-.standard-credits {
+.standard-level {
   font-size: calc(1.25vw + 1.25vh);
 
   color: white;
@@ -486,6 +486,55 @@ body {
 .contributors img {
   width: 4vh;
 }
+
+#subject-button{
+  position: absolute;
+  right:0;
+  height: 75%;
+  aspect-ratio: 1/1;
+  top:30%;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  filter: invert(99%) sepia(0%) saturate(7498%) hue-rotate(169deg) brightness(109%) contrast(100%);
+  transition: all 0.3s;
+}
+#subject-button img{
+  width: 100%;
+  height: 100%;
+}
+#subject-button:hover{
+  filter: invert(36%) sepia(51%) saturate(1092%) hue-rotate(189deg) brightness(99%) contrast(91%);
+}
+
+.subject-card {
+  min-height: 20%;
+  width: 100%;
+
+  padding-left: 0px;
+  padding-right: 0px;
+
+  border-radius: 20px 20px 20px 20px;
+  border: 2px solid rgb(93, 93, 93);
+
+  background-color: rgba(1, 48, 149, 0.586);
+
+  box-shadow: inset 0 200px 5000px rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(2px);
+  
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2rem;
+  color:white;
+  font-weight: 500;
+}
+
+.subject-card:hover {
+  background-color: rgba(9, 34, 88, 0.586);
+}
+
 
 @media (max-aspect-ratio: 13/16) {
   .search-results{
