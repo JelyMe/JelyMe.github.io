@@ -213,7 +213,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
               contributorsScreen.style.display = "none";
             }
 
-          }, 5);
+          }, 15);
         }
       ).then(
         () => {
@@ -273,10 +273,14 @@ document.body.addEventListener("click",()=>{
 
 document.querySelector("#subject-button").addEventListener("click", ()=>{
   searchResults.innerHTML = "";
+  examsNotFound.style.display = "none";
+  loadingWheel.style.display = "none";
+  searchResults.style.display = "flex";
+  contributorsScreen.style.display = "none";
   console.log("yep")
   for (let index = 0; index < subjectList.length; index++) {
     const subject = subjectList[index];
-    searchResults.innerHTML += `<button class="subject-card inter-light" onclick="search('`+subject+`')">`+subject+'</button>\n';
+    searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search('`+subject+`')">`+subject+'</button>\n';
   }
 })
 
@@ -339,7 +343,7 @@ function search(term){
           contributorsScreen.style.display = "none";
         }
 
-      }, 5);
+      }, 15);
     }
   ).then(
     () => {
