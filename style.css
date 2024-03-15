@@ -363,15 +363,15 @@ body {
 }
   
 .download-plus::before {
-  content: "+";
+  content: "⤓";
 
   width: calc(6vw + 6vh);
-  height: calc(6.5vw + 6.5vh);
+  height: calc(8vw + 8vh);
 
-  font-size: calc(4.8vw + 4.8vh);
+  font-size: calc(4.4vw + 4.4vh);
 
   font-weight: bold;
-  font-family: courier;
+  font-family: Madimi-One;
   color: white;
 
   display: flex;
