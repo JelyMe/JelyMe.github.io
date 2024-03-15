@@ -125,7 +125,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
                   </div>
             
                   <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')">
-                  </button>
+                  <img src="Images/DownloadIcon.png"></button>
           
                 </div>`
               });
@@ -200,7 +200,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
                   <p>Lvl</p>
                   </div>
             
-                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
+                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"><img src="Images/DownloadIcon.png"></button>
           
                 </div>`
               });
@@ -272,16 +272,25 @@ document.body.addEventListener("click",()=>{
   }
 })
 
+var showingSubjects = false;
+
 document.querySelector("#subject-button").addEventListener("click", ()=>{
-  searchResults.innerHTML = "";
-  examsNotFound.style.display = "none";
-  loadingWheel.style.display = "none";
-  searchResults.style.display = "flex";
-  contributorsScreen.style.display = "none";
-  console.log("yep")
-  for (let index = 0; index < subjectList.length; index++) {
-    const subject = subjectList[index];
-    searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search('`+subject+`')">`+subject+'</button>\n';
+  if (!showingSubjects){
+    searchResults.innerHTML = "";
+    examsNotFound.style.display = "none";
+    loadingWheel.style.display = "none";
+    searchResults.style.display = "flex";
+    contributorsScreen.style.display = "none";
+    console.log("yep")
+    for (let index = 0; index < subjectList.length; index++) {
+      const subject = subjectList[index];
+      searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search('`+subject+`')">`+subject+'</button>\n';
+    }
+    showingSubjects = true;
+  }
+  else{
+    searchResults.innerHTML = "";
+    showingSubjects = false;
   }
 })
 
@@ -330,7 +339,7 @@ function search(term){
               <p>Lvl</p>
               </div>
         
-              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
+              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"><img src="Images/DownloadIcon.png"></button>
       
             </div>`
           });
