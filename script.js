@@ -124,7 +124,8 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
                   <p>Lvl</p>
                   </div>
             
-                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"></button>
+                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')">
+                  </button>
           
                 </div>`
               });
