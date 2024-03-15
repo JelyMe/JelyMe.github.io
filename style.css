@@ -508,7 +508,7 @@ body {
   
   transition: background-color 0.2s ease-in-out;
 
-  font-size: 2rem;
+  font-size: 5vmin;
   color:white;
   font-weight: 500;
 }
