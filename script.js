@@ -46,11 +46,11 @@ searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true 
 storeScroll();
 //END BORROWED CODE
 
-var idx = null;
+var idx;
 
-var fullData = null;
+var fullData;
 
-var subjectList = null;
+var subjectList;
 
 //open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
 
