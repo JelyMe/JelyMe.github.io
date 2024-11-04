@@ -81,7 +81,7 @@ const loadingWheel = document.querySelector(".loading-wheel");
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
-  if(event.keyCode == 9){
+  if(event.keyCode == 9) {
     event.preventDefault();
     if (searchText.value == autocomplete.innerHTML) {
       examsNotFound.style.display = "none";
