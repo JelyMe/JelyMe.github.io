@@ -107,7 +107,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
                         `+fullData[result.ref]["number"]+`
                       </h1>
                       <h4 class="standard-info-time-period inter-light">
-                      `+fullData[result.ref]["year-range"]+`
+                      `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
                       </h4>
                     </div>
                     <div class="standard-info-description inconsolata">
@@ -182,7 +182,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
                       `+fullData[result.ref]["number"]+`
                     </h1>
                     <h4 class="standard-info-time-period inter-light">
-                    `+fullData[result.ref]["year-range"]+`
+                    `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
                     </h4>
                   </div>
                   <div class="standard-info-description inconsolata">
@@ -317,7 +317,7 @@ function search(term){
                     `+fullData[result.ref]["number"]+`
                   </h1>
                   <h4 class="standard-info-time-period inter-light">
-                  `+fullData[result.ref]["year-range"]+`
+                  `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
                   </h4>
                 </div>
                 <div class="standard-info-description inconsolata">
