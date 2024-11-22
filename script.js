@@ -158,7 +158,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
   const searchText = document.querySelector('#search-text');
   const autocomplete = document.querySelector('#autocomplete');
-  if (event.keyCode == 13 && autocomplete.innerHTML != "Search for an external paper") { //Enter key
+  if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") { //Enter key
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "flex";
@@ -241,7 +241,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     }
   }
   else {
-    autocomplete.innerHTML = "Search for an external paper";
+    autocomplete.innerHTML = "Enter standard number or subject name";
   }
 });
 
