@@ -76,13 +76,19 @@ const contributorsScreen = document.querySelector(".contributors-screen");
 const examsNotFound = document.querySelector(".subject-not-found-block");
 const loadingWheel = document.querySelector(".loading-wheel");
 
+// Texts in input field
+const searchText = document.querySelector('#search-text');
+const autocomplete = document.querySelector('#autocomplete');
+
 //Stupid tab button, it has to be done on the keydown event
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
-  const searchText = document.querySelector('#search-text');
-  const autocomplete = document.querySelector('#autocomplete');
-  if(event.keyCode == 9) {
+
+  // Keycode 9 is tab key
+  if (event.keyCode == 9) {
     event.preventDefault();
+
     if (searchText.value == autocomplete.innerHTML) {
+      // Display the loading wheel
       examsNotFound.style.display = "none";
       searchResults.style.display = "none";
       loadingWheel.style.display = "flex";
