@@ -85,6 +85,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
 
   // Keycode 9 is tab key
   if (event.keyCode == 9 && autocomplete.innerHTML != "Enter standard number or subject name") {
+    // Prevents pressing the tab key to select elements
     event.preventDefault();
 
     if (searchText.value == autocomplete.innerHTML) {
@@ -171,7 +172,8 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
       // If the current input text is not equal to autoComplete's text, will auto complete
       searchText.value = autocomplete.innerHTML;
     }
-}});
+  }
+});
 
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
@@ -243,24 +245,24 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     );
   }
 
-  autocomplete.innerHTML = searchText.value;
+  // autocomplete.innerHTML = searchText.value;
 
-  if (searchText.value.length != 0)
-  {
-    for (let index = 0; index < subjectList.length; index++) {
-      const subject = subjectList[index];
+  // if (searchText.value.length != 0)
+  // {
+  //   for (let index = 0; index < subjectList.length; index++) {
+  //     const subject = subjectList[index];
 
-      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
-        autocomplete.innerHTML = subject;
-        searchText.value = subject.substr(0,searchText.value.length);
+  //     if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
+  //       autocomplete.innerHTML = subject;
+  //       searchText.value = subject.substr(0,searchText.value.length);
 
-        break;
-      }
-    }
-  }
-  else {
-    autocomplete.innerHTML = "Enter standard number or subject name";
-  }
+  //       break;
+  //     }
+  //   }
+  // }
+  // else {
+  //   autocomplete.innerHTML = "Enter standard number or subject name";
+  // }
 });
 
 // Contributors button
