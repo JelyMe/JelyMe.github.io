@@ -84,7 +84,7 @@ const autocomplete = document.querySelector('#autocomplete');
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
 
   // Keycode 9 is tab key
-  if (event.keyCode == 9) {
+  if (event.keyCode == 9 && autocomplete.innerHTML != "Enter standard number or subject name") {
     event.preventDefault();
 
     if (searchText.value == autocomplete.innerHTML) {
@@ -159,6 +159,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
         }
       ).then(
         () => {
+          // Once exams are found show the search results
           examsNotFound.style.display = "none";
           loadingWheel.style.display = "none";
           searchResults.style.display = "flex";
@@ -167,14 +168,15 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
       );
     }
     else {
+      // If the current input text is not equal to autoComplete's text, will auto complete
       searchText.value = autocomplete.innerHTML;
     }
 }});
 
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
-  const searchText = document.querySelector('#search-text');
-  const autocomplete = document.querySelector('#autocomplete');
-  if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") { //Enter key
+
+  // Key code 13 is enter key
+  if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") {
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "flex";
