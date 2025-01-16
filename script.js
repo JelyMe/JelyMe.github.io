@@ -360,10 +360,8 @@ function search(term){
   new Promise(
     (resolve, reject) => {
       setTimeout(() => {
-        searchResults.innerHTML = "";
-        console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"))
-        let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
+        let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
         if (subjectExams.length > 0) {
           subjectExams.forEach((result) => {
