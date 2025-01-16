@@ -88,6 +88,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
     event.preventDefault();
 
     if (searchText.value == autocomplete.innerHTML) {
+
       // Display the loading wheel
       examsNotFound.style.display = "none";
       searchResults.style.display = "none";
@@ -97,12 +98,15 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
       new Promise(
         (resolve, reject) => {
           setTimeout(() => {
-            searchResults.innerHTML = "";
-            console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"))
+
+            // Not sure what this console.log is doing??
+            // console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+
             let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
-
             if (subjectExams.length > 0) {
+
+              // Add the exam card buttons for each exam there are for that subject
               subjectExams.forEach((result) => {
                 searchResults.innerHTML += 
                 `<div class="search-results-card flex-c-c">
@@ -138,6 +142,8 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
               resolve();
             }
             else if (subjectExams.length === 0) {
+
+              // If there are no exams for that subject, show the error screen (why face emoji)
               examsNotFound.style.display = "flex";
               searchResults.style.display = "none";
               loadingWheel.style.display = "none";
