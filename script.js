@@ -177,6 +177,8 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   // Key code 13 is enter key
   if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") {
+
+    // Display loading wheel
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "flex";
@@ -185,10 +187,8 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
     new Promise(
       (resolve, reject) => {
         setTimeout(() => {
-          searchResults.innerHTML = "";
-          console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"))
-          let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
+          let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
           if (subjectExams.length > 0) {
             subjectExams.forEach((result) => {
@@ -263,14 +263,25 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   }
 });
 
+// Contributors button
 const contributorsButton = document.querySelector(".contributors-button");
 
 contributorsButton.addEventListener("click", (e) => {
   if (contributorsScreen.style.display === "flex") {
+    // Display search results
+    searchResults.style.display = "flex"; 
     contributorsScreen.style.display = "none";
-    searchResults.style.display = "flex"; // Display search results
+
   } else {
-    e.stopPropagation()
+
+    /*
+    Will stop the click event fired by the user clicking
+    from going up to the body. If this was not included, then
+    the body click event will be fired and code will be executed
+    (the code to be executed is below this callback function)
+    */
+    e.stopPropagation();
+
     examsNotFound.style.display = "none";
     searchResults.style.display = "none";
     loadingWheel.style.display = "none";
@@ -278,14 +289,19 @@ contributorsButton.addEventListener("click", (e) => {
   }
 });
 
-document.body.addEventListener("click",()=>{
+/* 
+If the user clicks anywhere on the screen, and the contributors screen is showing, 
+then will hide contributor screen and show the exam paper search results
+*/
+document.body.addEventListener("click", () => {
   if (contributorsScreen.style.display === "flex") {
+    // Display search results
+    searchResults.style.display = "flex"; 
     contributorsScreen.style.display = "none";
-    searchResults.style.display = "flex"; // Display search results
   }
-})
+});
 
-var showingSubjects = false;
+let showingSubjects = false;
 
 document.querySelector("#subject-button").addEventListener("click", ()=>{
   if (!showingSubjects){
