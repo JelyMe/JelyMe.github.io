@@ -72,6 +72,7 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   fullData = data;
 });
 
+// Screens
 const contributorsScreen = document.querySelector(".contributors-screen");
 const examsNotFound = document.querySelector(".subject-not-found-block");
 const loadingWheel = document.querySelector(".loading-wheel");
@@ -80,7 +81,28 @@ const loadingWheel = document.querySelector(".loading-wheel");
 const searchText = document.querySelector('#search-text');
 const autocomplete = document.querySelector('#autocomplete');
 
-//Stupid tab button, it has to be done on the keydown event
+function setAutoCompleteText() {
+  autocomplete.innerHTML = searchText.value;
+
+  if (searchText.value.length != 0)
+  {
+    for (let index = 0; index < subjectList.length; index++) {
+      const subject = subjectList[index];
+
+      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
+        autocomplete.innerHTML = subject;
+        searchText.value = subject.substr(0,searchText.value.length);
+
+        break;
+      }
+    }
+  }
+  else {
+    autocomplete.innerHTML = "Enter standard number or subject name";
+  }
+}
+
+//Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
 
   // Keycode 9 is tab key
@@ -89,7 +111,9 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
     event.preventDefault();
 
     if (searchText.value == autocomplete.innerHTML) {
-
+      // Remove current search results
+      searchResults.innerHTML = "";
+      
       // Display the loading wheel
       examsNotFound.style.display = "none";
       searchResults.style.display = "none";
@@ -175,94 +199,87 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
   }
 });
 
+// Enter key autocomplete and stuff
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   // Key code 13 is enter key
   if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") {
 
-    // Display loading wheel
-    examsNotFound.style.display = "none";
-    searchResults.style.display = "none";
-    loadingWheel.style.display = "flex";
-    contributorsScreen.style.display = "none";
+    if (searchText.value == autocomplete.innerHTML) {
+      // Remove current search results
+      searchResults.innerHTML = "";
+      
+      // Display loading wheel
+      examsNotFound.style.display = "none";
+      searchResults.style.display = "none";
+      loadingWheel.style.display = "flex";
+      contributorsScreen.style.display = "none";
 
-    new Promise(
-      (resolve, reject) => {
-        setTimeout(() => {
+      new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
 
-          let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+            let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
-          if (subjectExams.length > 0) {
-            subjectExams.forEach((result) => {
-              searchResults.innerHTML += 
-              `<div class="search-results-card flex-c-c">
-                <div class="standard-info flex-c-s flex-column">
-                  <div class="standard-info-numbers flex-se-c">
-                    <h1 class="standard-info-id inter-light">
-                      `+fullData[result.ref]["number"]+`
-                    </h1>
-                    <h4 class="standard-info-time-period inter-light">
-                    `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
-                    </h4>
+            if (subjectExams.length > 0) {
+              subjectExams.forEach((result) => {
+                searchResults.innerHTML += 
+                `<div class="search-results-card flex-c-c">
+                  <div class="standard-info flex-c-s flex-column">
+                    <div class="standard-info-numbers flex-se-c">
+                      <h1 class="standard-info-id inter-light">
+                        `+fullData[result.ref]["number"]+`
+                      </h1>
+                      <h4 class="standard-info-time-period inter-light">
+                      `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
+                      </h4>
+                    </div>
+                    <div class="standard-info-description inconsolata">
+                      <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                    </div>
                   </div>
-                  <div class="standard-info-description inconsolata">
-                    <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
-                  </div>
-                </div>
-          
-                <div class="split-bar"></div>
-          
-                <div class="standard-level">
-                  <h1 class="standard-level-text inter-light">
-                    `+fullData[result.ref]["level"]+`
-                  </h1>
-                <p>Lvl</p>
-                </div>
-          
-                <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"><img src="Images/DownloadIcon.png"></button>
-        
-              </div>`
-            });
             
-            resolve();
-          }
-          else if (subjectExams.length === 0) {
-            examsNotFound.style.display = "flex";
-            searchResults.style.display = "none";
-            loadingWheel.style.display = "none";
-            contributorsScreen.style.display = "none";
-          }
+                  <div class="split-bar"></div>
+            
+                  <div class="standard-level">
+                    <h1 class="standard-level-text inter-light">
+                      `+fullData[result.ref]["level"]+`
+                    </h1>
+                  <p>Lvl</p>
+                  </div>
+            
+                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"><img src="Images/DownloadIcon.png"></button>
+          
+                </div>`
+              });
+              
+              resolve();
+            }
+            else if (subjectExams.length === 0) {
+              examsNotFound.style.display = "flex";
+              searchResults.style.display = "none";
+              loadingWheel.style.display = "none";
+              contributorsScreen.style.display = "none";
+            }
 
-        }, 15);
-      }
-    ).then(
-      () => {
-        examsNotFound.style.display = "none";
-        loadingWheel.style.display = "none";
-        searchResults.style.display = "flex";
-        contributorsScreen.style.display = "none";
-      }
-    );
+          }, 15);
+        }
+      ).then(
+        () => {
+          examsNotFound.style.display = "none";
+          loadingWheel.style.display = "none";
+          searchResults.style.display = "flex";
+          contributorsScreen.style.display = "none";
+        }
+      );
+    }
+    else {
+      // If the current input text is not equal to autoComplete's text, will auto complete
+      searchText.value = autocomplete.innerHTML;
+    }
   }
 
-  // autocomplete.innerHTML = searchText.value;
-
-  // if (searchText.value.length != 0)
-  // {
-  //   for (let index = 0; index < subjectList.length; index++) {
-  //     const subject = subjectList[index];
-
-  //     if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
-  //       autocomplete.innerHTML = subject;
-  //       searchText.value = subject.substr(0,searchText.value.length);
-
-  //       break;
-  //     }
-  //   }
-  // }
-  // else {
-  //   autocomplete.innerHTML = "Enter standard number or subject name";
-  // }
+  setAutoCompleteText();
 });
 
 // Contributors button
