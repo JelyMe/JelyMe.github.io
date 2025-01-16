@@ -113,7 +113,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
     if (searchText.value == autocomplete.innerHTML) {
       // Remove current search results
       searchResults.innerHTML = "";
-      
+
       // Display the loading wheel
       examsNotFound.style.display = "none";
       searchResults.style.display = "none";
@@ -124,13 +124,9 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
         (resolve, reject) => {
           setTimeout(() => {
 
-            // Not sure what this console.log is doing??
-            // console.log(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
-
             let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
 
             if (subjectExams.length > 0) {
-
               // Add the exam card buttons for each exam there are for that subject
               subjectExams.forEach((result) => {
                 searchResults.innerHTML += 
@@ -199,7 +195,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
   }
 });
 
-// Enter key autocomplete and stuff
+// Enter key autocomplete and stuff. Done on keyup because enter key is not special like tab
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   // Key code 13 is enter key
@@ -320,33 +316,42 @@ document.body.addEventListener("click", () => {
   }
 });
 
+
+
 let showingSubjects = false;
 
 document.querySelector("#subject-button").addEventListener("click", ()=>{
-  if (!showingSubjects){
+  if (!showingSubjects) {
+
+    // Remove search results
     searchResults.innerHTML = "";
+
     examsNotFound.style.display = "none";
     loadingWheel.style.display = "none";
     searchResults.style.display = "flex";
     contributorsScreen.style.display = "none";
-    console.log("yep")
+    
+    // Show subject list buttons
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
       searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search('`+subject+`')">`+subject+'</button>\n';
     }
     showingSubjects = true;
   }
-  else{
+  else {
+    // Hides the subject list buttons
     searchResults.innerHTML = "";
     showingSubjects = false;
   }
 })
 
+// Searching for subject exams from clicking the subject buttons
 function search(term){
-  const searchText = document.querySelector('#search-text');
-  const autocomplete = document.querySelector('#autocomplete');
+
   autocomplete.innerHTML = term;
   searchText.value = term;
+
+  // Show loading wheel
   examsNotFound.style.display = "none";
   searchResults.style.display = "none";
   loadingWheel.style.display = "flex";
