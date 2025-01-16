@@ -1,4 +1,3 @@
-//BORROWED CODE FOR SOME COOL CUSTOM SCROLL EFFECTS
 function interpolate(color1, color2, percent) {
   // Convert the hex colors to RGB values
   const r1 = parseInt(color1.substring(1, 3), 16);
@@ -33,7 +32,6 @@ const debounce = (fn) => {
   } 
 };
 
-//MODIFIED BORROWED CODE
 const searchResults = document.querySelector('.search-results')
 
 const storeScroll = () => {
@@ -44,8 +42,9 @@ const storeScroll = () => {
 searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
 
 storeScroll();
-//END BORROWED CODE
 
+
+// Searching
 var idx;
 
 var fullData;
