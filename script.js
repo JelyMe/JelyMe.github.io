@@ -142,7 +142,6 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
               resolve();
             }
             else if (subjectExams.length === 0) {
-
               // If there are no exams for that subject, show the error screen (why face emoji)
               examsNotFound.style.display = "flex";
               searchResults.style.display = "none";
@@ -151,6 +150,12 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
             }
 
           }, 5);
+          /* 
+          We added a 5 millisecond delay because of a behaviour in JavaScript
+          Seems like "tasks" in JavaScript will be blocking, until a certain task is done JavaScript
+          will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
+          wheel to show
+          */
         }
       ).then(
         () => {
