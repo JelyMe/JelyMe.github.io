@@ -162,7 +162,7 @@ function showSearchResults() {
           contributorsScreen.style.display = "none";
         }
 
-      }, 5);
+      }, 15);
       /* 
       We added a 5 millisecond delay because of a behaviour in JavaScript
       Seems like "tasks" in JavaScript will be blocking, until a certain task is done JavaScript
@@ -206,72 +206,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
   if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") {
 
     if (searchText.value == autocomplete.innerHTML) {
-      // Remove current search results
-      searchResults.innerHTML = "";
-      
-      // Display loading wheel
-      examsNotFound.style.display = "none";
-      searchResults.style.display = "none";
-      loadingWheel.style.display = "flex";
-      contributorsScreen.style.display = "none";
-
-      new Promise(
-        (resolve, reject) => {
-          setTimeout(() => {
-
-            let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
-
-            if (subjectExams.length > 0) {
-              subjectExams.forEach((result) => {
-                searchResults.innerHTML += 
-                `<div class="search-results-card flex-c-c">
-                  <div class="standard-info flex-c-s flex-column">
-                    <div class="standard-info-numbers flex-se-c">
-                      <h1 class="standard-info-id inter-light">
-                        `+fullData[result.ref]["number"]+`
-                      </h1>
-                      <h4 class="standard-info-time-period inter-light">
-                      `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
-                      </h4>
-                    </div>
-                    <div class="standard-info-description inconsolata">
-                      <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
-                    </div>
-                  </div>
-            
-                  <div class="split-bar"></div>
-            
-                  <div class="standard-level">
-                    <h1 class="standard-level-text inter-light">
-                      `+fullData[result.ref]["level"]+`
-                    </h1>
-                  <p>Lvl</p>
-                  </div>
-            
-                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')"><img src="Images/DownloadIcon.png"></button>
-          
-                </div>`
-              });
-              
-              resolve();
-            }
-            else if (subjectExams.length === 0) {
-              examsNotFound.style.display = "flex";
-              searchResults.style.display = "none";
-              loadingWheel.style.display = "none";
-              contributorsScreen.style.display = "none";
-            }
-
-          }, 15);
-        }
-      ).then(
-        () => {
-          examsNotFound.style.display = "none";
-          loadingWheel.style.display = "none";
-          searchResults.style.display = "flex";
-          contributorsScreen.style.display = "none";
-        }
-      );
+     showSearchResults();
     }
     else {
       // If the current input text is not equal to autoComplete's text, will auto complete
