@@ -103,7 +103,82 @@ function setAutoCompleteText() {
 }
 
 function showSearchResults() {
-  
+  // Remove current search results
+  searchResults.innerHTML = "";
+
+  // Display the loading wheel
+  examsNotFound.style.display = "none";
+  searchResults.style.display = "none";
+  loadingWheel.style.display = "flex";
+  contributorsScreen.style.display = "none";
+
+  new Promise(
+    (resolve, reject) => {
+      setTimeout(() => {
+
+        let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+
+        if (subjectExams.length > 0) {
+          // Add the exam card buttons for each exam there are for that subject
+          subjectExams.forEach((result) => {
+            searchResults.innerHTML += 
+            `<div class="search-results-card flex-c-c">
+              <div class="standard-info flex-c-s flex-column">
+                <div class="standard-info-numbers flex-se-c">
+                  <h1 class="standard-info-id inter-light">
+                    `+fullData[result.ref]["number"]+`
+                  </h1>
+                  <h4 class="standard-info-time-period inter-light">
+                  `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
+                  </h4>
+                </div>
+                <div class="standard-info-description inconsolata">
+                  <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                </div>
+              </div>
+        
+              <div class="split-bar"></div>
+        
+              <div class="standard-level">
+                <h1 class="standard-level-text inter-light">
+                  `+fullData[result.ref]["level"]+`
+                </h1>
+              <p>Lvl</p>
+              </div>
+        
+              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')">
+              <img src="Images/DownloadIcon.png"></button>
+      
+            </div>`
+          });
+          
+          resolve();
+        }
+        else if (subjectExams.length === 0) {
+          // If there are no exams for that subject, show the error screen (why face emoji)
+          examsNotFound.style.display = "flex";
+          searchResults.style.display = "none";
+          loadingWheel.style.display = "none";
+          contributorsScreen.style.display = "none";
+        }
+
+      }, 5);
+      /* 
+      We added a 5 millisecond delay because of a behaviour in JavaScript
+      Seems like "tasks" in JavaScript will be blocking, until a certain task is done JavaScript
+      will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
+      wheel to show
+      */
+    }
+  ).then(
+    () => {
+      // Once exams are found show the search results
+      examsNotFound.style.display = "none";
+      loadingWheel.style.display = "none";
+      searchResults.style.display = "flex";
+      contributorsScreen.style.display = "none";
+    }
+  );
 }
 
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
@@ -115,82 +190,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
     event.preventDefault();
 
     if (searchText.value == autocomplete.innerHTML) {
-      // Remove current search results
-      searchResults.innerHTML = "";
-
-      // Display the loading wheel
-      examsNotFound.style.display = "none";
-      searchResults.style.display = "none";
-      loadingWheel.style.display = "flex";
-      contributorsScreen.style.display = "none";
-
-      new Promise(
-        (resolve, reject) => {
-          setTimeout(() => {
-
-            let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
-
-            if (subjectExams.length > 0) {
-              // Add the exam card buttons for each exam there are for that subject
-              subjectExams.forEach((result) => {
-                searchResults.innerHTML += 
-                `<div class="search-results-card flex-c-c">
-                  <div class="standard-info flex-c-s flex-column">
-                    <div class="standard-info-numbers flex-se-c">
-                      <h1 class="standard-info-id inter-light">
-                        `+fullData[result.ref]["number"]+`
-                      </h1>
-                      <h4 class="standard-info-time-period inter-light">
-                      `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
-                      </h4>
-                    </div>
-                    <div class="standard-info-description inconsolata">
-                      <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
-                    </div>
-                  </div>
-            
-                  <div class="split-bar"></div>
-            
-                  <div class="standard-level">
-                    <h1 class="standard-level-text inter-light">
-                      `+fullData[result.ref]["level"]+`
-                    </h1>
-                  <p>Lvl</p>
-                  </div>
-            
-                  <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')">
-                  <img src="Images/DownloadIcon.png"></button>
-          
-                </div>`
-              });
-              
-              resolve();
-            }
-            else if (subjectExams.length === 0) {
-              // If there are no exams for that subject, show the error screen (why face emoji)
-              examsNotFound.style.display = "flex";
-              searchResults.style.display = "none";
-              loadingWheel.style.display = "none";
-              contributorsScreen.style.display = "none";
-            }
-
-          }, 5);
-          /* 
-          We added a 5 millisecond delay because of a behaviour in JavaScript
-          Seems like "tasks" in JavaScript will be blocking, until a certain task is done JavaScript
-          will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
-          wheel to show
-          */
-        }
-      ).then(
-        () => {
-          // Once exams are found show the search results
-          examsNotFound.style.display = "none";
-          loadingWheel.style.display = "none";
-          searchResults.style.display = "flex";
-          contributorsScreen.style.display = "none";
-        }
-      );
+      showSearchResults();
     }
     else {
       // If the current input text is not equal to autoComplete's text, will auto complete
