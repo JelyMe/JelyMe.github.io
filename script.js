@@ -102,6 +102,10 @@ function setAutoCompleteText() {
   }
 }
 
+function showSearchResults() {
+  
+}
+
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
 
