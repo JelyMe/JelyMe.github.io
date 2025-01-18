@@ -120,6 +120,7 @@ body {
 }
 /* #endregion */
 
+/* #region Search Bar */
 #search-bar-wrapper{
   display: flex;
   justify-content: center;
@@ -192,7 +193,9 @@ body {
     font-size: 3vw;
   }
 }
+/* #endregion */
 
+/* #region Search Results */
 .loading-wheel {
   display: none;
 
@@ -416,7 +419,9 @@ body {
   font-size: max(.8em,1.4vw);
   color: rgb(202, 133, 133);
 }
+/* #endregion */
 
+/* #region Contributors Screen */
 .contributors-screen {
   display: none;
 
@@ -490,16 +495,21 @@ body {
 .contributors img {
   width: 4vh;
 }
+/* #endregion */
 
+/* #region Subjects Page */
 #subject-button{
   position: absolute;
+  top:30%;
   right:0;
   height: 75%;
+
   aspect-ratio: 1/1;
-  top:30%;
+
+  filter: invert(99%) sepia(0%) saturate(7498%) hue-rotate(169deg) brightness(109%) contrast(100%);
   background-color: rgba(0,0,0,0);
   border: none;
-  filter: invert(99%) sepia(0%) saturate(7498%) hue-rotate(169deg) brightness(109%) contrast(100%);
+
   transition: all 0.3s;
 }
 #subject-button img{
@@ -562,8 +572,9 @@ body {
     font-size: 7vw;
   }
 }
+/* #endregion */
 
-/*-------------------------Stolen Code------------------------*/
+/* #region Background Particles*/
 .stars {
   position: absolute;
   z-index: -10;
@@ -638,3 +649,4 @@ body {
       transform: translateY(-2000px)
   }
 }
+/* #endregion */
