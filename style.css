@@ -3,6 +3,7 @@
   margin: 0;
 }
 
+/* #region Fonts */
 @font-face {
   font-family: Inter-Light;
   src: url("Fonts/Inter/static/Inter-Light.ttf");
@@ -34,6 +35,7 @@
   font-family: nasalization, sans-serif;
   font-style: normal;
 }
+/* #endregion */
 
 header {
   height: 14vh;
@@ -58,6 +60,7 @@ body {
   transition: all 1s;
 }
 
+/* #region Flex Displays */
 .flex-c-c {
   display: flex;
   justify-content: center;
@@ -101,7 +104,9 @@ body {
 .flex-row {
   flex-direction: row;
 }
+/* #endregion */
 
+/* #region Text colours */
 .text-white {
   color: white;
 }
@@ -113,6 +118,7 @@ body {
 .full-viewport-width {
   width: 100vw;
 }
+/* #endregion */
 
 #search-bar-wrapper{
   display: flex;
@@ -173,6 +179,18 @@ body {
   color:rgb(255, 255, 255);
   text-align: left;
   font-family: Inter-Light;
+}
+
+@media screen and (max-width: 940px) {
+  #autocomplete {
+    font-size: 1.5vw;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  #autocomplete {
+    font-size: 3vw;
+  }
 }
 
 .loading-wheel {
