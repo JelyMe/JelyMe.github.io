@@ -246,7 +246,6 @@ document.body.addEventListener("click", () => {
 });
 
 
-
 let showingSubjects = false;
 
 document.querySelector("#subject-button").addEventListener("click", ()=>{
