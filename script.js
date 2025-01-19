@@ -35,7 +35,7 @@ const debounce = (fn) => {
 const searchResults = document.querySelector('.search-results')
 
 const storeScroll = () => {
-  var scrollamount = (searchResults.scrollTop/searchResults.scrollHeight);
+  let scrollamount = (searchResults.scrollTop / searchResults.scrollHeight);
   searchResults.style.setProperty("--scroll-amount", interpolate("#4287f5","#460c85", scrollamount));
 }
 
@@ -45,11 +45,11 @@ storeScroll();
 
 
 // Searching
-var idx;
+let idx;
 
-var fullData;
+let fullData;
 
-var subjectList;
+let subjectList;
 
 //open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
 
@@ -89,10 +89,13 @@ function setAutoCompleteText() {
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
 
-      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
-        autocomplete.innerHTML = subject;
-        searchText.value = subject.substr(0,searchText.value.length);
+      if (subject.toLowerCase().substr(0, searchText.value.length) == searchText.value.toLowerCase()) {
 
+        autocomplete.textContent = subject;
+        
+        let autoCompleteContent = subject.substr(0, searchText.value.length).replace("&amp;", "&");
+
+        searchText.value = autoCompleteContent;
         break;
       }
     }
@@ -102,15 +105,18 @@ function setAutoCompleteText() {
   }
 }
 
+function changeScreensDisplay(examsNotFoundDisplay, searchResultsDisplay, loadingWheelDisplay, contributorsScreenDisplay) {
+  examsNotFound.style.display = examsNotFoundDisplay;
+  searchResults.style.display = searchResultsDisplay;
+  loadingWheel.style.display = loadingWheelDisplay;
+  contributorsScreen.style.display = contributorsScreenDisplay;
+}
+
 function showSearchResults() {
   // Remove current search results
   searchResults.innerHTML = "";
 
-  // Display the loading wheel
-  examsNotFound.style.display = "none";
-  searchResults.style.display = "none";
-  loadingWheel.style.display = "flex";
-  contributorsScreen.style.display = "none";
+  changeScreensDisplay("none", "none", "flex", "none");
 
   new Promise(
     (resolve, reject) => {
@@ -156,10 +162,7 @@ function showSearchResults() {
         }
         else if (subjectExams.length === 0) {
           // If there are no exams for that subject, show the error screen (why face emoji)
-          examsNotFound.style.display = "flex";
-          searchResults.style.display = "none";
-          loadingWheel.style.display = "none";
-          contributorsScreen.style.display = "none";
+          changeScreensDisplay("flex", "none", "none", "none");
         }
 
       }, 15);
@@ -173,10 +176,7 @@ function showSearchResults() {
   ).then(
     () => {
       // Once exams are found show the search results
-      examsNotFound.style.display = "none";
-      loadingWheel.style.display = "none";
-      searchResults.style.display = "flex";
-      contributorsScreen.style.display = "none";
+      changeScreensDisplay("none", "flex", "none", "none");
     }
   );
 }
@@ -184,17 +184,28 @@ function showSearchResults() {
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
 
+  
+  /*
+    Why we use autocomplete.textContent instead of innerHTML:
+    This is because Earth & Space Science has an ampersand, which is displayed as &amp; in HTML.
+    If we use autocomplete.innerHTML, then we are comparing searchText.value (which is plain) text, 
+    with HTML markup.
+    This leads to errors such as when autocompleting for Earth & Space Science, the searchText will
+    be displayed as "Earth &amp; Space Science".
+    To avoid this we have to use the raw plain text of autocomplete. Hence, we use textContent.
+  */
+ 
   // Keycode 9 is tab key
-  if (event.keyCode == 9 && autocomplete.innerHTML != "Enter standard number or subject name") {
+  if (event.keyCode == 9 && autocomplete.textContent != "Enter standard number or subject name") {
     // Prevents pressing the tab key to select elements
     event.preventDefault();
 
-    if (searchText.value == autocomplete.innerHTML) {
+    if (searchText.value == autocomplete.textContent) {
       showSearchResults();
     }
     else {
       // If the current input text is not equal to autoComplete's text, will auto complete
-      searchText.value = autocomplete.innerHTML;
+      searchText.value = autocomplete.textContent;
     }
   }
 });
@@ -203,14 +214,14 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   // Key code 13 is enter key
-  if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") {
+  if (event.keyCode == 13 && autocomplete.textContent != "Enter standard number or subject name") {
 
-    if (searchText.value == autocomplete.innerHTML) {
+    if (searchText.value == autocomplete.textContent) {
      showSearchResults();
     }
     else {
       // If the current input text is not equal to autoComplete's text, will auto complete
-      searchText.value = autocomplete.innerHTML;
+      searchText.value = autocomplete.textContent;
     }
   }
 
@@ -223,11 +234,8 @@ const contributorsButton = document.querySelector(".contributors-button");
 contributorsButton.addEventListener("click", (e) => {
   if (contributorsScreen.style.display === "flex") {
     // Display search results
-    searchResults.style.display = "flex"; 
-    contributorsScreen.style.display = "none";
-
+    changeScreensDisplay("none", "flex", "none", "none");
   } else {
-
     /*
     Will stop the click event fired by the user clicking
     from going up to the body. If this was not included, then
@@ -236,10 +244,7 @@ contributorsButton.addEventListener("click", (e) => {
     */
     e.stopPropagation();
 
-    examsNotFound.style.display = "none";
-    searchResults.style.display = "none";
-    loadingWheel.style.display = "none";
-    contributorsScreen.style.display = "flex";
+    changeScreensDisplay("none", "none", "none", "flex");
   }
 });
 
@@ -250,11 +255,9 @@ then will hide contributor screen and show the exam paper search results
 document.body.addEventListener("click", () => {
   if (contributorsScreen.style.display === "flex") {
     // Display search results
-    searchResults.style.display = "flex"; 
-    contributorsScreen.style.display = "none";
+    changeScreensDisplay("none", "flex", "none", "none");
   }
 });
-
 
 
 let showingSubjects = false;
@@ -265,10 +268,7 @@ document.querySelector("#subject-button").addEventListener("click", ()=>{
     // Remove search results
     searchResults.innerHTML = "";
 
-    examsNotFound.style.display = "none";
-    loadingWheel.style.display = "none";
-    searchResults.style.display = "flex";
-    contributorsScreen.style.display = "none";
+    changeScreensDisplay("none", "flex", "none", "none");
     
     // Show subject list buttons
     for (let index = 0; index < subjectList.length; index++) {
@@ -287,7 +287,7 @@ document.querySelector("#subject-button").addEventListener("click", ()=>{
 // Searching for subject exams from clicking the subject buttons
 function search(term){
 
-  autocomplete.innerHTML = term;
+  autocomplete.textContent = term;
   searchText.value = term;
 
   showSearchResults();

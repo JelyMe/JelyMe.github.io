@@ -186,10 +186,18 @@ body {
   #autocomplete {
     font-size: 1.5vw;
   }
+
+  #search-text {
+    font-size: 1.5vw;
+  }
 }
 
 @media screen and (max-width: 686px) {
   #autocomplete {
+    font-size: 3vw;
+  }
+
+  #search-text {
     font-size: 3vw;
   }
 }
