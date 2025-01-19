@@ -102,6 +102,10 @@ function setAutoCompleteText() {
   }
 }
 
+function changeScreensDisplay() {
+  
+}
+
 function showSearchResults() {
   // Remove current search results
   searchResults.innerHTML = "";
