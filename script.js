@@ -55,8 +55,6 @@ let subjectList;
 
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data;
-}).then(() => {
-  console.log(subjectList);
 });
 
 fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {  
@@ -72,9 +70,6 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   })
     
   fullData = data;
-}).then(() => {
-  console.log(idx);
-  console.log(fullData);
 });
 
 // Screens
@@ -94,10 +89,13 @@ function setAutoCompleteText() {
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
 
-      if (subject.toLowerCase().substr(0,searchText.value.length) == searchText.value.toLowerCase()) {
-        autocomplete.innerHTML = subject;
-        searchText.value = subject.substr(0,searchText.value.length);
+      if (subject.toLowerCase().substr(0, searchText.value.length) == searchText.value.toLowerCase()) {
 
+        autocomplete.textContent = subject;
+        
+        let autoCompleteContent = subject.substr(0, searchText.value.length).replace("&amp;", "&");
+
+        searchText.value = autoCompleteContent;
         break;
       }
     }
@@ -186,17 +184,28 @@ function showSearchResults() {
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
 
+  
+  /*
+    Why we use autocomplete.textContent instead of innerHTML:
+    This is because Earth & Space Science has an ampersand, which is displayed as &amp; in HTML.
+    If we use autocomplete.innerHTML, then we are comparing searchText.value (which is plain) text, 
+    with HTML markup.
+    This leads to errors such as when autocompleting for Earth & Space Science, the searchText will
+    be displayed as "Earth &amp; Space Science".
+    To avoid this we have to use the raw plain text of autocomplete. Hence, we use textContent.
+  */
+ 
   // Keycode 9 is tab key
-  if (event.keyCode == 9 && autocomplete.innerHTML != "Enter standard number or subject name") {
+  if (event.keyCode == 9 && autocomplete.textContent != "Enter standard number or subject name") {
     // Prevents pressing the tab key to select elements
     event.preventDefault();
 
-    if (searchText.value == autocomplete.innerHTML) {
+    if (searchText.value == autocomplete.textContent) {
       showSearchResults();
     }
     else {
       // If the current input text is not equal to autoComplete's text, will auto complete
-      searchText.value = autocomplete.innerHTML;
+      searchText.value = autocomplete.textContent;
     }
   }
 });
@@ -205,14 +214,14 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   // Key code 13 is enter key
-  if (event.keyCode == 13 && autocomplete.innerHTML != "Enter standard number or subject name") {
+  if (event.keyCode == 13 && autocomplete.textContent != "Enter standard number or subject name") {
 
-    if (searchText.value == autocomplete.innerHTML) {
+    if (searchText.value == autocomplete.textContent) {
      showSearchResults();
     }
     else {
       // If the current input text is not equal to autoComplete's text, will auto complete
-      searchText.value = autocomplete.innerHTML;
+      searchText.value = autocomplete.textContent;
     }
   }
 
@@ -278,7 +287,7 @@ document.querySelector("#subject-button").addEventListener("click", ()=>{
 // Searching for subject exams from clicking the subject buttons
 function search(term){
 
-  autocomplete.innerHTML = term;
+  autocomplete.textContent = term;
   searchText.value = term;
 
   showSearchResults();
