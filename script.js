@@ -222,7 +222,6 @@ contributorsButton.addEventListener("click", (e) => {
     // Display search results
     changeScreensDisplay("none", "flex", "none", "none");
   } else {
-
     /*
     Will stop the click event fired by the user clicking
     from going up to the body. If this was not included, then
@@ -242,8 +241,7 @@ then will hide contributor screen and show the exam paper search results
 document.body.addEventListener("click", () => {
   if (contributorsScreen.style.display === "flex") {
     // Display search results
-    searchResults.style.display = "flex"; 
-    contributorsScreen.style.display = "none";
+    changeScreensDisplay("none", "flex", "none", "none");
   }
 });
 
@@ -257,10 +255,7 @@ document.querySelector("#subject-button").addEventListener("click", ()=>{
     // Remove search results
     searchResults.innerHTML = "";
 
-    examsNotFound.style.display = "none";
-    loadingWheel.style.display = "none";
-    searchResults.style.display = "flex";
-    contributorsScreen.style.display = "none";
+    changeScreensDisplay("none", "flex", "none", "none");
     
     // Show subject list buttons
     for (let index = 0; index < subjectList.length; index++) {
