@@ -102,19 +102,18 @@ function setAutoCompleteText() {
   }
 }
 
-function changeScreensDisplay() {
-  
+function changeScreensDisplay(examsNotFoundDisplay, searchResultsDisplay, loadingWheelDisplay, contributorsScreenDisplay) {
+  examsNotFound.style.display = examsNotFoundDisplay;
+  searchResults.style.display = searchResultsDisplay;
+  loadingWheel.style.display = loadingWheelDisplay;
+  contributorsScreen.style.display = contributorsScreenDisplay;
 }
 
 function showSearchResults() {
   // Remove current search results
   searchResults.innerHTML = "";
 
-  // Display the loading wheel
-  examsNotFound.style.display = "none";
-  searchResults.style.display = "none";
-  loadingWheel.style.display = "flex";
-  contributorsScreen.style.display = "none";
+  changeScreensDisplay("none", "none", "flex", "none");
 
   new Promise(
     (resolve, reject) => {
