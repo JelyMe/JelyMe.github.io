@@ -35,7 +35,7 @@ const debounce = (fn) => {
 const searchResults = document.querySelector('.search-results')
 
 const storeScroll = () => {
-  var scrollamount = (searchResults.scrollTop/searchResults.scrollHeight);
+  let scrollamount = (searchResults.scrollTop / searchResults.scrollHeight);
   searchResults.style.setProperty("--scroll-amount", interpolate("#4287f5","#460c85", scrollamount));
 }
 
@@ -45,11 +45,11 @@ storeScroll();
 
 
 // Searching
-var idx;
+let idx;
 
-var fullData;
+let fullData;
 
-var subjectList;
+let subjectList;
 
 //open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
 
