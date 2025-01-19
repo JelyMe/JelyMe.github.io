@@ -159,10 +159,7 @@ function showSearchResults() {
         }
         else if (subjectExams.length === 0) {
           // If there are no exams for that subject, show the error screen (why face emoji)
-          examsNotFound.style.display = "flex";
-          searchResults.style.display = "none";
-          loadingWheel.style.display = "none";
-          contributorsScreen.style.display = "none";
+          changeScreensDisplay("flex", "none", "none", "none");
         }
 
       }, 15);
@@ -176,10 +173,7 @@ function showSearchResults() {
   ).then(
     () => {
       // Once exams are found show the search results
-      examsNotFound.style.display = "none";
-      loadingWheel.style.display = "none";
-      searchResults.style.display = "flex";
-      contributorsScreen.style.display = "none";
+      changeScreensDisplay("none", "none", "flex", "none");
     }
   );
 }
@@ -239,10 +233,7 @@ contributorsButton.addEventListener("click", (e) => {
     */
     e.stopPropagation();
 
-    examsNotFound.style.display = "none";
-    searchResults.style.display = "none";
-    loadingWheel.style.display = "none";
-    contributorsScreen.style.display = "flex";
+    changeScreensDisplay("none", "none", "none", "flex");
   }
 });
 
