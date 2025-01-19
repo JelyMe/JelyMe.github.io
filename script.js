@@ -55,6 +55,8 @@ let subjectList;
 
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data;
+}).then(() => {
+  console.log(subjectList);
 });
 
 fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {  
@@ -70,6 +72,9 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
   })
     
   fullData = data;
+}).then(() => {
+  console.log(idx);
+  console.log(fullData);
 });
 
 // Screens
