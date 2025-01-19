@@ -220,9 +220,7 @@ const contributorsButton = document.querySelector(".contributors-button");
 contributorsButton.addEventListener("click", (e) => {
   if (contributorsScreen.style.display === "flex") {
     // Display search results
-    searchResults.style.display = "flex"; 
-    contributorsScreen.style.display = "none";
-
+    changeScreensDisplay("none", "flex", "none", "none");
   } else {
 
     /*
