@@ -173,7 +173,7 @@ function showSearchResults() {
   ).then(
     () => {
       // Once exams are found show the search results
-      changeScreensDisplay("none", "none", "flex", "none");
+      changeScreensDisplay("none", "flex", "none", "none");
     }
   );
 }
