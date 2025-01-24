@@ -181,10 +181,12 @@ function showSearchResults() {
   );
 }
 
+const tabKeyCode = 9;
+const enterKeyCode = 13;
+
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
 document.querySelector('#search-text').addEventListener('keydown', (event) => {  
 
-  
   /*
     Why we use autocomplete.textContent instead of innerHTML:
     This is because Earth & Space Science has an ampersand, which is displayed as &amp; in HTML.
@@ -196,7 +198,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
   */
  
   // Keycode 9 is tab key
-  if (event.keyCode == 9 && autocomplete.textContent != "Enter standard number or subject name") {
+  if (event.keyCode == tabKeyCode && autocomplete.textContent != "Enter standard number or subject name") {
     // Prevents pressing the tab key to select elements
     event.preventDefault();
 
@@ -214,7 +216,7 @@ document.querySelector('#search-text').addEventListener('keydown', (event) => {
 document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   // Key code 13 is enter key
-  if (event.keyCode == 13 && autocomplete.textContent != "Enter standard number or subject name") {
+  if (event.keyCode == enterKeyCode && autocomplete.textContent != "Enter standard number or subject name") {
 
     if (searchText.value == autocomplete.textContent) {
      showSearchResults();
