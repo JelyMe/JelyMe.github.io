@@ -51,8 +51,6 @@ let fullData;
 
 let subjectList;
 
-//open("https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/exams/90837-2021.pdf")
-
 fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
   subjectList = data;
 });
