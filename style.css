@@ -52,6 +52,9 @@ header {
 }
 
 body {
+  width: 100vw;
+  height: 100vh;
+
   font-family: system-ui;
   color: white;
   text-align: center;
@@ -59,6 +62,46 @@ body {
   background: radial-gradient(circle, rgba(43,58,75,1) 0%, rgba(0,0,0,1) 100%);
   transition: all 1s;
 }
+
+/* #region Loader */
+.loader-container {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+
+  z-index: 9999;
+
+  background: radial-gradient(circle, rgba(43,58,75,1) 0%, rgba(0,0,0,1) 100%);
+}
+
+.loader {
+  width: 60px;
+  height: 25px;
+  border: 2px solid;
+  box-sizing: border-box;
+  border-radius: 50%;
+  display: grid;
+  animation: l2 2s infinite linear;
+}
+
+.loader:before, .loader:after {
+  content: "";
+  grid-area: 1/1;
+  border: inherit;
+  border-radius: 50%;
+  animation: inherit;
+  animation-duration: 3s;
+}
+
+.loader:after {
+  --s:-1;
+}
+
+@keyframes l2 {
+   100% {transform:rotate(calc(var(--s,1)*1turn))}
+}
+/* #endregion */
 
 /* #region Flex Displays */
 .flex-c-c {
@@ -98,10 +141,12 @@ body {
 }
 
 .flex-column {
+  display: flex;
   flex-direction: column;
 }
 
 .flex-row {
+  display: flex;
   flex-direction: row;
 }
 /* #endregion */
@@ -559,18 +604,26 @@ body {
   .search-results{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   .contributors-screen{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   .subject-not-found-block{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   .loading-wheel{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   #search-bar{
     width:70vw;
