@@ -52,6 +52,9 @@ header {
 }
 
 body {
+  width: 100vw;
+  height: 100vh;
+
   font-family: system-ui;
   color: white;
   text-align: center;
@@ -138,10 +141,12 @@ body {
 }
 
 .flex-column {
+  display: flex;
   flex-direction: column;
 }
 
 .flex-row {
+  display: flex;
   flex-direction: row;
 }
 /* #endregion */
@@ -599,18 +604,26 @@ body {
   .search-results{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   .contributors-screen{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   .subject-not-found-block{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   .loading-wheel{
     width: 95vw;
     height: 55vh;
+
+    flex-grow: 1;
   }
   #search-bar{
     width:70vw;
