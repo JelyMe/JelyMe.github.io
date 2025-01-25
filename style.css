@@ -60,6 +60,17 @@ body {
   transition: all 1s;
 }
 
+/* #region Loader */
+.loader {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+
+  z-index: 9999;
+}
+/* #endregion */
+
 /* #region Flex Displays */
 .flex-c-c {
   display: flex;
