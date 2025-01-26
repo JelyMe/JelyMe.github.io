@@ -1,10 +1,12 @@
-// Loader
+// #region Loader
 const loader = document.querySelector(".loader-container");
 
 window.addEventListener("load", () => { 
   loader.style.display = "none";
 });
+// #endregion
 
+// #region Scrollbar
 // Helper function to convert a hex color to RGB
 function hexToRgb(hex) {
   return {
@@ -61,6 +63,7 @@ const storeScroll = () => {
 searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
 
 storeScroll();
+// #endregion
 
 
 // Searching
