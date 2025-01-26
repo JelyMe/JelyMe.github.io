@@ -286,7 +286,7 @@ document.body.addEventListener("click", () => {
 });
 // #endregion
 
-
+// #region Subjects Screen
 let showingSubjects = false;
 
 document.querySelector("#subject-button").addEventListener("click", ()=>{
@@ -319,3 +319,4 @@ function search(term){
 
   showSearchResults();
 }
+// #endregion
