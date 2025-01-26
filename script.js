@@ -1,10 +1,12 @@
-// Loader
+// #region Loader
 const loader = document.querySelector(".loader-container");
 
 window.addEventListener("load", () => { 
   loader.style.display = "none";
 });
+// #endregion
 
+// #region Scrollbar
 // Helper function to convert a hex color to RGB
 function hexToRgb(hex) {
   return {
@@ -61,8 +63,9 @@ const storeScroll = () => {
 searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
 
 storeScroll();
+// #endregion
 
-
+// #region Prepare necessary variables for searching
 // Searching
 let idx;
 
@@ -70,7 +73,7 @@ let fullData;
 
 let subjectList;
 
-fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
+fetch("subjects.json").then((res) => {return res.json()}).then((data)=>{
   subjectList = data;
 });
 
@@ -88,7 +91,9 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
     
   fullData = data;
 });
+// #endregion
 
+// #region Searching Logic
 // Screens
 const contributorsScreen = document.querySelector(".contributors-screen");
 const examsNotFound = document.querySelector(".subject-not-found-block");
@@ -246,7 +251,9 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   setAutoCompleteText();
 });
+// #endregion
 
+// #region Contributors Screen
 // Contributors button
 const contributorsButton = document.querySelector(".contributors-button");
 
@@ -277,8 +284,9 @@ document.body.addEventListener("click", () => {
     changeScreensDisplay("none", "flex", "none", "none");
   }
 });
+// #endregion
 
-
+// #region Subjects Screen
 let showingSubjects = false;
 
 document.querySelector("#subject-button").addEventListener("click", ()=>{
@@ -311,3 +319,4 @@ function search(term){
 
   showSearchResults();
 }
+// #endregion
