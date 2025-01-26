@@ -253,6 +253,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
 });
 // #endregion
 
+// #region Contributors Screen
 // Contributors button
 const contributorsButton = document.querySelector(".contributors-button");
 
@@ -283,6 +284,7 @@ document.body.addEventListener("click", () => {
     changeScreensDisplay("none", "flex", "none", "none");
   }
 });
+// #endregion
 
 
 let showingSubjects = false;
