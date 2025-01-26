@@ -93,6 +93,7 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
 });
 // #endregion
 
+// #region Searching Logic
 // Screens
 const contributorsScreen = document.querySelector(".contributors-screen");
 const examsNotFound = document.querySelector(".subject-not-found-block");
@@ -250,6 +251,7 @@ document.querySelector('#search-text').addEventListener('keyup', (event) => {
 
   setAutoCompleteText();
 });
+// #endregion
 
 // Contributors button
 const contributorsButton = document.querySelector(".contributors-button");
