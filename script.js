@@ -65,7 +65,7 @@ searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true 
 storeScroll();
 // #endregion
 
-
+// #region Prepare necessary variables for searching
 // Searching
 let idx;
 
@@ -73,7 +73,7 @@ let fullData;
 
 let subjectList;
 
-fetch("subjects.json").then((res) =>{return res.json()}).then((data)=>{
+fetch("subjects.json").then((res) => {return res.json()}).then((data)=>{
   subjectList = data;
 });
 
@@ -91,6 +91,7 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
     
   fullData = data;
 });
+// #endregion
 
 // Screens
 const contributorsScreen = document.querySelector(".contributors-screen");
