@@ -8,14 +8,14 @@
 
 4. ~~all backend must be spaghetti~~ It's about the front end user experience, if it doesn't feel nice, fix it.
 
-5. The if statements need to be written in a form like this:
-   ```javascript
-   if (expression) {
-      //code
-   }
-   ```
+5. Curly braces shall start on the same line as the expression. Eg:
+```js
+if (expression) {
+   //Stuff
+}
+```
 
-6. Don't delete other's stuff without asking what it was used for, it might be important to their vision of the project.
+6. Don't delete other's stuff without asking what it was used for. However, if you think that other's code can be written more cleanly, please make sure that you know exactly what their code is doing (along with potentially little things) before refactoring.
 
 7. ~~**COMMENT EVERYTHING**~~ Please do not over document code. Document when something needs to be explained explicitly. An example can be found in `script.js`.
 >   Why we use `autocomplete.textContent` instead of `innerHTML`: This is because Earth & Space Science has an ampersand, which is displayed as `&amp;` in HTML. If we use `autocomplete.innerHTML`, then we are comparing `searchText.value` (which is plain) text, with HTML markup. This leads to errors such as when autocompleting for Earth & Space Science, the `searchText` will be displayed as `"Earth &amp; Space Science"`. To avoid this we have to use the raw plain text of autocomplete. Hence, we use `textContent`.
