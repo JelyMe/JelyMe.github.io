@@ -224,13 +224,14 @@ body {
   border:0;
   font-size: 1em;
 
-  top: 6px;
-
   z-index: -1;
   
   color:rgb(255, 255, 255);
-  text-align: left;
+  
   font-family: Inter-Light;
+
+  display: flex;
+  align-items: center;
 }
 /* #endregion */
 
