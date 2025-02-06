@@ -281,6 +281,8 @@ body {
 }
 
 .search-results {
+  display: none;
+
   padding-left: 2vw;
   padding-right: 2vw;
   margin-left: auto;
@@ -556,6 +558,45 @@ body {
 }
 /* #endregion */
 
+/* #region GitHub Contributors Screen */
+.github-contribute-screen {
+  display: none;
+
+  height: 65vh;
+  width: 50vw;
+
+  margin-left: auto;
+  margin-right:  auto;
+  margin-bottom: 3vh;
+  padding-left: 0.1vw;
+  padding-right: 0.1vw;
+
+  background-color: rgba(126, 126, 126, 0.1);
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.13);
+	
+  backdrop-filter: blur(2px);
+  
+	border: 2px rgb(78, 78, 78) solid;
+  border-radius: 2.5vw;
+
+  overflow: auto;
+
+  gap: 4vh;
+}
+
+.github-contribute-screen h1 {
+  font-size: 4vw;
+}
+
+.github-contribute-screen p, .github-contribute-screen a {
+  font-size: 1.5vw;
+}
+
+.github-contribute-screen a {
+  color: white;
+}
+/* #endregion */
+
 /* #region Subjects Page */
 #subject-button{
   position: absolute;
@@ -614,6 +655,12 @@ body {
     flex-grow: 1;
   }
   .contributors-screen{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .github-contribute-screen{
     width: 95vw;
     height: 55vh;
 
