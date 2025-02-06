@@ -44,7 +44,6 @@ header {
 
   transform: translate(0,-3vh);
 
-  /* box-shadow: inset 0 200px 5000px rgba(0, 81, 255, 0.4); */
   background-color: rgba(0, 81, 255, 0.25);
   box-shadow: 0px 10px 15px 10px rgb(0 0 0 / 50%);
 
@@ -140,6 +139,12 @@ body {
   align-items: center;
 }
 
+.flex-sa-c {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -179,7 +184,7 @@ body {
 #search-bar {
   display: block;
   position: relative;
-  font-size: min(1em, 2vw);
+  font-size: min(1em, 4vw);
   width: 35vw;
 }
 
@@ -218,33 +223,14 @@ body {
   border:0;
   font-size: 1em;
 
-  top: 6px;
-
   z-index: -1;
   
   color:rgb(255, 255, 255);
-  text-align: left;
+  
   font-family: Inter-Light;
-}
 
-@media screen and (max-width: 940px) {
-  #autocomplete {
-    font-size: 1.5vw;
-  }
-
-  #search-text {
-    font-size: 1.5vw;
-  }
-}
-
-@media screen and (max-width: 686px) {
-  #autocomplete {
-    font-size: 3vw;
-  }
-
-  #search-text {
-    font-size: 3vw;
-  }
+  display: flex;
+  align-items: center;
 }
 /* #endregion */
 
@@ -275,6 +261,8 @@ body {
 }
 
 .search-results {
+  display: none;
+
   padding-left: 2vw;
   padding-right: 2vw;
   margin-left: auto;
@@ -550,6 +538,45 @@ body {
 }
 /* #endregion */
 
+/* #region GitHub Contributors Screen */
+.github-contribute-screen {
+  display: flex;
+
+  height: 65vh;
+  width: 50vw;
+
+  margin-left: auto;
+  margin-right:  auto;
+  margin-bottom: 3vh;
+  padding-left: 0.1vw;
+  padding-right: 0.1vw;
+
+  background-color: rgba(126, 126, 126, 0.1);
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.13);
+	
+  backdrop-filter: blur(2px);
+  
+	border: 2px rgb(78, 78, 78) solid;
+  border-radius: 2.5vw;
+
+  overflow: auto;
+
+  gap: 4vh;
+}
+
+.github-contribute-screen h1 {
+  font-size: 4vw;
+}
+
+.github-contribute-screen p, .github-contribute-screen a {
+  font-size: 1.5vw;
+}
+
+.github-contribute-screen a {
+  color: white;
+}
+/* #endregion */
+
 /* #region Subjects Page */
 #subject-button{
   position: absolute;
@@ -597,41 +624,6 @@ body {
 .subject-card:hover {
   background-color: rgb(170, 167, 167);
   color: rgb(42, 42, 42);
-}
-
-
-@media (max-aspect-ratio: 13/16) {
-  .search-results{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  .contributors-screen{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  .subject-not-found-block{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  .loading-wheel{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  #search-bar{
-    width:70vw;
-    font-size: 4vw;
-  }
-  header{
-    font-size: 7vw;
-  }
 }
 /* #endregion */
 
@@ -708,6 +700,89 @@ body {
   to {
       -webkit-transform: translateY(-2000px);
       transform: translateY(-2000px)
+  }
+}
+/* #endregion */
+
+/* #region Responsive Code */
+@media (max-aspect-ratio: 13/16) {
+  .search-results{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .contributors-screen{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .github-contribute-screen{
+    width: 95vw;
+    height: 55vh;
+
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+    flex-grow: 1;
+  }
+  .subject-not-found-block{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .loading-wheel{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+
+  #search-bar{
+    width: 70vw;
+    font-size: 4vw;
+  }
+
+  #autocomplete, #search-text {
+    font-size: 3vw !important;
+  }
+
+  .github-contribute-screen h1 {
+    font-size: 10vw;
+  }
+
+  .github-contribute-screen p, .github-contribute-screen a {
+    font-size: 5vw;
+  }
+
+  .standard-info-description p {
+    font-size: 2.5vw;
+  }
+
+  header{
+    font-size: 7vw;
+  }
+}
+
+@media screen and (max-width: 940px) {
+  #autocomplete {
+    font-size: 1.5vw;
+  }
+
+  #search-text {
+    font-size: 1.5vw;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  #autocomplete {
+    font-size: 3vw;
+  }
+
+  #search-text {
+    font-size: 3vw;
   }
 }
 /* #endregion */

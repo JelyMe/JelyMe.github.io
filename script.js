@@ -98,40 +98,53 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
 const contributorsScreen = document.querySelector(".contributors-screen");
 const examsNotFound = document.querySelector(".subject-not-found-block");
 const loadingWheel = document.querySelector(".loading-wheel");
+const githubContributeScreen = document.querySelector(
+  ".github-contribute-screen"
+);
 
 // Texts in input field
-const searchText = document.querySelector('#search-text');
-const autocomplete = document.querySelector('#autocomplete');
+const searchText = document.querySelector("#search-text");
+const autocomplete = document.querySelector("#autocomplete");
 
 function setAutoCompleteText() {
   autocomplete.innerHTML = searchText.value;
 
-  if (searchText.value.length != 0)
-  {
+  if (searchText.value.length != 0) {
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
 
-      if (subject.toLowerCase().substr(0, searchText.value.length) == searchText.value.toLowerCase()) {
-
+      if (
+        subject.toLowerCase().substr(0, searchText.value.length) ==
+        searchText.value.toLowerCase()
+      ) {
         autocomplete.textContent = subject;
-        
-        let autoCompleteContent = subject.substr(0, searchText.value.length).replace("&amp;", "&");
+
+        let autoCompleteContent = subject
+          .substr(0, searchText.value.length)
+          .replace("&amp;", "&");
 
         searchText.value = autoCompleteContent;
         break;
       }
     }
-  }
-  else {
+  } else {
     autocomplete.innerHTML = "Enter standard number or subject name";
   }
 }
 
-function changeScreensDisplay(examsNotFoundDisplay, searchResultsDisplay, loadingWheelDisplay, contributorsScreenDisplay) {
+function changeScreensDisplay(
+  examsNotFoundDisplay,
+  searchResultsDisplay,
+  loadingWheelDisplay,
+  contributorsScreenDisplay
+) {
   examsNotFound.style.display = examsNotFoundDisplay;
   searchResults.style.display = searchResultsDisplay;
   loadingWheel.style.display = loadingWheelDisplay;
   contributorsScreen.style.display = contributorsScreenDisplay;
+
+  // Always disable githubContribtuteScreen
+  githubContributeScreen.style.display = "none";
 }
 
 function showSearchResults() {
