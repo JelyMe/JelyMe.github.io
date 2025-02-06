@@ -746,7 +746,7 @@ body {
   }
 
   #autocomplete, #search-text {
-    font-size: 3vw;
+    font-size: 3vw !important;
   }
 
   .github-contribute-screen h1 {
