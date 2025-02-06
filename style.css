@@ -140,6 +140,12 @@ body {
   align-items: center;
 }
 
+.flex-sa-c {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .flex-column {
   display: flex;
   flex-direction: column;
