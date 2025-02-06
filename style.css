@@ -63,65 +63,6 @@ body {
   transition: all 1s;
 }
 
-/* #region Responsive Code */
-@media (max-aspect-ratio: 13/16) {
-  .search-results{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  .contributors-screen{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  .github-contribute-screen{
-    width: 95vw;
-    height: 55vh;
-
-    padding-left: 1vw;
-    padding-right: 1vw;
-
-    flex-grow: 1;
-  }
-  .subject-not-found-block{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-  .loading-wheel{
-    width: 95vw;
-    height: 55vh;
-
-    flex-grow: 1;
-  }
-
-  #search-bar{
-    width:70vw;
-    font-size: 4vw;
-  }
-
-  .github-contribute-screen h1 {
-    font-size: 10vw;
-  }
-
-  .github-contribute-screen p, .github-contribute-screen a {
-    font-size: 5vw;
-  }
-
-  .standard-info-description p {
-    font-size: 2.5vw;
-  }
-
-  header{
-    font-size: 7vw;
-  }
-}
-/* #endregion */
-
 /* #region Loader */
 .loader-container {
   width: 100vw;
@@ -244,7 +185,7 @@ body {
 #search-bar {
   display: block;
   position: relative;
-  font-size: min(1em, 2vw);
+  font-size: min(1em, 4vw);
   width: 35vw;
 }
 
@@ -290,26 +231,6 @@ body {
   color:rgb(255, 255, 255);
   text-align: left;
   font-family: Inter-Light;
-}
-
-@media screen and (max-width: 940px) {
-  #autocomplete {
-    font-size: 1.5vw;
-  }
-
-  #search-text {
-    font-size: 1.5vw;
-  }
-}
-
-@media screen and (max-width: 686px) {
-  #autocomplete {
-    font-size: 3vw;
-  }
-
-  #search-text {
-    font-size: 3vw;
-  }
 }
 /* #endregion */
 
@@ -779,6 +700,89 @@ body {
   to {
       -webkit-transform: translateY(-2000px);
       transform: translateY(-2000px)
+  }
+}
+/* #endregion */
+
+/* #region Responsive Code */
+@media (max-aspect-ratio: 13/16) {
+  .search-results{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .contributors-screen{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .github-contribute-screen{
+    width: 95vw;
+    height: 55vh;
+
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+    flex-grow: 1;
+  }
+  .subject-not-found-block{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+  .loading-wheel{
+    width: 95vw;
+    height: 55vh;
+
+    flex-grow: 1;
+  }
+
+  #search-bar{
+    width: 70vw;
+    font-size: 4vw;
+  }
+
+  #autocomplete, #search-text {
+    font-size: 3vw;
+  }
+
+  .github-contribute-screen h1 {
+    font-size: 10vw;
+  }
+
+  .github-contribute-screen p, .github-contribute-screen a {
+    font-size: 5vw;
+  }
+
+  .standard-info-description p {
+    font-size: 2.5vw;
+  }
+
+  header{
+    font-size: 7vw;
+  }
+}
+
+@media screen and (max-width: 940px) {
+  #autocomplete {
+    font-size: 1.5vw;
+  }
+
+  #search-text {
+    font-size: 1.5vw;
+  }
+}
+
+@media screen and (max-width: 686px) {
+  #autocomplete {
+    font-size: 3vw;
+  }
+
+  #search-text {
+    font-size: 3vw;
   }
 }
 /* #endregion */
