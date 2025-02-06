@@ -560,7 +560,7 @@ body {
 
 /* #region GitHub Contributors Screen */
 .github-contribute-screen {
-  display: none;
+  display: flex;
 
   height: 65vh;
   width: 50vw;
