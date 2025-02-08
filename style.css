@@ -625,9 +625,13 @@ body {
 }
 
 #filter-tooltip button {
-  background-color: #00000033;
-  border: none;
+  background-color: #0000002c;
+  border: 2px rgb(78, 78, 78) solid;
+  width: 100%;
+  border-radius: 4px;
+  padding: 2px;
   color: white;
+  margin: 2px 0;
 }
 
 /* #endregion */
