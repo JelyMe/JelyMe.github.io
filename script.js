@@ -187,8 +187,12 @@ function showSearchResults() {
 
         let subjectExams = idx.search(search);
         // Filtering
-        subjectExams = subjectExams.filter((result) => fullData[result.ref]['credits'] >= minCredits );
-        subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
+        if (minCredits) {
+          subjectExams = subjectExams.filter((result) => fullData[result.ref]['credits'] >= minCredits );
+        }
+        if (level) {
+          subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
+        }
 
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
