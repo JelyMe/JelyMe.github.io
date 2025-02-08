@@ -83,6 +83,7 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
     this.field('title');
     this.field('subject');
     this.field('number');
+    this.field('credits');
       
     data.forEach(function (doc) {
       this.add(doc)
