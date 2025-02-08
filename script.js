@@ -149,6 +149,17 @@ function changeScreensDisplay(
   githubContributeScreen.style.display = "none";
 }
 
+function addFilter(filter) {
+  // Add space if there's already text in the bar
+  if (searchText.value != "") {
+    searchText.value += " ";
+  }
+
+  searchText.value += filter;
+  autocomplete.innerHTML = "";
+  searchText.focus();
+}
+
 function extractSearchData(search) {
   // Credit Selector
   const creditsRegex = /mincredits:(\d+)/i;
