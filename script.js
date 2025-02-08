@@ -105,6 +105,7 @@ const githubContributeScreen = document.querySelector(
 // Texts in input field
 const searchText = document.querySelector("#search-text");
 const autocomplete = document.querySelector("#autocomplete");
+const minCredits = 0
 
 function setAutoCompleteText() {
   autocomplete.innerHTML = searchText.value;
@@ -147,6 +148,29 @@ function changeScreensDisplay(
   githubContributeScreen.style.display = "none";
 }
 
+function extractSearchData(search) {
+  // Credit Selector
+  const creditsRegex = /mincredits:(\d+)/i;
+  const creditsMatch = search.match(creditsRegex);
+  const minCredits = creditsMatch ? parseInt(creditsMatch[1], 10) : null;
+  search = search.replace(creditsRegex, '').trim();
+
+  // Level selector
+  const levelRegex = /level:(\d+)/i;
+  const levelMatch = search.match(levelRegex);
+  const level = levelMatch ? levelMatch[1] : null;
+  search = search.replace(levelRegex, '').trim();
+
+  // Search query cleaning 
+  search = search.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1");
+
+  return ({
+    search,
+    minCredits,
+    level
+  });
+}
+
 function showSearchResults() {
   // Remove current search results
   searchResults.innerHTML = "";
@@ -156,8 +180,14 @@ function showSearchResults() {
   new Promise(
     (resolve, reject) => {
       setTimeout(() => {
+        const { search, minCredits, level } = extractSearchData(searchText.value);
 
-        let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+        console.log(minCredits);
+
+        let subjectExams = idx.search(search);
+        // Filtering
+        subjectExams = subjectExams.filter((result) => fullData[result.ref]['credits'] >= minCredits );
+        subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
 
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
