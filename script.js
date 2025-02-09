@@ -83,6 +83,7 @@ fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {
     this.field('title');
     this.field('subject');
     this.field('number');
+    this.field('credits');
       
     data.forEach(function (doc) {
       this.add(doc)
@@ -105,6 +106,7 @@ const githubContributeScreen = document.querySelector(
 // Texts in input field
 const searchText = document.querySelector("#search-text");
 const autocomplete = document.querySelector("#autocomplete");
+const minCredits = 0
 
 function setAutoCompleteText() {
   autocomplete.innerHTML = searchText.value;
@@ -147,6 +149,44 @@ function changeScreensDisplay(
   githubContributeScreen.style.display = "none";
 }
 
+function addFilter(filter) {
+  // Add space if there's already text in the bar
+  if (searchText.value != "") {
+    searchText.value += " ";
+  }
+
+  searchText.value += filter;
+  autocomplete.innerHTML = "";
+  searchText.focus();
+}
+
+function extractSearchData(search) {
+  // Credit Selector
+  // Matchs mincredits: then a number, and the i at the end means it's case insensitive
+  const creditsRegex = /mincredits:(\d+)/i;
+  const creditsMatch = search.match(creditsRegex);
+  const minCredits = creditsMatch ? parseInt(creditsMatch[1], 10) : null;
+  search = search.replace(creditsRegex, '').trim();
+
+  // Level selector
+  // Matchs level: then a number, and the i at the end means it's case insensitive
+  const levelRegex = /level:(\d+)/i;
+  const levelMatch = search.match(levelRegex);
+  const level = levelMatch ? levelMatch[1] : null;
+  search = search.replace(levelRegex, '').trim();
+
+  // Search query sanitization 
+  // Adds a plus before each word so that lunr matches it properly
+  const sanitizationRegex = /(?<![+-])\b([A-Z][^+\s]+)\b/g;
+  search = search.replace(sanitizationRegex, "+$1");
+
+  return ({
+    search,
+    minCredits,
+    level
+  });
+}
+
 function showSearchResults() {
   // Remove current search results
   searchResults.innerHTML = "";
@@ -156,8 +196,18 @@ function showSearchResults() {
   new Promise(
     (resolve, reject) => {
       setTimeout(() => {
+        const { search, minCredits, level } = extractSearchData(searchText.value);
 
-        let subjectExams = idx.search(searchText.value.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1"));
+        console.log(minCredits);
+
+        let subjectExams = idx.search(search);
+        // Filtering
+        if (minCredits) {
+          subjectExams = subjectExams.filter((result) => fullData[result.ref]['credits'] >= minCredits );
+        }
+        if (level) {
+          subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
+        }
 
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
