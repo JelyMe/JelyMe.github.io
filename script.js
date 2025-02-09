@@ -162,19 +162,23 @@ function addFilter(filter) {
 
 function extractSearchData(search) {
   // Credit Selector
+  // Matchs mincredits: then a number, and the i at the end means it's case insensitive
   const creditsRegex = /mincredits:(\d+)/i;
   const creditsMatch = search.match(creditsRegex);
   const minCredits = creditsMatch ? parseInt(creditsMatch[1], 10) : null;
   search = search.replace(creditsRegex, '').trim();
 
   // Level selector
+  // Matchs level: then a number, and the i at the end means it's case insensitive
   const levelRegex = /level:(\d+)/i;
   const levelMatch = search.match(levelRegex);
   const level = levelMatch ? levelMatch[1] : null;
   search = search.replace(levelRegex, '').trim();
 
-  // Search query cleaning 
-  search = search.replace(/(?<![+-])\b([A-Z][^+\s]+)\b/g, "+$1");
+  // Search query sanitization 
+  // Adds a plus before each word so that lunr matches it properly
+  const sanitizationRegex = /(?<![+-])\b([A-Z][^+\s]+)\b/g;
+  search = search.replace(sanitizationRegex, "+$1");
 
   return ({
     search,
