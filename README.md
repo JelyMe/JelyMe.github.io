@@ -1,5 +1,7 @@
 ﻿# Conventions Used Within This Codebase
 
+0. Please commit to the `dev-branch`! All commits to the `main` branch will be automatically rejected!
+
 1. For all languages that is not HTML and CSS, use camelCase for all names, including variables and functions. For HTML and CSS, classes and IDs must be named where each word is separated by a dash, and all the letters have to be lowercase.
 
 2. Make sure that the CSS styling is grouped by attribute to avoid clustered CSS code! For example, all the code that has to do with fonts are grouped together in a class, and all the border stuff is grouped together, and so on! 

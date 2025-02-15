@@ -198,8 +198,6 @@ function showSearchResults() {
       setTimeout(() => {
         const { search, minCredits, level } = extractSearchData(searchText.value);
 
-        console.log(minCredits);
-
         let subjectExams = idx.search(search);
         // Filtering
         if (minCredits) {
