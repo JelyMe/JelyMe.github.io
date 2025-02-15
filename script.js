@@ -169,8 +169,8 @@ function extractSearchData(search) {
   search = search.replace(creditsRegex, '').trim();
 
   // Level selector
-  // Matchs level: then a number, and the i at the end means it's case insensitive
-  const levelRegex = /level:(\d+)/i;
+  // Matchs level: then a number or S, and the i at the end means it's case insensitive
+  const levelRegex = /level:(\d+|S)/i;
   const levelMatch = search.match(levelRegex);
   const level = levelMatch ? levelMatch[1] : null;
   search = search.replace(levelRegex, '').trim();
