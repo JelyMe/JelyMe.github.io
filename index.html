@@ -1,118 +1,206 @@
-<!DOCTYPE html>
-<html lang="en">
+// #region Loader
+const loader = document.querySelector(".loader-container");
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Exams</title>
-    <meta name="description" content="A website to host all past NCEA external papers.
-    
-    NCEA New Zealand Past Papers, 2011-2023, lost papers recovered. Exam schedules and papers included!">
-    <meta name="keywords" content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Images/Favicon/OurExamsFavicon.png">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
-    <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
-    <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
+window.addEventListener("load", () => { 
+  loader.style.display = "none";
+});
+// #endregion
 
-    <!-- Canonical Tag -->
-    <link rel="canonical" href="https://www.ourexams.org/">
+// #region Scrollbar
+function hexToRgb(hex) {
+  return {
+    r: parseInt(hex.substring(1, 3), 16),
+    g: parseInt(hex.substring(3, 5), 16),
+    b: parseInt(hex.substring(5, 7), 16),
+  };
+}
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZERG48HKRJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+function rgbToHex({ r, g, b }) {
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
 
-      gtag('config', 'G-ZERG48HKRJ');
-    </script>
-  </head>
+function interpolate(color1, color2, percent) {
+  const rgb1 = hexToRgb(color1);
+  const rgb2 = hexToRgb(color2);
 
-  <body class="flex-column">
-    <div class="loader-container flex-c-c">
-      <div class="loader"></div>
-    </div>
-    
-    <div class="stars -visible" style="height: 100%;">
-      <div class="small"></div>
-      <div class="medium"></div>
-      <div class="big"></div>
-    </div>
-    
-    <header class="flex-c-c full-viewport-width">
-      <h1 class="text-white nasalization">OUR EXAMS</h1>
-    </header>
-    
-    <div id="search-bar-wrapper">
-      <div id="search-bar">
-        <div id="autocomplete">Enter standard number or subject name</div>
-        <input type="text" id="search-text" maxlength="50" autocomplete="off">
-        <button id="filter-button"><img src="Images/Filter.png"></button>
-        <button id="subject-button" title="Show subject list"><img src="Images/More.png"></button>
-        <div id="filter-tooltip">
-          Filter Options
-          <br>
-          <button class="filter-add" onclick="addFilter('level:')">level:number</button>
-          <br>
-          <button class="filter-add" onclick="addFilter('mincredits:')">mincredits:number</button>
-        </div> 
-      </div>
-    </div>
+  const interpolateValue = (start, end) =>
+    Math.round(start + (end - start) * percent);
 
-    <div class="loading-wheel flex-c-c">
-      <img src="Images/LoadingWheel.png" alt="Loading Wheel">
-    </div>
+  return rgbToHex({
+    r: interpolateValue(rgb1.r, rgb2.r),
+    g: interpolateValue(rgb1.g, rgb2.g),
+    b: interpolateValue(rgb1.b, rgb2.b),
+  });
+}
 
-    <div class="subject-not-found-block flex-c-c flex-column">
-      <h1 class="madimi">
-        ⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
-⣇⠰⠉⢙⡄⠀⠀⣴⠖⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠁⠙⡆
-⠘⡇⢠⠞⠉⠙⣾⠃⢀⡼⠀⠀⠀⠀⠀⠀⠀⢀⣼⡀⠄⢷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠰⠒⠲⡄⠀⣏⣆⣀⡍
-⠀⢠⡏⠀⡤⠒⠃⠀⡜⠀⠀⠀⠀⠀⢀⣴⠾⠛⡁⠀⠀⢀⣈⡉⠙⠳⣤⡀⠀⠀⠀⠘⣆⠀⣇⡼⢋⠀⠀⢱
-⠀⠘⣇⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⡴⢋⡣⠊⡩⠋⠀⠀⠀⠣⡉⠲⣄⠀⠙⢆⠀⠀⠀⣸⠀⢉⠀⢀⠿⠀⢸
-⠀⠀⠸⡄⠀⠈⢳⣄⡇⠀⠀⢀⡞⠀⠈⠀⢀⣴⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠈⢧⠀⠀⢳⣰⠁⠀⠀⠀⣠⠃
-⠀⠀⠀⠘⢄⣀⣸⠃⠀⠀⠀⡸⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠈⣇⠀⠀⠙⢄⣀⠤⠚⠁⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⢘⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⢰⣿⣿⣿⡿⠛⠁⠀⠉⠛⢿⣿⣿⣿⣧⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⣸⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⡀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠹⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⠁⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣤⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢢⣀⣠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-      </h1>
-      <p class="madimi">
-        There may be a typo in the search query or the paper you are searching for doesn't exist.<br>Double check that it isn't an internal, we only have externals here
-      </p>
-    </div>
+const debounce = (fn) => {
+  let frame;
+  return (...params) => {
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => fn(...params));
+  };
+};
 
-    <div class="contributors-screen flex-c-c flex-column">
-      <h1 class="inconsolata">Designed and created by:</h1>
-      <p class="inconsolata">Joel Batchelar,<br>Yanxuan Weng,<br>and Fionn Cassidy<br>from Nayland College<br>+ a little help from Mitar Nikolic (from Germany)</p>
-      <h1>Contacts:</h1>
-      <a href="https://forms.gle/u22nQarT9DabZozB6">Provide Feedback!</a>
-      <h2><br>We're just three students who made something pretty cool. Let us know how it helped you!</h2>
-    </div>
+const searchResults = document.querySelector(".search-results");
 
-    <div class="github-contribute-screen flex-c-c flex-column">
-      <h1 class="inconsolata">Want to contribute and make Our Exams better?</h1>
-      <p class="inconsolata">
-        Go to 
-        <a href="https://github.com/JelyMe/JelyMe.github.io" target="_blank" rel="noopener noreferrer">this GitHub page</a>
-        and make a pull request! (Only contribute if you have experience with front-end development)
-      </p>
-    </div>
+const storeScroll = () => {
+  let scrollamount = searchResults.scrollTop / searchResults.scrollHeight;
+  searchResults.style.setProperty(
+    "--scroll-amount",
+    interpolate("#4287f5", "#460c85", scrollamount)
+  );
+};
 
-    <div class="search-results flex-s-s flex-column">
-      <!-- Empty, elements are created via JS -->
-    </div>
+searchResults.addEventListener("scroll", debounce(storeScroll), { passive: true });
 
-    <footer class="contributors flex-c-c">
-      <img src="Images/contributorsIcon.png" alt="Contributors Icon">
-      <button class="contributors-button inter-light">CONTRIBUTORS</button>
-    </footer>
-  </body>
+storeScroll();
+// #endregion
 
-</html>
+// #region Fetching Data Securely
+let idx, fullData, subjectList;
+
+fetch("subjects.json")
+  .then((res) => res.json())
+  .then((data) => {
+    subjectList = data;
+  });
+
+fetch("searchIndex.json")
+  .then((res) => res.json())
+  .then((data) => {
+    idx = lunr(function () {
+      this.ref("id");
+      this.field("title");
+      this.field("subject");
+      this.field("number");
+      this.field("credits");
+      data.forEach((doc) => this.add(doc), this);
+    });
+    fullData = data;
+  });
+// #endregion
+
+// #region Searching Logic
+const searchText = document.querySelector("#search-text");
+const autocomplete = document.querySelector("#autocomplete");
+
+function sanitizeText(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML; // Escapes any potentially harmful HTML
+}
+
+function setAutoCompleteText() {
+  autocomplete.textContent = searchText.value; // Use textContent instead of innerHTML
+
+  if (searchText.value.length !== 0) {
+    for (let subject of subjectList) {
+      if (subject.toLowerCase().startsWith(searchText.value.toLowerCase())) {
+        autocomplete.textContent = subject;
+        searchText.value = subject;
+        break;
+      }
+    }
+  } else {
+    autocomplete.textContent = "Enter standard number or subject name";
+  }
+}
+
+function extractSearchData(search) {
+  const creditsRegex = /mincredits:(\d+)/i;
+  const creditsMatch = search.match(creditsRegex);
+  const minCredits = creditsMatch ? parseInt(creditsMatch[1], 10) : null;
+  search = search.replace(creditsRegex, "").trim();
+
+  const levelRegex = /level:(\d+|S)/i;
+  const levelMatch = search.match(levelRegex);
+  const level = levelMatch ? levelMatch[1] : null;
+  search = search.replace(levelRegex, "").trim();
+
+  return { search, minCredits, level };
+}
+
+function showSearchResults() {
+  searchResults.innerHTML = "";
+  
+  const { search, minCredits, level } = extractSearchData(searchText.value);
+  let subjectExams = idx.search(search);
+
+  if (minCredits) {
+    subjectExams = subjectExams.filter((result) => fullData[result.ref]["credits"] >= minCredits);
+  }
+  if (level) {
+    subjectExams = subjectExams.filter(
+      (result) => fullData[result.ref]["level"] == level || fullData[result.ref]["level"] == "All"
+    );
+  }
+
+  if (subjectExams.length > 0) {
+    subjectExams.forEach((result) => {
+      const card = document.createElement("div");
+      card.classList.add("search-results-card", "flex-c-c");
+
+      card.innerHTML = `
+        <div class="standard-info flex-c-s flex-column">
+          <div class="standard-info-numbers flex-se-c">
+            <h1 class="standard-info-id inter-light">${sanitizeText(fullData[result.ref]["number"])}</h1>
+            <h4 class="standard-info-time-period inter-light">${sanitizeText(fullData[result.ref]["start-year"])} - ${sanitizeText(fullData[result.ref]["end-year"])}</h4>
+          </div>
+          <div class="standard-info-description inconsolata">
+            <p>${sanitizeText(fullData[result.ref]["title"])} | Credits: ${sanitizeText(fullData[result.ref]["credits"].toString())}</p>
+          </div>
+        </div>
+        <div class="split-bar"></div>
+        <div class="standard-level">
+          <h1 class="standard-level-text inter-light">${sanitizeText(fullData[result.ref]["level"])}</h1>
+          <p>Lvl</p>
+        </div>
+        <button class="download-plus">
+          <img src="Images/DownloadIcon.png">
+        </button>
+      `;
+
+      card.querySelector(".download-plus").addEventListener("click", () => {
+        window.open(
+          `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${sanitizeText(fullData[result.ref]["number"])}.zip`
+        );
+      });
+
+      searchResults.appendChild(card);
+    });
+  } else {
+    searchResults.innerHTML = "<p>No results found.</p>";
+  }
+}
+
+document.querySelector("#search-text").addEventListener("keydown", (event) => {
+  if (event.keyCode === 9 && autocomplete.textContent !== "Enter standard number or subject name") {
+    event.preventDefault();
+    searchText.value = autocomplete.textContent;
+  }
+});
+
+document.querySelector("#search-text").addEventListener("keyup", (event) => {
+  if (event.keyCode === 13) showSearchResults();
+  setAutoCompleteText();
+});
+// #endregion
+
+// #region Subjects Screen
+let showingSubjects = false;
+
+document.querySelector("#subject-button").addEventListener("click", () => {
+  searchResults.innerHTML = showingSubjects ? "" : subjectList.map((subject) =>
+    `<button class="subject-card inter-light flex-c-c">${sanitizeText(subject)}</button>`
+  ).join("\n");
+
+  showingSubjects = !showingSubjects;
+});
+
+searchResults.addEventListener("click", (event) => {
+  if (event.target.classList.contains("subject-card")) {
+    searchText.value = event.target.textContent;
+    showSearchResults();
+  }
+});
+// #endregion
