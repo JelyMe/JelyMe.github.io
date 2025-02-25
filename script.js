@@ -6,6 +6,19 @@ window.addEventListener("load", () => {
 });
 // #endregion
 
+// --- Added sanitization helper function ---
+function escapeHTML(str) {
+  if (typeof str !== "string") {
+    str = String(str);
+  }
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // #region Scrollbar
 // Helper function to convert a hex color to RGB
 function hexToRgb(hex) {
@@ -73,24 +86,28 @@ let fullData;
 
 let subjectList;
 
-fetch("subjects.json").then((res) => {return res.json()}).then((data)=>{
-  subjectList = data;
-});
+fetch("subjects.json")
+  .then((res) => res.json())
+  .then((data)=>{
+    subjectList = data;
+  });
 
-fetch("searchIndex.json").then((res) => { return res.json()}).then((data) => {  
-  idx = lunr(function () {
-    this.ref('id');
-    this.field('title');
-    this.field('subject');
-    this.field('number');
-    this.field('credits');
+fetch("searchIndex.json")
+  .then((res) => res.json())
+  .then((data) => {  
+    idx = lunr(function () {
+      this.ref('id');
+      this.field('title');
+      this.field('subject');
+      this.field('number');
+      this.field('credits');
+        
+      data.forEach(function (doc) {
+        this.add(doc)
+      }, this)
+    })
       
-    data.forEach(function (doc) {
-      this.add(doc)
-    }, this)
-  })
-    
-  fullData = data;
+    fullData = data;
 });
 // #endregion
 
@@ -105,11 +122,13 @@ const githubContributeScreen = document.querySelector(
 
 // Texts in input field
 const searchText = document.querySelector("#search-text");
+// Use textContent when simply displaying text to avoid HTML injection.
 const autocomplete = document.querySelector("#autocomplete");
 const minCredits = 0
 
 function setAutoCompleteText() {
-  autocomplete.innerHTML = searchText.value;
+  // Use textContent instead of innerHTML for user-supplied text.
+  autocomplete.textContent = searchText.value;
 
   if (searchText.value.length != 0) {
     for (let index = 0; index < subjectList.length; index++) {
@@ -119,6 +138,7 @@ function setAutoCompleteText() {
         subject.toLowerCase().substr(0, searchText.value.length) ==
         searchText.value.toLowerCase()
       ) {
+        // Set the autocomplete text safely
         autocomplete.textContent = subject;
 
         let autoCompleteContent = subject
@@ -130,7 +150,8 @@ function setAutoCompleteText() {
       }
     }
   } else {
-    autocomplete.innerHTML = "Enter standard number or subject name";
+    // Set a safe default text message
+    autocomplete.textContent = "Enter standard number or subject name";
   }
 }
 
@@ -156,7 +177,7 @@ function addFilter(filter) {
   }
 
   searchText.value += filter;
-  autocomplete.innerHTML = "";
+  autocomplete.textContent = "";
   searchText.focus();
 }
 
@@ -210,19 +231,29 @@ function showSearchResults() {
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
           subjectExams.forEach((result) => {
+            // Sanitize each dynamic field
+            const examNumber = escapeHTML(fullData[result.ref]["number"]);
+            const startYear = escapeHTML(fullData[result.ref]["start-year"]);
+            const endYear = escapeHTML(fullData[result.ref]["end-year"]);
+            const examTitle = escapeHTML(fullData[result.ref]["title"]);
+            const creditsText = escapeHTML(fullData[result.ref]["credits"]);
+            const examLevel = escapeHTML(fullData[result.ref]["level"]);
+            // For URL parts, use encodeURIComponent
+            const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
+
             searchResults.innerHTML += 
             `<div class="search-results-card flex-c-c">
               <div class="standard-info flex-c-s flex-column">
                 <div class="standard-info-numbers flex-se-c">
                   <h1 class="standard-info-id inter-light">
-                    `+fullData[result.ref]["number"]+`
+                    ${examNumber}
                   </h1>
                   <h4 class="standard-info-time-period inter-light">
-                  `+fullData[result.ref]["start-year"] + '-' + fullData[result.ref]["end-year"]+`
+                  ${startYear}-${endYear}
                   </h4>
                 </div>
                 <div class="standard-info-description inconsolata">
-                  <p>`+fullData[result.ref]["title"]+` | Credits: `+fullData[result.ref]["credits"]+`</p>
+                  <p>${examTitle} | Credits: ${creditsText}</p>
                 </div>
               </div>
         
@@ -230,15 +261,15 @@ function showSearchResults() {
         
               <div class="standard-level">
                 <h1 class="standard-level-text inter-light">
-                  `+fullData[result.ref]["level"]+`
+                  ${examLevel}
                 </h1>
               <p>Lvl</p>
               </div>
         
-              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/` + fullData[result.ref]["number"] + `.zip')">
+              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip')">
               <img src="Images/DownloadIcon.png"></button>
       
-            </div>`
+            </div>`;
           });
           
           resolve();
@@ -361,7 +392,9 @@ document.querySelector("#subject-button").addEventListener("click", ()=>{
     // Show subject list buttons
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
-      searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search('`+subject+`')">`+subject+'</button>\n';
+      // Use JSON.stringify to safely pass the subject string into the onclick handler,
+      // and escapeHTML for the button's inner text.
+      searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search(${JSON.stringify(subject)})">` + escapeHTML(subject) + '</button>\n';
     }
     showingSubjects = true;
   }
@@ -374,7 +407,6 @@ document.querySelector("#subject-button").addEventListener("click", ()=>{
 
 // Searching for subject exams from clicking the subject buttons
 function search(term){
-
   autocomplete.textContent = term;
   searchText.value = term;
 
