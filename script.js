@@ -1,17 +1,7 @@
-// #region Loader
-const loader = document.querySelector(".loader-container");
-
-window.addEventListener("load", () => { 
-  loader.style.display = "none";
-});
-// #endregion
-
 // --- Added sanitization helper function ---
 function escapeHTML(str) {
-  if (typeof str !== "string") {
-    str = String(str);
-  }
-  return str
+  // String(string) is still a string.
+  return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -66,16 +56,22 @@ const debounce = (fn) => {
   } 
 };
 
-const searchResults = document.querySelector('.search-results')
+var searchResults;// = document.querySelector("#search-results");
+var subjectSelect;// = document.getElementById("subject-select");
+runOnDocumentLoad(function() {
+  searchResults = document.getElementById("search-results");
+  subjectSelect = document.getElementById("subject-select");
+  //searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
+  searchResults.addEventListener('scroll', storeScroll, { passive: true});
+
+  storeScroll();
+});
 
 const storeScroll = () => {
-  let scrollamount = (searchResults.scrollTop / searchResults.scrollHeight);
-  searchResults.style.setProperty("--scroll-amount", interpolate("#4287f5","#460c85", scrollamount));
+  let scrollamount = searchResults.scrollTop / searchResults.scrollHeight;
+  // `scrollamount ? scrollamount : 0` --> If `scrollamount` is `NaN`, we just return the beginning value (0).
+  searchResults.style.setProperty("--scroll-amount", interpolate("#4287f5","#460c85", scrollamount ? scrollamount : 0));
 }
-
-searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
-
-storeScroll();
 // #endregion
 
 // #region Prepare necessary variables for searching
@@ -84,95 +80,112 @@ let idx;
 
 let fullData;
 
-let subjectList;
+let subjectList = [];
+let relevant_subject_list = [];
 
-fetch("subjects.json")
-  .then((res) => res.json())
-  .then((data)=>{
-    subjectList = data;
+window.addEventListener('load', function() {
+  fetch("./subjects.json")
+    .then((res) => res.json())
+    .then((data)=>{
+      subjectList = data;
+      relevant_subject_list = data;
+
+      console.log(subjectList.length);
+
+    for (let index = 0; index < subjectList.length; index++) {
+      const subject = subjectList[index];
+      //console.log(subject);
+      //console.log(subjectSelect);
+      // Use JSON.stringify to safely pass the subject string into the onclick handler,
+      // and escapeHTML for the button's inner text.
+      let subjectButton = document.createElement("button");
+      subjectButton.classList.add("subject-card", "inter-light", "flex-c-c");
+      subjectButton.onclick = function() { search(subject) };
+      subjectButton.textContent = subject;
+      subjectSelect.appendChild(subjectButton);
+    }
   });
-
-fetch("searchIndex.json")
-  .then((res) => res.json())
-  .then((data) => {  
-    idx = lunr(function () {
-      this.ref('id');
-      this.field('title');
-      this.field('subject');
-      this.field('number');
-      this.field('credits');
+  fetch("./searchIndex.json")
+    .then((res) => res.json())
+    .then((data) => {  
+      idx = lunr(function () {
+        this.ref('id');
+        this.field('title');
+        this.field('subject');
+        this.field('number');
+        this.field('credits');
+          
+        data.forEach(function (doc) {
+          this.add(doc)
+        }, this)
+      })
         
-      data.forEach(function (doc) {
-        this.add(doc)
-      }, this)
-    })
-      
-    fullData = data;
+      fullData = data;
+  });
 });
 // #endregion
 
 // #region Searching Logic
-// Screens
-const contributorsScreen = document.querySelector(".contributors-screen");
-const examsNotFound = document.querySelector(".subject-not-found-block");
-const loadingWheel = document.querySelector(".loading-wheel");
-const githubContributeScreen = document.querySelector(
-  ".github-contribute-screen"
-);
-
 // Texts in input field
-const searchText = document.querySelector("#search-text");
+let searchText;
 // Use textContent when simply displaying text to avoid HTML injection.
-const autocomplete = document.querySelector("#autocomplete");
+let autocomplete;
 const minCredits = 0
+const default_searchtext = "Enter standard number or subject name";
+let previous_search_length = 0;
+
+runOnDocumentLoad(function() {
+  searchText = document.getElementById("search-text");
+  autocomplete = document.getElementById("autocomplete");
+  //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
+  // Hey! Don't treat the tab button like that!
+  searchText.addEventListener('keydown', handleAutocomplete, { passive: true });
+
+  searchText.addEventListener('input', setAutoCompleteText);
+});
 
 function setAutoCompleteText() {
   // Use textContent instead of innerHTML for user-supplied text.
-  autocomplete.textContent = searchText.value;
+  const text = searchText.value;
 
-  if (searchText.value.length != 0) {
-    for (let index = 0; index < subjectList.length; index++) {
-      const subject = subjectList[index];
-
-      if (
-        subject.toLowerCase().substr(0, searchText.value.length) ==
-        searchText.value.toLowerCase()
-      ) {
-        // Set the autocomplete text safely
-        autocomplete.textContent = subject;
-
-        let autoCompleteContent = subject
-          .substr(0, searchText.value.length)
-          .replace("&amp;", "&");
-
-        searchText.value = autoCompleteContent;
-        break;
-      }
-    }
-  } else {
-    // Set a safe default text message
-    autocomplete.textContent = "Enter standard number or subject name";
+  if (text.length < previous_search_length || text.length < 2) {
+    relevant_subject_list = subjectList;
   }
-}
+  console.log(relevant_subject_list);
+  
+  if (text.length == 0) {
+    // Set a safe default text message
+    autocomplete.textContent = default_searchtext;
 
-function changeScreensDisplay(
-  examsNotFoundDisplay,
-  searchResultsDisplay,
-  loadingWheelDisplay,
-  contributorsScreenDisplay
-) {
-  examsNotFound.style.display = examsNotFoundDisplay;
-  searchResults.style.display = searchResultsDisplay;
-  loadingWheel.style.display = loadingWheelDisplay;
-  contributorsScreen.style.display = contributorsScreenDisplay;
+    // This would never be visible without refreshing the page otherwise!!
+    selectScreen(screen.welcome);
+    previous_search = "";
+    previous_search_length = 0;
+    return;
+  }
 
-  // Always disable githubContribtuteScreen
-  githubContributeScreen.style.display = "none";
+  let delete_list = [];
+  let matches_list = [];
+
+  for (let i = 0; i < relevant_subject_list.length; i++) {
+    const subject = relevant_subject_list[i];
+    if (subject.toLowerCase().substr(0, text.length) == text.toLowerCase()) {
+      matches_list.push(subject);
+    }
+    else delete_list.push(subject);
+  }
+  relevant_subject_list = matches_list;
+
+  matches_list.push(text);
+  autocomplete_item = matches_list[0];
+  autocomplete.textContent = autocomplete_item;
+  searchText.value = autocomplete_item.substr(0, text.length).replace("&amp;", "&");
 }
 
 function addFilter(filter) {
-  // Add space if there's already text in the bar
-  if (searchText.value != "") {
+  // Strings are truthy/falsy; returns true if string has no content, is null, etc..
+  if (searchText.value !== "") {
+    // Add space if there's already text in the bar
     searchText.value += " ";
   }
 
@@ -212,7 +225,7 @@ function showSearchResults() {
   // Remove current search results
   searchResults.innerHTML = "";
 
-  changeScreensDisplay("none", "none", "flex", "none");
+  selectScreen(screen.rswheel);
 
   new Promise(
     (resolve, reject) => {
@@ -228,8 +241,11 @@ function showSearchResults() {
           subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
         }
 
+	const template = document.getElementById("template-search-card");
+
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
+	  var elements = [];
           subjectExams.forEach((result) => {
             // Sanitize each dynamic field
             const examNumber = escapeHTML(fullData[result.ref]["number"]);
@@ -241,7 +257,20 @@ function showSearchResults() {
             // For URL parts, use encodeURIComponent
             const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
-            searchResults.innerHTML += 
+	    var card = template.cloneNode(true).content;
+	    //searchResults.appendChild(card);
+	    var headings = card.querySelectorAll("h2");
+	    headings[0].textContent = examNumber;
+	    headings[1].textContent = examLevel;
+
+	    card.querySelector(".standard-info-time-period").textContent = `${startYear}~${endYear}`;
+	    card.querySelector(".standard-info-description").textContent = `${examTitle} | Credits: ${creditsText}`;
+
+	    card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
+
+	    elements.push(card);
+
+            /*searchResults.innerHTML += 
             `<div class="search-results-card flex-c-c">
               <div class="standard-info flex-c-s flex-column">
                 <div class="standard-info-numbers flex-se-c">
@@ -263,23 +292,27 @@ function showSearchResults() {
                 <h1 class="standard-level-text inter-light">
                   ${examLevel}
                 </h1>
-              <p>Lvl</p>
               </div>
         
-              <button class="download-plus" onclick="window.open('https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip')">
-              <img src="Images/DownloadIcon.png"></button>
+	      <!-- Who TF decided to use *buttons* over the *built-for-hyperlink* anchor tags? -->
+              <a class="download-plus flex-c-c" href="https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip">
+              <img src="Images/DownloadIcon.png"></a>
       
-            </div>`;
+            </div>`;*/
           });
+
+	  for (var i = 0; i < elements.length; i++) {
+	    searchResults.append(elements[i]);
+	  }
           
           resolve();
         }
         else if (subjectExams.length === 0) {
           // If there are no exams for that subject, show the error screen (why face emoji)
-          changeScreensDisplay("flex", "none", "none", "none");
+          selectScreen(screen.snfound);
         }
 
-      }, 15);
+      }, 0);
       /* 
       We added a 5 millisecond delay because of a behaviour in JavaScript
       Seems like "tasks" in JavaScript will be blocking, until a certain task is done JavaScript
@@ -290,121 +323,57 @@ function showSearchResults() {
   ).then(
     () => {
       // Once exams are found show the search results
-      changeScreensDisplay("none", "flex", "none", "none");
+      selectScreen(screen.results);
     }
   );
 }
 
 const tabKeyCode = 9;
 const enterKeyCode = 13;
+let previous_search = "";
 
-//Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
-document.querySelector('#search-text').addEventListener('keydown', (event) => {  
-
+function handleAutocomplete(e) {
   /*
     Why we use autocomplete.textContent instead of innerHTML:
-    This is because Earth & Space Science has an ampersand, which is displayed as &amp; in HTML.
-    If we use autocomplete.innerHTML, then we are comparing searchText.value (which is plain) text, 
-    with HTML markup.
-    This leads to errors such as when autocompleting for Earth & Space Science, the searchText will
-    be displayed as "Earth &amp; Space Science".
-    To avoid this we have to use the raw plain text of autocomplete. Hence, we use textContent.
+    1. textContent is not parsed as HTML, meaning we are not prone to XSS or
+       other malicious user input.
+    2. innerHTML means we have to make unhelpful workarounds, such as replacing
+       "&amp;" => "&" instead of just knowing that "&" represents "&".
+    To avoid this, we simply use textContent. Simple switch, good results.
+    * Technically we might have to remove some dead code after the switch, but
+      who doesn't love getting to upgrade and remove code with zero drawbacks?
   */
- 
-  // Keycode 9 is tab key
-  if (event.keyCode == tabKeyCode && autocomplete.textContent != "Enter standard number or subject name") {
-    // Prevents pressing the tab key to select elements
-    event.preventDefault();
 
-    if (searchText.value == autocomplete.textContent) {
-      showSearchResults();
+  // Keycode 9 is the tab key
+  // Keycode 13 is the enter key
+  if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == default_searchtext) {
+    // Keycode 8 is backspace;
+    // We do this incase of an error; the search is empty but the user uses it to "go to home".
+    if(event.keyCode == 8 && searchText.value == "") {
+      selectScreen(screen.welcome);
+      setAutoCompleteText();
     }
-    else {
-      // If the current input text is not equal to autoComplete's text, will auto complete
-      searchText.value = autocomplete.textContent;
-    }
-  }
-});
 
-// Enter key autocomplete and stuff. Done on keyup because enter key is not special like tab
-document.querySelector('#search-text').addEventListener('keyup', (event) => {
-
-  // Key code 13 is enter key
-  if (event.keyCode == enterKeyCode && autocomplete.textContent != "Enter standard number or subject name") {
-
-    if (searchText.value == autocomplete.textContent) {
-     showSearchResults();
-    }
-    else {
-      // If the current input text is not equal to autoComplete's text, will auto complete
-      searchText.value = autocomplete.textContent;
-    }
-  }
-
-  setAutoCompleteText();
-});
-// #endregion
-
-// #region Contributors Screen
-// Contributors button
-const contributorsButton = document.querySelector(".contributors-button");
-
-contributorsButton.addEventListener("click", (e) => {
-  if (contributorsScreen.style.display === "flex") {
-    // Display search results
-    changeScreensDisplay("none", "flex", "none", "none");
-  } else {
-    /*
-    Will stop the click event fired by the user clicking
-    from going up to the body. If this was not included, then
-    the body click event will be fired and code will be executed
-    (the code to be executed is below this callback function)
-    */
-    e.stopPropagation();
-
-    changeScreensDisplay("none", "none", "none", "flex");
-  }
-});
-
-/* 
-If the user clicks anywhere on the screen, and the contributors screen is showing, 
-then will hide contributor screen and show the exam paper search results
-*/
-document.body.addEventListener("click", () => {
-  if (contributorsScreen.style.display === "flex") {
-    // Display search results
-    changeScreensDisplay("none", "flex", "none", "none");
-  }
-});
-// #endregion
-
-// #region Subjects Screen
-let showingSubjects = false;
-
-document.querySelector("#subject-button").addEventListener("click", ()=>{
-  if (!showingSubjects) {
-
-    // Remove search results
-    searchResults.innerHTML = "";
-
-    changeScreensDisplay("none", "flex", "none", "none");
-    
-    // Show subject list buttons
-    for (let index = 0; index < subjectList.length; index++) {
-      const subject = subjectList[index];
-      // Use JSON.stringify to safely pass the subject string into the onclick handler,
-      // and escapeHTML for the button's inner text.
-      searchResults.innerHTML += `<button class="subject-card inter-light flex-c-c" onclick="search(${JSON.stringify(subject)})">` + escapeHTML(subject) + '</button>\n';
-    }
-    showingSubjects = true;
+    return;
+  } 
+  searchText.value = autocomplete.textContent;
+  if (previous_search != searchText.value) {
+    showSearchResults();
+    previous_search = searchText.value;
   }
   else {
-    // Hides the subject list buttons
-    searchResults.innerHTML = "";
-    showingSubjects = false;
+    // If the current input text is not equal to autoComplete's text, will auto complete
+    searchText.value = autocomplete.textContent;
+    // I have a rather lengthy argument as to why the following code is uncommented,
+    // but in short: we don't need it. Users like me are unable to use the site
+    // **PROPERLY**
+    // otherwise.
+    //event.preventDefault();
   }
-})
+}
+// #endregion
 
+// #region Search Function
 // Searching for subject exams from clicking the subject buttons
 function search(term){
   autocomplete.textContent = term;

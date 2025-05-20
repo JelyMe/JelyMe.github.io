@@ -1,0 +1,59 @@
+/* This comment has been through a lot. Wanna know the funny part? It's all
+   quite simple, at the end. You see, I thought that my bugfixes made the
+   Our Exams website go from ~40MB of memory to ~300MB. Wrong! In fact, a
+   "feature" in Ecosia Browser means tabs increase the memory they take every
+   reload. I reloaded a *lot* when trying to make the page better. Go figure.
+
+   Anyway, my first iteration actually took it down to ~30MB. 10x smaller than
+   I thought! Now, the current version with almost no hardcoded CSS takes only
+   ~20MB, which is half of what it used to! Not to mention, the stars go the
+   right way AND the cost of sending the file is WAAAY smaller.
+
+   If you'd like to see my unreplaced commant, head to `bg-scroll-v1.css`.
+   I've kept the VERY WRONG comment for history's sake. */
+
+/* #region Scrolling */
+/* So... why use this instead of `body {}` ? Simple! `body {}` doesn't work,
+   since styling the body is awkward and it's just not worth throwing everything
+   else off just to try to use less elements - the body is literally the main
+   container for the webpage. Best not to use it unless we need to.
+
+   It's much better to style an element that *isn't* at the root, instead, and
+   we can do whatever we please with it. */
+#bg-scroll-effect {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: -3;
+}
+
+#bg-scroll-effect>* {
+    position: fixed;
+    z-index: -2;
+    animation-name: bg-vertical-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    box-shadow: var(--shadow);
+    -moz-box-shadow: var(--shadow);
+    -webkit-box-shadow: var(--shadow);
+}
+
+/* Unrelatedly, NeoVim is AWESOME!!! */
+
+.bg-overlay {
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle farthest-corner, #000 0%, #00000080 75%, #00000000 100%);
+}
+
+@keyframes bg-vertical-scroll {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(125vh);
+    }
+}
+/* #endregion */
