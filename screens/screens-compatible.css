@@ -1,0 +1,12 @@
+/* #endregion */
+
+/* #region Flex
+ * Flex helpers to abstract and make things work nicer. */
+.miniflex img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}

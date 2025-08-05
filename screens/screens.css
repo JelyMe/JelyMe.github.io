@@ -1,0 +1,49 @@
+/* #region Screens */
+.glass {
+  flex-direction: column;
+  min-width: 75vw;
+  height: 60vh;
+  backdrop-filter: blur(2px);
+  border: 2px solid #4E4E4E;
+  border-radius: 3vw;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #7e7e7e20;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.glass h2 {
+  /* The default for h1, but here we actually want an h1-appearing h2, because
+   * we use a h1 at the top of the page and we don't want more.
+   * See the page at
+   * <https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements#avoid_using_multiple_h1_elements_on_one_page>
+   * and
+   * <https://adrianroselli.com/2016/08/there-is-no-document-outline-algorithm.html>
+   * if you're interested as to why. */
+  font-size: 2em;
+}
+/* #endregion */
+
+/* #region Flex
+ * Flex helpers to abstract and make things work nicer. */
+.miniflex img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+/* #endregion */
+
+/* #region Responsiveness */
+@media (max-aspect-ratio: 13/16) {
+  .glass {
+    width: 90vw;
+    max-width: 90vw;
+  }
+}
+/* #endregion */

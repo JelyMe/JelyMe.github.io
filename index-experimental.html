@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta Descriptors
+      Basically, they describe the website for SEO, bots, etc.. -->
+      <title>Our Exams</title>
+      <link rel="icon" href="Images/Favicon/OurExamsFavicon.png">
+      <link rel="canonical" href="https://ourexams.org"/>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- The line break is only going to get content cutoff, it's already replaced by a description taken from the page itself. -->
+      <meta name="description" content="Our Exams contains all the externals NCEA previously removed.
+Our Exams lets you search & download papers from 2011~2023, including exam schedules!">
+      <!-- Remember that "SEO tells keywords aren't given importance these days" - This is why StackOverflow itself has **none**.
+	   I propose we delete these entirely, since they literally are almost not used (too easy to be abused, so engines ignore them). -->
+      <meta name="keywords" content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
+      <!-- CSS -->
+      <link rel="stylesheet" href="critical.css">
+      <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="style-experimental.css">
+      <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="scroll/bg-scroll.css">
+      <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="screens/screens.css">
+      <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://use.typekit.net/khq6mcg.css">
+
+      <!-- JS -->
+      <script src="critical.js" type="text/javascript"></script>
+      <!-- We have to make this blocking... too many "lunr not found" errors
+	and we don't have an option to "wait for lunr to load" because afaik
+	there are none provided. -->
+      <script async src="https://unpkg.com/lunr/lunr.js" fetchpriority="high"></script>
+      <script defer async src="script-experimental.js"></script>
+      <script defer async src="scroll/bg-scroll.js"></script>
+      <script defer async src="screens/screens.js"></script>
+      <!--script defer async src="js/search.js"></script-->
+
+      <!-- Noscript 
+	With noscript, we can't do any fancy CSS fast-loading tech using
+	onload="...", which breaks the link in noscript mode,
+	so we have a much slower backup here for any users that need it. -->
+      <noscript>
+	<link rel="stylesheet" href="style-experimental.css">
+	<link rel="stylesheet" href="scroll/bg-scroll.css">
+	<link rel="stylesheet" href="sreens/screens.css">
+	<link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
+      </noscript>
+
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZERG48HKRJ"></script>
+      <script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+	gtag('js', new Date());
+
+	gtag('config', 'G-ZERG48HKRJ');
+      </script>
+  </head>
+  <body>
+    <div id="bg-scroll-effect"></div>
+
+    <noscript>
+      <h1 id="noscript-message">Hey! OurExams is built with JavaScript, mind turning it on?</h1>
+      <p>If you *really* don't want to use it, you can manually search all of the raw content available <a target="_blank" href="https://github.com/JelyMe/NCEAPapers">here</a>.
+      It's not quite so nice, but it saves having to use *our* JS, instead using GitHub's.</p>
+    </noscript>
+
+    <div id="loading-wheel" class="loader-container miniflex">
+      <!--div id="loading-wheel-wheel"></div-->
+      <div class="loader"></div>
+    </div>
+
+    <div id="fg" class="miniflex flex-column">
+      <header class="miniflex">
+	<h1 class="nasalization">OUR EXAMS</h1>
+      </header>
+
+      <div id="search-bar-wrapper">
+	<div id="search-bar">
+	  <div id="autocomplete">Enter standard number or subject name</div>
+	  <input type="text" id="search-text" maxlength="50" autocomplete="off">
+	  <!-- If you see a "weird" tabindex, please DO NOT TOUCH it until you've tried to use it yourself, to see why it's (maybe not) meant to be there. -->
+	  <button tabindex="-1" id="filter-button"><img src="Images/Filter.png"></button>
+	  <button id="subject-button" title="Show subject list" onclick="toggleScreen(screen.subject);"><img src="Images/More.png"></button>
+	  <div id="filter-tooltip">
+	    Filter Options
+	    <br>
+	    <button tabindex="1" id="filter-button-level" class="filter-add" onclick="addFilter('level:')">level:number</button>
+	    <br>
+	    <button tabindex="2" id="filter-button-credits" class="filter-add" onclick="addFilter('mincredits:')">mincredits:number</button>
+	  </div>
+	</div>
+	<button onclick="toggleScreen(screen.filters);" id="filters-button" class="miniflex navbutton"><img src="Images/Filter.png">Filters</button>
+      </div>
+
+      <section id="welcome" name="Welcome" class="screen glass">
+	<h1>Welcome to Our Exams (alpha)!</h1>
+	<p>We house external papers no longer available from NCEA,<br>start searching to find some.</p>
+	<p>Here to help? Check out our <a href="https://github.com/JelyMe/JelyMe.github.io" target="_blank" rel="noopener noreferrer">GitHub
+	  repo</a>!</p>
+	<p>Or, if you're looking for the current version, head <a href="/">here</a>.</p>
+      </section>
+      <div id="results-wheel" class="screen glass">
+	<img src="Images/LoadingWheel.png" alt="Loading Wheel">
+      </div>
+
+      <section name="Search Error" id="subject-not-found" class="screen glass">
+	<!-- TL;DR I autoformatted this, I didn't realise when I formatted the file, mb sorry.
+	  Please fix this if you know how, thx!
+	  The tag repositioning is intentional, the newlines are actually rendered (small problem, but why not fix it?). -->
+	  <h1 id="madimi" class="madimi">	    ⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
+	    ⣇⠰⠉⢙⡄⠀⠀⣴⠖⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠁⠙⡆
+	    ⠘⡇⢠⠞⠉⠙⣾⠃⢀⡼⠀⠀⠀⠀⠀⠀⠀⢀⣼⡀⠄⢷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠰⠒⠲⡄⠀⣏⣆⣀⡍
+	    ⠀⢠⡏⠀⡤⠒⠃⠀⡜⠀⠀⠀⠀⠀⢀⣴⠾⠛⡁⠀⠀⢀⣈⡉⠙⠳⣤⡀⠀⠀⠀⠘⣆⠀⣇⡼⢋⠀⠀⢱
+	    ⠀⠘⣇⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⡴⢋⡣⠊⡩⠋⠀⠀⠀⠣⡉⠲⣄⠀⠙⢆⠀⠀⠀⣸⠀⢉⠀⢀⠿⠀⢸
+	    ⠀⠀⠸⡄⠀⠈⢳⣄⡇⠀⠀⢀⡞⠀⠈⠀⢀⣴⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠈⢧⠀⠀⢳⣰⠁⠀⠀⠀⣠⠃
+	    ⠀⠀⠀⠘⢄⣀⣸⠃⠀⠀⠀⡸⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠈⣇⠀⠀⠙⢄⣀⠤⠚⠁⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⢘⠀⠀⠀⠀⠀⠀⠀⠀⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⢰⣿⣿⣿⡿⠛⠁⠀⠉⠛⢿⣿⣿⣿⣧⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⣸⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⡀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠹⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⠁⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣤⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢢⣀⣠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</h1>
+	  <p class="madimi">We couldn't find anything! Perhaps you've made a typo, or the paper doesn't exist?<br>
+	  Remember, we only have externals!</p>
+	</section>
+
+	<!-- TEMPLATES ARE AMAZING OMFG THEY'RE SO USEFUL!!!! -->
+	<template id="template-search-card">
+	  <div class="card search-results-card miniflex">
+	    <div class="standard-info miniflex flex-column">
+	      <h2></h2>
+	      <p></p>
+	    </div>
+	    <div class="standard-details miniflex flex-column">
+	      <h2></h2>
+	      <p><b></b><br><p><b></b></p>
+	    </div>
+	    <a class="miniflex">
+	      <img src="Images/DownloadIcon.png">
+	    </a>
+	  </div>
+	</template>
+	<div tabindex="-1" id="search-results" class="screen glass" style="--scroll-amount: #4287f5;">
+	  <!-- Populated by JS. -->
+	</div>
+
+	<section id="credits" name="Credits" class="screen glass">
+	  <h1 class="inconsolata">Designed and created by:</h1>
+	  <p class="inconsolata">Joel Batchelar,<br>
+	  Yanxuan Weng, and<br>
+	  Fionn Cassidy<br>from Nayland College,<br>
+	  with a little help from Mitar Nikolic (from Germany)<br>
+	  and more through GitHub!</p>
+	  <p>We're just a few students who made something pretty cool.<br>
+	  <!-- Can I (FoxChillz) be given access to this form? You know how to contact me if yes.
+	    Also, at what point have I earned my name on the contributors list? -->
+	    <a href="https://forms.gle/u22nQarT9DabZozB6">Let us know what you thought</a>!</p>
+
+	  <!-- Manually change display in DevTools to test. -->
+	  <button style="display:none;" onclick="toggleScreen(screen.filters);">Secret Button?</button>
+	</section>
+
+	<template id="template-subject-selector">
+	  <button class="card subject-card inter-light miniflex"><p>Loading...</p></button>
+	</template>
+	<section id="subject-select" name="Subject Selection" class="screen glass">
+	  <!-- Populated by JS. -->
+	</section>
+	<button onclick="toggleScreen(screen.credits);" id="credits-btn" class="miniflex inter-light navbutton"><img src="Images/contributorsIcon.png" alt="Contributors Icon">CONTRIBUTORS</button>
+      </div>
+  </body>
+</html>
