@@ -1,0 +1,70 @@
+/* We make SURE this CSS runs first because it's, y'know, CRITICAL.
+ * It also allows us to hide and FoUC behind a loading wheel. */
+
+* {
+  font-family: inconsolata;
+}
+/* Make sure that nothing appears when not wanted. */
+.screen {
+  display: none;
+}
+/* Make sure that the loader is in the center of the screen immediately. */
+.miniflex {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+*,*:after {
+  padding: 0;
+  margin: 0;
+  color: white;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  font-family: Inconsolata, system-ui;
+}
+
+body {
+  text-align: center;
+  overflow: hidden;
+  max-height: 100vh;
+  height: 100vh;
+}
+
+.loader-container {
+  width: 100vw;
+  height: 100vh;
+
+  position: fixed;
+
+  z-index: 9999;
+
+  background: radial-gradient(circle, rgba(43,58,75,1) 0%, rgba(0,0,0,1) 100%);
+}
+
+/* I tried to optimize some of this mess away but every time I tried it got worse. */
+.loader {
+  width: 60px;
+  height: 25px;
+  border: 2px solid;
+  box-sizing: border-box;
+  border-radius: 50%;
+  display: grid;
+  animation: l2 2s infinite linear;
+}
+
+.loader:before, .loader:after {
+  content: "";
+  grid-area: 1/1;
+  border: inherit;
+  border-radius: 50%;
+  animation: inherit;
+  animation-duration: 3s;
+}
+
+.loader:after {
+  --s:-1;
+}
+
+@keyframes l2 {
+   100% {transform:rotate(calc(var(--s,1)*1turn))}
+}

@@ -1,118 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
+    <title>Our Exams</title>
+    <link rel="icon" href="Images/Favicon/OurExamsFavicon.png">
+    <link rel="canonical" href="https://ourexams.org/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Exams</title>
+    <!-- This isn't a description, it's just the keywords all over again. -->
     <meta name="description" content="A website to host all past NCEA external papers.
     
     NCEA New Zealand Past Papers, 2011-2023, lost papers recovered. Exam schedules and papers included!">
-    <meta name="keywords" content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
+    <meta name="keywords"
+	  content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
+    <!-- CSS -->
+    <link rel="stylesheet" href="critical.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Images/Favicon/OurExamsFavicon.png">
-    <script src="https://unpkg.com/lunr/lunr.js"></script>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
-    <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
-    <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
+    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="screens/screens-compatible.css">
+    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="scroll/old.css">
+    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://use.typekit.net/khq6mcg.css">
 
-    <!-- Canonical Tag -->
-    <link rel="canonical" href="https://www.ourexams.org/">
+    <!-- JS -->
+    <script src="critical.js"></script>
+    <script async src="https://unpkg.com/lunr/lunr.js"></script>
+    <script src="script.js"></script>
+    <script defer async src="screens/screens-compatible.js"></script>
+    <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
+  
+    <!-- Noscript 
+      With noscript, we can't do any fancy CSS fast-loading tech using
+      onload="...", which breaks the link in noscript mode,
+      so we have a much slower backup here for any users that need it. -->
+    <noscript-->
+      <!-- In future, noscript could redirect to a noscript page where
+	all of the standards are already laid out, but without the fancy search
+	that OurExams provides. This could also be a button accesible on the
+	main page. -->
+      <link rel="stylesheet" href="screens/screens-compatible.css">
+      <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
+      <link rel="stylesheet" href="scroll/old.css">
+    <!--/noscript>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZERG48HKRJ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
 
       gtag('config', 'G-ZERG48HKRJ');
     </script>
-  </head>
+</head>
+<body class="flex-column">
+  <div id="bg-scroll-effect"><div class="overlay"></div></div>
 
-  <body class="flex-column">
-    <div class="loader-container flex-c-c">
-      <div class="loader"></div>
-    </div>
-    
-    <div class="stars -visible" style="height: 100%;">
-      <div class="small"></div>
-      <div class="medium"></div>
-      <div class="big"></div>
-    </div>
-    
-    <header class="flex-c-c full-viewport-width">
-      <h1 class="text-white nasalization">OUR EXAMS</h1>
-    </header>
-    
-    <div id="search-bar-wrapper">
-      <div id="search-bar">
-        <div id="autocomplete">Enter standard number or subject name</div>
-        <input type="text" id="search-text" maxlength="50" autocomplete="off">
-        <button id="filter-button"><img src="Images/Filter.png"></button>
-        <button id="subject-button" title="Show subject list"><img src="Images/More.png"></button>
-        <div id="filter-tooltip">
-          Filter Options
-          <br>
-          <button class="filter-add" onclick="addFilter('level:')">level:number</button>
-          <br>
-          <button class="filter-add" onclick="addFilter('mincredits:')">mincredits:number</button>
-        </div> 
+  <div class="loader-container flex-c-c">
+    <div class="loader"></div>
+  </div>
+  <div id="fg"></div>
+
+  <div class="stars -visible" style="height:100%">
+    <div class="small"></div>
+    <div class="medium"></div>
+    <div class="big"></div>
+  </div>
+
+  <header class="flex-c-c full-viewport-width">
+    <h1 class="text-white nasalization">OUR EXAMS</h1>
+  </header>
+
+  <div id="search-bar-wrapper">
+    <div id="search-bar">
+      <div id="autocomplete">Enter standard number or subject name</div>
+      <input type="text" id="search-text" maxlength="50" autocomplete="off">
+      <button tabindex="-1" id="filter-button"><img src="Images/Filter.png"></button>
+      <button id="subject-button" title="Show subject list" onclick="toggleScreen(screen.subject);"><img src="Images/More.png"></button>
+      <div id="filter-tooltip">
+        Filter Options
+        <br>
+        <button tabindex="1" class="filter-add" onclick="addFilter('level:')">level:number</button>
+        <br>
+        <button tabindex="2" class="filter-add" onclick="addFilter('mincredits:')">mincredits:number</button>
       </div>
     </div>
+  </div>
 
-    <div class="loading-wheel flex-c-c">
-      <img src="Images/LoadingWheel.png" alt="Loading Wheel">
+  <div class="loading-wheel flex-c-c">
+    <img src="Images/LoadingWheel.png" alt="Loading Wheel">
+  </div>
+
+  <div class="subject-not-found-block flex-c-c flex-column">
+    <h1 class="madimi">
+      ⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
+      ⣇⠰⠉⢙⡄⠀⠀⣴⠖⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠁⠙⡆
+      ⠘⡇⢠⠞⠉⠙⣾⠃⢀⡼⠀⠀⠀⠀⠀⠀⠀⢀⣼⡀⠄⢷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠰⠒⠲⡄⠀⣏⣆⣀⡍
+      ⠀⢠⡏⠀⡤⠒⠃⠀⡜⠀⠀⠀⠀⠀⢀⣴⠾⠛⡁⠀⠀⢀⣈⡉⠙⠳⣤⡀⠀⠀⠀⠘⣆⠀⣇⡼⢋⠀⠀⢱
+      ⠀⠘⣇⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⡴⢋⡣⠊⡩⠋⠀⠀⠀⠣⡉⠲⣄⠀⠙⢆⠀⠀⠀⣸⠀⢉⠀⢀⠿⠀⢸
+      ⠀⠀⠸⡄⠀⠈⢳⣄⡇⠀⠀⢀⡞⠀⠈⠀⢀⣴⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠈⢧⠀⠀⢳⣰⠁⠀⠀⠀⣠⠃
+      ⠀⠀⠀⠘⢄⣀⣸⠃⠀⠀⠀⡸⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠈⣇⠀⠀⠙⢄⣀⠤⠚⠁⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⢘⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⢰⣿⣿⣿⡿⠛⠁⠀⠉⠛⢿⣿⣿⣿⣧⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⣸⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⡀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠹⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⠁⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣤⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢢⣀⣠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    </h1>
+    <p class="madimi">
+      We couldn't find anything! Perhaps you've made a typo, or the paper doesn't exist?<br>
+      Remember, we only have externals!
+    </p>
+  </div>
+
+  <div class="contributors-screen flex-c-c flex-column">
+    <h2 class="inconsolata">Designed and created by:</h2>
+    <p class="inconsolata">Joel Batchelar,<br>
+      Yanxuan Weng, and<br>
+      Fionn Cassidy<br>from Nayland College<br>
+      + a little help from Mitar Nikolic (from Germany)</p>
+    <p>We're just three students who made something pretty cool. Let us know how it helped you!</p>
+    <p>Want to help test the alpha? Awesome, head <a href="/index-experimental.html">here</a>!<br>
+    Make sure to <a href="https://forms.gle/u22nQarT9DabZozB6">give us some feedback</a> - we want to improve our website for <em>you</em>, after all.</p>
+  </div>
+
+  <div class="github-contribute-screen flex-c-c flex-column">
+    <h1 class="inconsolata">Want to help make Our Exams better?</h1>
+    <p class="inconsolata">
+      Go to
+      <a href="https://github.com/JelyMe/JelyMe.github.io" target="_blank" rel="noopener noreferrer">this GitHub
+        page</a>
+      and make a pull request!
+    </p>
+  </div>
+
+  <template id="template-search-card">
+    <div class="search-results-card flex-c-c marker">
+      <div class="standard-info flex-c-s flex-column">
+	<div class="standard-info-numbers flex-se-c">
+	  <h2 class="standard-info-id inter-light">
+	    ${examNumber}
+	  </h2>
+	  <h4 class="standard-info-time-period inter-light">
+	    ${startYear}-${endYear}
+	  </h4>
+	</div>
+	<!--div class="standard-info-description inconsolata"-->
+	  <p class="standard-info-description inconsolata"></p>
+	<!--/div-->
+      </div>
+
+      <div class="split-bar"></div>
+
+      <!--div class="standard-level"-->
+	<h2 class="standard-level inter-light flex-c-c flex-column">
+	  ${examLevel}
+	</h2>
+      <!--/div-->
+
+      <!-- Who TF decided to use *buttons* over the *built-for-hyperlink* anchor tags? -->
+      <a class="download-plus flex-c-c" href="https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip">
+	<img src="Images/DownloadIcon.png"></a>
+
     </div>
+  </template>
+  <div id="search-results" class="search-results flex-s-s flex-column">
+    <!-- Empty, elements are created via JS -->
+  </div>
 
-    <div class="subject-not-found-block flex-c-c flex-column">
-      <h1 class="madimi">
-        ⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
-⣇⠰⠉⢙⡄⠀⠀⣴⠖⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠁⠙⡆
-⠘⡇⢠⠞⠉⠙⣾⠃⢀⡼⠀⠀⠀⠀⠀⠀⠀⢀⣼⡀⠄⢷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠰⠒⠲⡄⠀⣏⣆⣀⡍
-⠀⢠⡏⠀⡤⠒⠃⠀⡜⠀⠀⠀⠀⠀⢀⣴⠾⠛⡁⠀⠀⢀⣈⡉⠙⠳⣤⡀⠀⠀⠀⠘⣆⠀⣇⡼⢋⠀⠀⢱
-⠀⠘⣇⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⡴⢋⡣⠊⡩⠋⠀⠀⠀⠣⡉⠲⣄⠀⠙⢆⠀⠀⠀⣸⠀⢉⠀⢀⠿⠀⢸
-⠀⠀⠸⡄⠀⠈⢳⣄⡇⠀⠀⢀⡞⠀⠈⠀⢀⣴⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠈⢧⠀⠀⢳⣰⠁⠀⠀⠀⣠⠃
-⠀⠀⠀⠘⢄⣀⣸⠃⠀⠀⠀⡸⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠈⣇⠀⠀⠙⢄⣀⠤⠚⠁⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⢘⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⢰⣿⣿⣿⡿⠛⠁⠀⠉⠛⢿⣿⣿⣿⣧⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⣸⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⡀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠹⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⠁⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣤⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢢⣀⣠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-      </h1>
-      <p class="madimi">
-        There may be a typo in the search query or the paper you are searching for doesn't exist.<br>Double check that it isn't an internal, we only have externals here
-      </p>
-    </div>
+  <div id="subject-select" class="search-results flex-s-s flex-column">
+    <!-- Empty, elements are created via JS -->
+  </div>
 
-    <div class="contributors-screen flex-c-c flex-column">
-      <h1 class="inconsolata">Designed and created by:</h1>
-      <p class="inconsolata">Joel Batchelar,<br>Yanxuan Weng,<br>and Fionn Cassidy<br>from Nayland College<br>+ a little help from Mitar Nikolic (from Germany)</p>
-      <h1>Contacts:</h1>
-      <a href="https://forms.gle/u22nQarT9DabZozB6">Provide Feedback!</a>
-      <h2><br>We're just three students who made something pretty cool. Let us know how it helped you!</h2>
-    </div>
-
-    <div class="github-contribute-screen flex-c-c flex-column">
-      <h1 class="inconsolata">Want to contribute and make Our Exams better?</h1>
-      <p class="inconsolata">
-        Go to 
-        <a href="https://github.com/JelyMe/JelyMe.github.io" target="_blank" rel="noopener noreferrer">this GitHub page</a>
-        and make a pull request! (Only contribute if you have experience with front-end development)
-      </p>
-    </div>
-
-    <div class="search-results flex-s-s flex-column">
-      <!-- Empty, elements are created via JS -->
-    </div>
-
-    <footer class="contributors flex-c-c">
-      <img src="Images/contributorsIcon.png" alt="Contributors Icon">
-      <button class="contributors-button inter-light">CONTRIBUTORS</button>
-    </footer>
-  </body>
+  <footer class="contributors flex-c-c">
+    <img src="Images/contributorsIcon.png" alt="Contributors Icon">
+    <button class="contributors-button inter-light" onclick="toggleScreen(screen.credits);">CONTRIBUTORS</button>
+  </footer>
+</body>
 
 </html>

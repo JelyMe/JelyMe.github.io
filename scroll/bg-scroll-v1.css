@@ -1,0 +1,139 @@
+/* === THIS COMMENT IS WRONG AND OUTDATED ===
+
+   Wanna hear a fun story? 
+   There I was, re-making the star background, increasing flexibility, fixing
+   bugs, making the stars go down so it feels like you're rising up!
+   Wanna know what happened? That's right! The code took an average of 250MB to
+   run! That's a *wee* little bit higher than 40MB. So then I re-made
+   everything, keeping the bugfixes, and making sure that it doesn't take up
+   absurd amounts of memory!
+   This was written before the rewrite. Below I will type "LOL" when I have
+   completed this task.
+   LOL!!! It turns out that I went wrong; this code actually only uses a total
+   of ~55MB memory, which is a little higher (but not much) than OurExam's
+   current 30~40mb. Still, worth it, but another solution would also be nice.
+   Box shadows just don't look nice enough, but they run nicely, presuming that
+   I could get a script going to auto-generate them all. I would really like
+   another option, since box shadows look ugly as stars but they're stupidly
+   cheap to render, comparatively. */
+
+/* #region Scrolling */
+#bg-scroll-effect {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* So... why use this instead of `body {}` ? Simple! `body {}` doesn't work,
+since styling the body is awkward and most commonly the body isn't tall enough.
+It's much better to style an element that *isn't* at the root, instead,
+and we can do whatever we please with it. */
+#bg-scroll-effect>div.underlay {
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -3;
+    background: #000;
+}
+
+/* #bg-scroll-effect>div.overlay { */
+    /* left: 0; */
+    /* top: 0; */
+    /* width: 100vw; */
+    /* height: 100vh; */
+    /* position: fixed; */
+    /* z-index: -1; */
+    /* background: radial-gradient(circle farthest-side, #2b3a4b 0%, #2b3a4b00 100%); */
+/* } */
+
+#bg-scroll-effect>div.star {
+    position: fixed;
+    z-index: -2;
+    animation-name: bg-vertical-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+#bg-scroll-effect>div.star::after {
+    content: "";
+    position: absolute;
+    top: -125vh;
+    left: 0;
+}
+
+#bg-scroll-effect>div.bright,
+#bg-scroll-effect>div.bright::after {
+    background-image: radial-gradient(closest-side, #fff 0%, #ffffff88 25%, #ffffff00 100%);
+}
+
+#bg-scroll-effect>div.dim,
+#bg-scroll-effect>div.dim::after {
+    background-image: radial-gradient(closest-side, #ffffff88 0%, #88888888 25%, #ffffff00 100%);
+}
+
+#bg-scroll-effect>div.size-5,
+#bg-scroll-effect>div.size-5::after {
+    animation-duration: 12s;
+    width: 5px;
+    height: 5px;
+}
+
+#bg-scroll-effect>div.size-4,
+#bg-scroll-effect>div.size-4::after {
+    animation-duration: 15s;
+    width: 4px;
+    height: 4px;
+}
+
+#bg-scroll-effect>div.size-3,
+#bg-scroll-effect>div.size-3::after {
+    animation-duration: 20s;
+    width: 3px;
+    height: 3px;
+}
+
+#bg-scroll-effect>div.size-2,
+#bg-scroll-effect>div.size-2::after {
+    animation-duration: 30s;
+    width: 2px;
+    height: 2px;
+}
+
+#bg-scroll-effect>div.size-1,
+#bg-scroll-effect>div.size-1::after {
+    animation-duration: 60s;
+    width: 1px;
+    height: 1px;
+}
+
+@keyframes bg-vertical-scroll {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        transform: translate(-50%, calc(125vh - 50%));
+    }
+}
+
+/* #endregion */
+
+/* #region Compatibiity */
+/* To make sure the rest of the site doesn't break
+from the background scroll being added. */
+
+#search-bar-wrapper {
+    z-index: 1;
+}
+
+.contributors.flex-c-c {
+    z-index: 1;
+}
+
+.search-results.flex-s-s.flex-column {
+    z-index: 1;
+}
+
+/* #endregion */
