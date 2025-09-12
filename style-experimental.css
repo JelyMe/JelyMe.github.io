@@ -156,7 +156,7 @@ header {
   border: none;
   background: none;
   flex-direction: column;
-  row-gap: 4vh;
+  row-gap: 1rem;
   padding: 0vw 5vw 0vw 5vw;
   scrollbar-color: var(--scroll-amount) #000;
 }
@@ -326,7 +326,7 @@ a:visited {
 #subject-select {
   border: none;
   background: transparent;
-  gap: 2vh;
+  gap: 0.5rem;
 }
 
 #subject-select>* {

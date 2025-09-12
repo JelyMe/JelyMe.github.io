@@ -101,8 +101,7 @@ fetch("./subjects.json")
       const subject = subjectList[index];
       var button = template.cloneNode(true).content;
       button.querySelector("button").onclick = function() { search(subject); };
-      button.childNodes[0].textContent = subject;
-      //button.querySelector("h1").textContent = subject;
+      button.querySelector("p").textContent = subject;
       subjectSelect.appendChild(button);
     }
   });
