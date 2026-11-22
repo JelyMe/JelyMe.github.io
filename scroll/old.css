@@ -17,7 +17,7 @@
   animation: b 50s linear infinite;
 }
 
-.stars>.small, .stars>.small:after {		
+.stars>.small, .stars>.small:after {
   width: 1px;
   height: 1px;
   background: transparent;
@@ -47,7 +47,6 @@
   border-radius: 100%;
 }
 
-
 @-webkit-keyframes b {
   0% {
       -webkit-transform: translateY(0);
@@ -59,7 +58,6 @@
       transform: translateY(-2000px)
   }
 }
-
 
 @keyframes b {
   0% {

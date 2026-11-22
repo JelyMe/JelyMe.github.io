@@ -45,7 +45,7 @@ const debounce = (fn) => {
   let frame;
 
   return (...params) => {
-    if (frame) { 
+    if (frame) {
       cancelAnimationFrame(frame);
     }
 
@@ -53,15 +53,14 @@ const debounce = (fn) => {
       fn(...params);
     });
 
-  } 
+  }
 };
 
-var searchResults;// = document.querySelector("#search-results");
-var subjectSelect;// = document.getElementById("subject-select");
+var searchResults;
+var subjectSelect;
 runOnDocumentLoad(function() {
   searchResults = document.getElementById("search-results");
   subjectSelect = document.getElementById("subject-select");
-  //searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
   searchResults.addEventListener('scroll', storeScroll, { passive: true});
 
   storeScroll();
@@ -94,10 +93,7 @@ window.addEventListener('load', function() {
 
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
-      //console.log(subject);
-      //console.log(subjectSelect);
-      // Use JSON.stringify to safely pass the subject string into the onclick handler,
-      // and escapeHTML for the button's inner text.
+
       let subjectButton = document.createElement("button");
       subjectButton.classList.add("subject-card", "inter-light", "flex-c-c");
       subjectButton.onclick = function() { search(subject) };
@@ -107,19 +103,19 @@ window.addEventListener('load', function() {
   });
   fetch("./searchIndex.json")
     .then((res) => res.json())
-    .then((data) => {  
+    .then((data) => {
       idx = lunr(function () {
         this.ref('id');
         this.field('title');
         this.field('subject');
         this.field('number');
         this.field('credits');
-          
         data.forEach(function (doc) {
+
           this.add(doc)
         }, this)
       })
-        
+
       fullData = data;
   });
 });
@@ -128,7 +124,6 @@ window.addEventListener('load', function() {
 // #region Searching Logic
 // Texts in input field
 let searchText;
-// Use textContent when simply displaying text to avoid HTML injection.
 let autocomplete;
 const minCredits = 0
 const default_searchtext = "Enter standard number or subject name";
@@ -138,7 +133,6 @@ runOnDocumentLoad(function() {
   searchText = document.getElementById("search-text");
   autocomplete = document.getElementById("autocomplete");
   //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
-  // Hey! Don't treat the tab button like that!
   searchText.addEventListener('keydown', handleAutocomplete, { passive: true });
 
   searchText.addEventListener('input', setAutoCompleteText);
@@ -152,12 +146,11 @@ function setAutoCompleteText() {
     relevant_subject_list = subjectList;
   }
   console.log(relevant_subject_list);
-  
+
   if (text.length == 0) {
     // Set a safe default text message
     autocomplete.textContent = default_searchtext;
 
-    // This would never be visible without refreshing the page otherwise!!
     selectScreen(screen.welcome);
     previous_search = "";
     previous_search_length = 0;
@@ -183,7 +176,6 @@ function setAutoCompleteText() {
 }
 
 function addFilter(filter) {
-  // Strings are truthy/falsy; returns true if string has no content, is null, etc..
   if (searchText.value !== "") {
     // Add space if there's already text in the bar
     searchText.value += " ";
@@ -209,7 +201,7 @@ function extractSearchData(search) {
   const level = levelMatch ? levelMatch[1] : null;
   search = search.replace(levelRegex, '').trim();
 
-  // Search query sanitization 
+  // Search query sanitization
   // Adds a plus before each word so that lunr matches it properly
   const sanitizationRegex = /(?<![+-])\b([A-Z][^+\s]+)\b/g;
   search = search.replace(sanitizationRegex, "+$1");
@@ -222,7 +214,6 @@ function extractSearchData(search) {
 }
 
 function showSearchResults() {
-  // Remove current search results
   searchResults.innerHTML = "";
 
   selectScreen(screen.rswheel);
@@ -241,11 +232,11 @@ function showSearchResults() {
           subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
         }
 
-	const template = document.getElementById("template-search-card");
+        const template = document.getElementById("template-search-card");
 
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
-	  var elements = [];
+          var elements = [];
           subjectExams.forEach((result) => {
             // Sanitize each dynamic field
             const examNumber = escapeHTML(fullData[result.ref]["number"]);
@@ -257,54 +248,23 @@ function showSearchResults() {
             // For URL parts, use encodeURIComponent
             const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
-	    var card = template.cloneNode(true).content;
-	    //searchResults.appendChild(card);
-	    var headings = card.querySelectorAll("h2");
-	    headings[0].textContent = examNumber;
-	    headings[1].textContent = examLevel;
+            var card = template.cloneNode(true).content;
+            //searchResults.appendChild(card);
+            var headings = card.querySelectorAll("h2");
+            headings[0].textContent = examNumber;
+            headings[1].textContent = examLevel;
 
-	    card.querySelector(".standard-info-time-period").textContent = `${startYear}~${endYear}`;
-	    card.querySelector(".standard-info-description").textContent = `${examTitle} | Credits: ${creditsText}`;
+            card.querySelector(".standard-info-time-period").textContent = `${startYear}~${endYear}`;
+            card.querySelector(".standard-info-description").textContent = `${examTitle} | Credits: ${creditsText}`;
 
-	    card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
+            card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
 
-	    elements.push(card);
-
-            /*searchResults.innerHTML += 
-            `<div class="search-results-card flex-c-c">
-              <div class="standard-info flex-c-s flex-column">
-                <div class="standard-info-numbers flex-se-c">
-                  <h1 class="standard-info-id inter-light">
-                    ${examNumber}
-                  </h1>
-                  <h4 class="standard-info-time-period inter-light">
-                  ${startYear}-${endYear}
-                  </h4>
-                </div>
-                <div class="standard-info-description inconsolata">
-                  <p>${examTitle} | Credits: ${creditsText}</p>
-                </div>
-              </div>
-        
-              <div class="split-bar"></div>
-        
-              <div class="standard-level">
-                <h1 class="standard-level-text inter-light">
-                  ${examLevel}
-                </h1>
-              </div>
-        
-	      <!-- Who TF decided to use *buttons* over the *built-for-hyperlink* anchor tags? -->
-              <a class="download-plus flex-c-c" href="https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip">
-              <img src="Images/DownloadIcon.png"></a>
-      
-            </div>`;*/
+            elements.push(card);
           });
 
-	  for (var i = 0; i < elements.length; i++) {
-	    searchResults.append(elements[i]);
-	  }
-          
+          for (var i = 0; i < elements.length; i++) {
+            searchResults.append(elements[i]);
+          }
           resolve();
         }
         else if (subjectExams.length === 0) {
@@ -313,10 +273,10 @@ function showSearchResults() {
         }
 
       }, 0);
-      /* 
-      We added a 5 millisecond delay because of a behaviour in JavaScript
+      /*
+      We added a 0 millisecond delay because of a behaviour in JavaScript
       Seems like "tasks" in JavaScript will be blocking, until a certain task is done JavaScript
-      will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
+      will move onto the next task. Thus, adding a 0 millisecond delay to this will allow the loading
       wheel to show
       */
     }
@@ -333,20 +293,7 @@ const enterKeyCode = 13;
 let previous_search = "";
 
 function handleAutocomplete(e) {
-  /*
-    Why we use autocomplete.textContent instead of innerHTML:
-    1. textContent is not parsed as HTML, meaning we are not prone to XSS or
-       other malicious user input.
-    2. innerHTML means we have to make unhelpful workarounds, such as replacing
-       "&amp;" => "&" instead of just knowing that "&" represents "&".
-    To avoid this, we simply use textContent. Simple switch, good results.
-    * Technically we might have to remove some dead code after the switch, but
-      who doesn't love getting to upgrade and remove code with zero drawbacks?
-  */
-
-  // Keycode 9 is the tab key
-  // Keycode 13 is the enter key
-  if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == default_searchtext) {
+  if (event.keyCode != tabKeyCode && event.keyCode != enterKeyCode || autocomplete.textContent == default_searchtext) {
     // Keycode 8 is backspace;
     // We do this incase of an error; the search is empty but the user uses it to "go to home".
     if(event.keyCode == 8 && searchText.value == "") {
@@ -355,7 +302,7 @@ function handleAutocomplete(e) {
     }
 
     return;
-  } 
+  }
   searchText.value = autocomplete.textContent;
   if (previous_search != searchText.value) {
     showSearchResults();
@@ -364,11 +311,6 @@ function handleAutocomplete(e) {
   else {
     // If the current input text is not equal to autoComplete's text, will auto complete
     searchText.value = autocomplete.textContent;
-    // I have a rather lengthy argument as to why the following code is uncommented,
-    // but in short: we don't need it. Users like me are unable to use the site
-    // **PROPERLY**
-    // otherwise.
-    //event.preventDefault();
   }
 }
 // #endregion

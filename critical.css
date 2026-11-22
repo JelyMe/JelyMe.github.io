@@ -1,6 +1,3 @@
-/* We make SURE this CSS runs first because it's, y'know, CRITICAL.
- * It also allows us to hide and FoUC behind a loading wheel. */
-
 * {
   font-family: inconsolata;
 }

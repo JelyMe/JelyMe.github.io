@@ -71,10 +71,10 @@ header {
 
 #search-text{
   padding: 6px 5px 0px 5px;
-  
+
   font-size: 1em;
   font-family: Inter-Light;
-  
+
   width: 100%;
   height: 100%;
   padding: 5px;
@@ -90,8 +90,6 @@ header {
 }
 
 #search-text::selection{
-  /* This is *very* hard to see! */
-  /* background-color: #1851ce33; */
   background-color: #1851ce88;
   border-radius: 0.1em;
 }
@@ -107,9 +105,9 @@ header {
   font-size: 1em;
 
   z-index: -1;
-  
+
   color:rgb(255, 255, 255);
-  
+
   font-family: Inter-Light;
 
   display: flex;
@@ -138,17 +136,14 @@ header {
   }
 }
 
-/* Yeah, not doing much to the scrollbar might look a *little* bit ugly.
- * The upside? We aren't screwing over accessiblity (not to mention browser
- * support is a nightmare). */
 #search-results::-webkit-scrollbar-track
 {
-	background-color: #f5f5f526;
+  background-color: #f5f5f526;
 }
 
 #search-results::-webkit-scrollbar-thumb
 {
-	background: var(--scroll-amount);
+  background: var(--scroll-amount);
 }
 
 #search-results {
@@ -160,7 +155,7 @@ header {
   padding: 0vw 5vw 0vw 5vw;
   scrollbar-color: var(--scroll-amount) #000;
 }
-/* .card */
+
 .search-results-card {
   width: 100%;
 }
@@ -337,13 +332,10 @@ a:visited {
 .card {
   border: 2px solid #5D5D5D;
   border-radius: 0.5em 2em 2em 0.5em;
-  /* Kept for later */
   background-color: rgb(217,217,217);
-  /* wtaf */
   box-shadow: inset 0 200px 5000px rgba(255, 255, 255, 0.14);
   background: linear-gradient(#ffffff14, transparent);
   backdrop-filter: blur(2px);
-  /* width: 75vw; */
   width: 100%;
 }
 

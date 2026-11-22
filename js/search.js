@@ -1,6 +1,6 @@
 "use strict";
 
-/* #region URL Searching 
+/* #region URL Searching
  * So, basically, this allows for passing values into the URL as query
  * parameters. E.g https://ourexams.org/?q=Business+Studies` will automatically
  * load and show the search results for "English". */
@@ -21,7 +21,7 @@ runOnDocumentLoad(function() {
     }
     if (decodeURIComponent(param[i]) !== param[i]) continue;
     parameter_list[i] = parameter_list[i].split("=");
-    
+
   }
   if (parameter_list == []) return;
   console.log(parameter_list);

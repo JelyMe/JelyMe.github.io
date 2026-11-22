@@ -1,22 +1,3 @@
-/* === THIS COMMENT IS WRONG AND OUTDATED ===
-
-   Wanna hear a fun story? 
-   There I was, re-making the star background, increasing flexibility, fixing
-   bugs, making the stars go down so it feels like you're rising up!
-   Wanna know what happened? That's right! The code took an average of 250MB to
-   run! That's a *wee* little bit higher than 40MB. So then I re-made
-   everything, keeping the bugfixes, and making sure that it doesn't take up
-   absurd amounts of memory!
-   This was written before the rewrite. Below I will type "LOL" when I have
-   completed this task.
-   LOL!!! It turns out that I went wrong; this code actually only uses a total
-   of ~55MB memory, which is a little higher (but not much) than OurExam's
-   current 30~40mb. Still, worth it, but another solution would also be nice.
-   Box shadows just don't look nice enough, but they run nicely, presuming that
-   I could get a script going to auto-generate them all. I would really like
-   another option, since box shadows look ugly as stars but they're stupidly
-   cheap to render, comparatively. */
-
 /* #region Scrolling */
 #bg-scroll-effect {
     position: fixed;
@@ -24,10 +5,6 @@
     height: 100vh;
 }
 
-/* So... why use this instead of `body {}` ? Simple! `body {}` doesn't work,
-since styling the body is awkward and most commonly the body isn't tall enough.
-It's much better to style an element that *isn't* at the root, instead,
-and we can do whatever we please with it. */
 #bg-scroll-effect>div.underlay {
     left: 0;
     top: 0;
@@ -37,16 +14,6 @@ and we can do whatever we please with it. */
     z-index: -3;
     background: #000;
 }
-
-/* #bg-scroll-effect>div.overlay { */
-    /* left: 0; */
-    /* top: 0; */
-    /* width: 100vw; */
-    /* height: 100vh; */
-    /* position: fixed; */
-    /* z-index: -1; */
-    /* background: radial-gradient(circle farthest-side, #2b3a4b 0%, #2b3a4b00 100%); */
-/* } */
 
 #bg-scroll-effect>div.star {
     position: fixed;

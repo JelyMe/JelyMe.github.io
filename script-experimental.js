@@ -49,7 +49,7 @@ const debounce = (fn) => {
   let frame;
 
   return (...params) => {
-    if (frame) { 
+    if (frame) {
       cancelAnimationFrame(frame);
     }
 
@@ -57,7 +57,7 @@ const debounce = (fn) => {
       fn(...params);
     });
 
-  } 
+  }
 };
 
 var searchResults;
@@ -107,7 +107,7 @@ fetch("./subjects.json")
   });
 fetch("./searchIndex.json")
   .then((res) => res.json())
-  .then((data) => {  
+  .then((data) => {
     // Hopefully, by offsetting this, we avoid "lunr is not defined" but we also
     // get the benefits of fetching literally as soon as the line of code is
     // run.
@@ -120,7 +120,7 @@ fetch("./searchIndex.json")
       this.field('credits');
 
       data.forEach(function (doc) {
-	this.add(doc)
+        this.add(doc)
       }, this)
     })
     fullData = data;
@@ -150,7 +150,7 @@ function setAutoCompleteText() {
     relevant_subject_list = subjectList;
   }
   console.log(relevant_subject_list);
-  
+
   if (text.length == 0) {
     // Set a safe default text message
     autocomplete.textContent = default_searchtext;
@@ -209,7 +209,7 @@ function extractSearchData(search) {
   const level = levelMatch ? levelMatch[1] : null;
   search = search.replace(levelRegex, '').trim();
 
-  // Search query sanitization 
+  // Search query sanitization
   // Adds a plus before each word so that lunr matches it properly
   const sanitizationRegex = /(?<![+-])\b([A-Z][^+\s]+)\b/g;
   search = search.replace(sanitizationRegex, "+$1");
@@ -253,55 +253,55 @@ function showSearchResults() {
           subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
         }
 
-	// If there are no exams for that subject, show the error screen (why face emoji)
-	if (subjectExams.length < 1) {
+        // If there are no exams for that subject, show the error screen (why face emoji)
+        if (subjectExams.length < 1) {
           selectScreen(screen.snfound);
-	  return;
-	}
-	var template = document.getElementById("template-search-card");
-	var cards = [];
-	// Add the exam card buttons for each exam there are for that subject
-	console.log(fullData);
-	subjectExams.forEach((result) => {
-	  // No sanitization needed; textContent literally just changes the text, no HTML parsing involved. It's like it sanitizes for us!
-	  // TBF these *could* probably be inlined.
-	  // It saves a few LoC => shorter load speed,
-	  // but isn't too necessary (and is a *little* unergonomic).
-	  //const examNumber = fullData[result.ref]["number"]; // Inline
-	  const startYear = fullData[result.ref]["start-year"]; // Not inline
-	  const endYear = fullData[result.ref]["end-year"]; // Not inline
-	  //const examTitle = fullData[result.ref]["title"]; // Inline
-	  const creditsText = fullData[result.ref]["credits"]; // Not inline
-	  const examLevel = fullData[result.ref]["level"]; // Not inline
+          return;
+        }
+        var template = document.getElementById("template-search-card");
+        var cards = [];
+        // Add the exam card buttons for each exam there are for that subject
+        console.log(fullData);
+        subjectExams.forEach((result) => {
+          // No sanitization needed; textContent literally just changes the text, no HTML parsing involved. It's like it sanitizes for us!
+          // TBF these *could* probably be inlined.
+          // It saves a few LoC => shorter load speed,
+          // but isn't too necessary (and is a *little* unergonomic).
+          //const examNumber = fullData[result.ref]["number"]; // Inline
+          const startYear = fullData[result.ref]["start-year"]; // Not inline
+          const endYear = fullData[result.ref]["end-year"]; // Not inline
+          //const examTitle = fullData[result.ref]["title"]; // Inline
+          const creditsText = fullData[result.ref]["credits"]; // Not inline
+          const examLevel = fullData[result.ref]["level"]; // Not inline
 
-	  // We *do*, however, need to make sure the URL works like we want it so.
-	  // Wcich is why, for URL parts, we use encodeURIComponent.
-	  const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
+          // We *do*, however, need to make sure the URL works like we want it so.
+          // Wcich is why, for URL parts, we use encodeURIComponent.
+          const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
-	  var card = template.cloneNode(true).content;
-	  var headings = card.querySelectorAll("h2");
-	  var details = card.querySelectorAll("b");
-	  headings[0].textContent = fullData[result.ref]["number"];
-	  // "- Credits" is not very nice to see.
-	  if (creditsText === "-") details[0].textContent = "Scholarship";
-	  else details[0].textContent = `${creditsText} Credits`;
-	  details[1].textContent = `${startYear}~${endYear}`;
-	  card.querySelector("p").textContent = fullData[result.ref]["title"];
+          var card = template.cloneNode(true).content;
+          var headings = card.querySelectorAll("h2");
+          var details = card.querySelectorAll("b");
+          headings[0].textContent = fullData[result.ref]["number"];
+          // "- Credits" is not very nice to see.
+          if (creditsText === "-") details[0].textContent = "Scholarship";
+          else details[0].textContent = `${creditsText} Credits`;
+          details[1].textContent = `${startYear}~${endYear}`;
+          card.querySelector("p").textContent = fullData[result.ref]["title"];
 
-	  //if (examLevel !== "S") headings[1].textContent = examLevel;
-	  headings[1].textContent = examLevel;
-	  card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
-	  cards.push(card);
-	  //searchResults.appendChild(card);
-	});
+          //if (examLevel !== "S") headings[1].textContent = examLevel;
+          headings[1].textContent = examLevel;
+          card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
+          cards.push(card);
+          //searchResults.appendChild(card);
+        });
 
-	for (var i = 0; i < cards.length; i++) {
-	  searchResults.appendChild(cards[i]);
-	}
+        for (var i = 0; i < cards.length; i++) {
+          searchResults.appendChild(cards[i]);
+        }
 
-	resolve();
+        resolve();
       }, 0);
-      /* 
+      /*
       We added a 5 millisecond delay because of a behaviour in JavaScript
       Seems like "tasks" in JavaScript will be blocking, until a certain task is done,
       JavaScript will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
@@ -344,10 +344,10 @@ runOnWindowLoad(function() {
     This is because Earth & Space Science has an ampersand, which is displayed
     as &amp; in HTML. If we use autocomplete.innerHTML, then we are comparing
     searchText.value (which is plain) text, with HTML markup. This leads to
-    errors such as when autocompleting for Earth & Space Science, the 
+    errors such as when autocompleting for Earth & Space Science, the
     searchText will be displayed as "Earth &amp; Space Science".
 
-    > Unfun fact! 
+    > Unfun fact!
     > This even happens in Steam, somehow. Ever listened to "Giant&apos;s Deep"
     > by Andrew Prahlow? To avoid this we have to use the raw plain text of
     > autocomplete. Hence, we use textContent.
@@ -362,24 +362,24 @@ runOnWindowLoad(function() {
       // Keycode 8 is backspace;
       // We do this incase of an error; the search is empty but the user uses it to "go to home".
       if(event.keyCode == 8 && searchText.value == "") {
-	selectScreen(screen.welcome);
-	setAutoCompleteText();
+        selectScreen(screen.welcome);
+        setAutoCompleteText();
       }
 
       return;
-    } 
+    }
     searchText.value = autocomplete.textContent;
     if (previous_search != searchText.value) {
       showSearchResults();
       previous_search = searchText.value;
       return;
     }
-    // If the current input text is not equal to autoComplete's text, will 
+    // If the current input text is not equal to autoComplete's text, will
     // auto complete.
     searchText.value = autocomplete.textContent;
 
-    // I have a rather lengthy argument, as to why the following code is 
-    // commented, but in short: we don't need it. Users like me are unable to use 
+    // I have a rather lengthy argument, as to why the following code is
+    // commented, but in short: we don't need it. Users like me are unable to use
     // the site **PROPERLY** otherwise.
     //event.preventDefault();
   });
