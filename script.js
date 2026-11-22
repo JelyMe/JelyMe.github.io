@@ -288,12 +288,10 @@ function showSearchResults() {
   );
 }
 
-const tabKeyCode = 9;
-const enterKeyCode = 13;
 let previous_search = "";
 
 function handleAutocomplete(e) {
-  if (event.keyCode != tabKeyCode && event.keyCode != enterKeyCode || autocomplete.textContent == default_searchtext) {
+  if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == default_searchtext) {
     // Keycode 8 is backspace;
     // We do this incase of an error; the search is empty but the user uses it to "go to home".
     if(event.keyCode == 8 && searchText.value == "") {

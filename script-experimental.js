@@ -72,6 +72,8 @@ runOnDocumentLoad(function() {
 });
 
 runOnWindowLoad(function () {
+  document.getElementById("fg").style.display = "flex";
+
   searchResults.addEventListener('scroll', function(e) {
     var scrollamount = searchResults.scrollTop / searchResults.scrollHeight;
     // `scrollamount ? scrollamount : 0` --> If `scrollamount` is `NaN`, we just return the beginning value (0).
@@ -129,9 +131,6 @@ fetch("./searchIndex.json")
 // #endregion
 
 // #region Searching Logic
-// This is everything everywhere all at once made into code.
-// It's going to take a while to fix, even every time I add to it,
-// I end up just monkeypatching instead.
 
 // Texts in input field
 //const searchText = document.querySelector("#search-text");
@@ -329,15 +328,10 @@ function showSearchResults() {
   );
 }
 
-const tabKeyCode = 9;
-const enterKeyCode = 13;
 let previous_search = "";
 
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
-// WTF dude tab button isn't stupid, it's stunning.
-// Thanks to the tab button I don't need to use my mouse on this site anymore
-// (big win)!
-runOnWindowLoad(function() {
+runOnDocumentLoad(function() {
   searchText.addEventListener('keydown', (event) => {
     /*
     Why we use autocomplete.textContent instead of innerHTML:
@@ -346,15 +340,7 @@ runOnWindowLoad(function() {
     searchText.value (which is plain) text, with HTML markup. This leads to
     errors such as when autocompleting for Earth & Space Science, the
     searchText will be displayed as "Earth &amp; Space Science".
-
-    > Unfun fact!
-    > This even happens in Steam, somehow. Ever listened to "Giant&apos;s Deep"
-    > by Andrew Prahlow? To avoid this we have to use the raw plain text of
-    > autocomplete. Hence, we use textContent.
     */
-    // Also, imo, `.textContent` is literally just goated.
-    // Did I mention it basically auto-eradicates our XSS problems for us?
-    // Awesome!!!
 
     // Keycode 9 is the tab key
     // Keycode 13 is the enter key
@@ -377,17 +363,11 @@ runOnWindowLoad(function() {
     // If the current input text is not equal to autoComplete's text, will
     // auto complete.
     searchText.value = autocomplete.textContent;
-
-    // I have a rather lengthy argument, as to why the following code is
-    // commented, but in short: we don't need it. Users like me are unable to use
-    // the site **PROPERLY** otherwise.
-    //event.preventDefault();
   });
 
   searchText.addEventListener('input', (event) => {
     setAutoCompleteText();
   }, { passive: true });
-
 });
 // Searching for subject exams from clicking the subject buttons
 function search(term){
