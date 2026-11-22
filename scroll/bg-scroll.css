@@ -13,6 +13,7 @@
     animation-name: bg-vertical-scroll;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    border-radius: 50%;
     box-shadow: var(--shadow);
     -moz-box-shadow: var(--shadow);
     -webkit-box-shadow: var(--shadow);
@@ -23,7 +24,8 @@
 .bg-overlay {
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(circle farthest-corner, #000 0%, #00000080 75%, #00000000 100%);
+    background: radial-gradient(ellipse closest-side, #000e 40%, #0000 100%);
+    border-radius: 0 !important;
 }
 
 @keyframes bg-vertical-scroll {
