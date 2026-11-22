@@ -26,19 +26,16 @@
     <script defer async src="screens/screens-compatible.js"></script>
     <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
 
-    <!-- Noscript
-      With noscript, we can't do any fancy CSS fast-loading tech using
-      onload="...", which breaks the link in noscript mode,
-      so we have a much slower backup here for any users that need it. -->
-    <!-- <noscript> -->
-      <!-- In future, noscript could redirect to a noscript page where
-        all of the standards are already laid out, but without the fancy search
-        that OurExams provides. This could also be a button accesible on the
-        main page. -->
+    <noscript>
+      <!-- Noscript
+        With noscript, we can't do any fancy CSS fast-loading tech using
+        onload="...", which breaks the link in noscript mode,
+        so we have a much slower backup here for any users that need it.
+      -->
       <link rel="stylesheet" href="screens/screens-compatible.css">
       <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
       <link rel="stylesheet" href="scroll/old.css">
-    <!-- </noscript> -->
+    </noscript>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZERG48HKRJ"></script>
