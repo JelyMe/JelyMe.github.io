@@ -16,7 +16,7 @@
   padding: 0;
   margin: 0;
   color: white;
-  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out;
   font-family: Inconsolata, system-ui;
 }
 
@@ -24,6 +24,7 @@ body {
   text-align: center;
   overflow: hidden;
   max-height: 100vh;
+  width: 100vw;
   height: 100vh;
 }
 
@@ -41,7 +42,7 @@ body {
 /* I tried to optimize some of this mess away but every time I tried it got worse. */
 .loader {
   width: 60px;
-  height: 25px;
+  height: 30px;
   border: 2px solid;
   box-sizing: border-box;
   border-radius: 50%;
