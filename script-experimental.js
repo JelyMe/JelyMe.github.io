@@ -73,6 +73,7 @@ runOnDocumentLoad(function() {
 
 runOnWindowLoad(function () {
   document.getElementById("fg").style.display = "flex";
+  searchText.focus();
 
   searchResults.addEventListener('scroll', function(e) {
     var scrollamount = searchResults.scrollTop / searchResults.scrollHeight;
