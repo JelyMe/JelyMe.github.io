@@ -66,7 +66,8 @@ header {
   display: block;
   position: relative;
   font-size: 1em;
-  min-width: 75ch;
+  width: 75ch;
+  max-width: 80vw;
   padding-left: 5px;
 }
 #search-bar * {
