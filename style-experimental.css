@@ -180,10 +180,6 @@ header {
 #subject-button>img{
   filter: invert(99%) sepia(0%) saturate(7498%) hue-rotate(169deg) brightness(109%) contrast(100%);
 }
-
-#filters-button {
-  display: none;
-}
 /* #endregion */
 
 /* #region Search Results */
