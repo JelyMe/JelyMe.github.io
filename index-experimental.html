@@ -62,16 +62,16 @@
       <div id="search-bar-wrapper">
         <div id="search-bar">
           <div id="autocomplete">Enter standard number or subject name</div>
-          <input type="text" id="search-text" maxlength="50" autocomplete="off">
+          <input type="text" class="nobg" id="search-text" maxlength="50" autocomplete="off">
         </div>
 
-        <button tabindex="-1" id="filter-button"><img src="Images/Filter.png"></button>
+        <button class="nobg" tabindex="-1" id="filter-button"><img src="Images/Filter.png"></button>
         <div class="miniflex flex-column" id="filter-tooltip">
           Filter Options
           <button id="filter-button-level" onclick="addFilter('level:')">level:number</button>
           <button id="filter-button-credits" onclick="addFilter('mincredits:')">mincredits:number</button>
         </div>
-        <button id="subject-button" title="Show subject list" onclick="toggleScreen(screen.subject);">
+        <button class="nobg" id="subject-button" title="Show subject list" onclick="toggleScreen(screen.subject);">
           <img src="Images/More.png">
         </button>
       </div>
@@ -83,12 +83,12 @@
           repo</a>!</p>
         <p>Or, if you're looking for the current version, head <a href="/">here</a>.</p>
       </section>
-      <div id="results-wheel" class="screen glass">
+      <div id="results-wheel" class="screen glass nobg">
         <img src="Images/LoadingWheel.png" alt="Loading Wheel">
       </div>
 
       <section name="Search Error" id="subject-not-found" class="screen glass">
-        <h1 id="madimi" class="madimi">	    ⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
+        <p>	    ⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
 	    ⣇⠰⠉⢙⡄⠀⠀⣴⠖⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠁⠙⡆
 	    ⠘⡇⢠⠞⠉⠙⣾⠃⢀⡼⠀⠀⠀⠀⠀⠀⠀⢀⣼⡀⠄⢷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠰⠒⠲⡄⠀⣏⣆⣀⡍
 	    ⠀⢠⡏⠀⡤⠒⠃⠀⡜⠀⠀⠀⠀⠀⢀⣴⠾⠛⡁⠀⠀⢀⣈⡉⠙⠳⣤⡀⠀⠀⠀⠘⣆⠀⣇⡼⢋⠀⠀⢱
@@ -101,9 +101,9 @@
 	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⣸⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⡀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
 	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠹⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⠁⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣤⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢢⣀⣠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</h1>
-        <p class="madimi">We couldn't find anything! Perhaps you've made a typo, or the paper doesn't exist?<br>
-        Remember, we only have externals!</p>
+	    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</p>
+        <p>We couldn't find anything! Perhaps you've made a typo, or the paper doesn't exist?
+Remember, we only have externals!</p>
       </section>
 
       <template id="template-search-card">
@@ -122,7 +122,7 @@
           </a>
         </div>
       </template>
-      <div tabindex="-1" id="search-results" class="screen glass" style="--scroll-amount: #4287f5;">
+      <div tabindex="-1" id="search-results" class="screen glass nobg">
         <!-- Populated by JS. -->
       </div>
 
@@ -147,10 +147,11 @@
       <template id="template-subject-selector">
         <button class="card subject-card inter-light miniflex"><p>Loading...</p></button>
       </template>
-      <section id="subject-select" name="Subject Selection" class="screen glass">
+      <section id="subject-select" name="Subject Selection" class="screen glass nobg">
         <!-- Populated by JS. -->
       </section>
-      <button onclick="toggleScreen(screen.credits);" id="credits-btn" class="miniflex inter-light navbutton"><img src="Images/contributorsIcon.png" alt="Contributors Icon">CONTRIBUTORS</button>
+      <button onclick="toggleScreen(screen.credits);" id="credits-btn" class="miniflex inter-light navbutton nobg">
+        <img src="Images/contributorsIcon.png" alt="Contributors Icon">CONTRIBUTORS</button>
     </div>
   </body>
 </html>
