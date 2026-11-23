@@ -223,12 +223,8 @@ header {
   scrollbar-color: var(--scroll-amount) #000;
 }
 
-.search-results-card>* {
-  width: 20%;
-}
-
 .standard-info {
-  min-width: 50%;
+  width: 60%;
   padding: 0.5em 0 0.5em 1em;
   text-align: left;
 }
@@ -239,10 +235,15 @@ header {
 
 .standard-details {
   padding: 0.5em 0;
-  min-width:30%;
+  width: 20%;
 }
 
-.standard-details>h2:before {
+.standard-level {
+  font-family: Inter-Light;
+  font-size: 2em;
+  font-weight: bold;
+}
+.standard-level:before {
   content: "Lvl ";
 }
 
@@ -252,6 +253,7 @@ header {
 
 .search-results-card>a {
   border-radius: 0.5em 2em 2em 0.5em;
+  width: 20%;
   height: 100%;
   background-color: rgba(1, 48, 149, 0.586);
 }

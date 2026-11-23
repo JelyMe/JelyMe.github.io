@@ -264,36 +264,29 @@ function showSearchResults() {
         // Add the exam card buttons for each exam there are for that subject
         console.log(fullData);
         subjectExams.forEach((result) => {
-          // No sanitization needed; textContent literally just changes the text, no HTML parsing involved. It's like it sanitizes for us!
-          // TBF these *could* probably be inlined.
-          // It saves a few LoC => shorter load speed,
-          // but isn't too necessary (and is a *little* unergonomic).
-          //const examNumber = fullData[result.ref]["number"]; // Inline
-          const startYear = fullData[result.ref]["start-year"]; // Not inline
-          const endYear = fullData[result.ref]["end-year"]; // Not inline
-          //const examTitle = fullData[result.ref]["title"]; // Inline
-          const creditsText = fullData[result.ref]["credits"]; // Not inline
-          const examLevel = fullData[result.ref]["level"]; // Not inline
 
-          // We *do*, however, need to make sure the URL works like we want it so.
-          // Wcich is why, for URL parts, we use encodeURIComponent.
+          //const examNumber = fullData[result.ref]["number"];
+          const startYear = fullData[result.ref]["start-year"];
+          const endYear = fullData[result.ref]["end-year"];
+          //const examTitle = fullData[result.ref]["title"];
+          const creditsText = fullData[result.ref]["credits"];
+          // const examLevel = fullData[result.ref]["level"];
+
+          // We *do*, however, need to make sure the URL works like we want it to.
+          // Which is why, for URL parts, we use encodeURIComponent.
           const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
           var card = template.cloneNode(true).content;
-          var headings = card.querySelectorAll("h2");
-          var details = card.querySelectorAll("b");
-          headings[0].textContent = fullData[result.ref]["number"];
-          // "- Credits" is not very nice to see.
-          if (creditsText === "-") details[0].textContent = "Scholarship";
-          else details[0].textContent = `${creditsText} Credits`;
-          details[1].textContent = `${startYear}~${endYear}`;
+          card.querySelector("h2").textContent = fullData[result.ref]["number"];
           card.querySelector("p").textContent = fullData[result.ref]["title"];
 
-          //if (examLevel !== "S") headings[1].textContent = examLevel;
-          headings[1].textContent = examLevel;
+          card.querySelector(".standard-level").textContent = fullData[result.ref]["level"];
+          card.querySelector(".standard-years").textContent = startYear + "~" + endYear;
+          if (creditsText === "-") card.querySelector(".standard-credits").textContent = "Scholarship";
+          else card.querySelector(".standard-credits").textContent = `${creditsText} Credits`;
+
           card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
           cards.push(card);
-          //searchResults.appendChild(card);
         });
 
         for (var i = 0; i < cards.length; i++) {
