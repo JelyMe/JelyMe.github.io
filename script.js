@@ -93,6 +93,7 @@ window.addEventListener('load', function() {
 
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
+      if (subject == "Earth and Space Science") { continue; }
 
       let subjectButton = document.createElement("button");
       subjectButton.classList.add("subject-card", "inter-light", "flex-c-c");
@@ -127,7 +128,6 @@ let searchText;
 let autocomplete;
 const minCredits = 0
 const default_searchtext = "Enter standard number or subject name";
-let previous_search_length = 0;
 
 runOnDocumentLoad(function() {
   searchText = document.getElementById("search-text");
@@ -142,10 +142,7 @@ function setAutoCompleteText() {
   // Use textContent instead of innerHTML for user-supplied text.
   const text = searchText.value;
 
-  if (text.length < previous_search_length || text.length < 2) {
-    relevant_subject_list = subjectList;
-  }
-  console.log(relevant_subject_list);
+  relevant_subject_list = subjectList;
 
   if (text.length == 0) {
     // Set a safe default text message
@@ -153,26 +150,34 @@ function setAutoCompleteText() {
 
     selectScreen(screen.welcome);
     previous_search = "";
-    previous_search_length = 0;
     return;
   }
 
   let delete_list = [];
   let matches_list = [];
+  let shortestMatch;
 
   for (let i = 0; i < relevant_subject_list.length; i++) {
     const subject = relevant_subject_list[i];
+
     if (subject.toLowerCase().substr(0, text.length) == text.toLowerCase()) {
+      if (!shortestMatch) {
+        shortestMatch = subject;
+      } else if (subject.length < shortestMatch.length) {
+        shortestMatch = subject;
+      }
+
       matches_list.push(subject);
     }
     else delete_list.push(subject);
   }
   relevant_subject_list = matches_list;
+  console.log(relevant_subject_list);
 
   matches_list.push(text);
-  autocomplete_item = matches_list[0];
+  autocomplete_item = shortestMatch ? shortestMatch : text;
+  autocomplete_item = text + autocomplete_item.substr(text.length, autocomplete_item.length);
   autocomplete.textContent = autocomplete_item;
-  searchText.value = autocomplete_item.substr(0, text.length).replace("&amp;", "&");
 }
 
 function addFilter(filter) {

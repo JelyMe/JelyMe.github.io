@@ -101,6 +101,7 @@ fetch("./subjects.json")
     var template = document.getElementById("template-subject-selector");
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
+      if (subject == "Earth and Space Science") { continue; }
       var button = template.cloneNode(true).content;
       button.querySelector("button").onclick = function() { search(subject); };
       button.querySelector("p").textContent = subject;
@@ -137,48 +138,48 @@ fetch("./searchIndex.json")
 // Use textContent when simply displaying text to avoid HTML injection.
 //const autocomplete = document.querySelector("#autocomplete");
 const minCredits = 0
-const default_searchtext = "Enter standard number or subject name";
-let previous_search_length = 0;
+const defaultAutocompleteText = "Enter standard number or subject name";
 
-// 37 lines of gross...
 function setAutoCompleteText() {
   // Use textContent instead of innerHTML for user-supplied text.
   const text = searchText.value;
 
-  if (text.length < previous_search_length || text.length < 2) {
-    relevant_subject_list = subjectList;
-  }
-  console.log(relevant_subject_list);
+  relevant_subject_list = subjectList;
 
   if (text.length == 0) {
     // Set a safe default text message
-    autocomplete.textContent = default_searchtext;
+    autocomplete.textContent = defaultAutocompleteText;
 
-    // This would never be visible without refreshing the page otherwise!!
     selectScreen(screen.welcome);
     previous_search = "";
-    previous_search_length = 0;
     return;
   }
 
   let delete_list = [];
   let matches_list = [];
+  let shortestMatch;
 
   for (let i = 0; i < relevant_subject_list.length; i++) {
     const subject = relevant_subject_list[i];
+
     if (subject.toLowerCase().substr(0, text.length) == text.toLowerCase()) {
+      if (!shortestMatch) {
+        shortestMatch = subject;
+      } else if (subject.length < shortestMatch.length) {
+        shortestMatch = subject;
+      }
+
       matches_list.push(subject);
     }
     else delete_list.push(subject);
   }
   relevant_subject_list = matches_list;
+  console.log(relevant_subject_list);
 
   matches_list.push(text);
-  autocomplete_item = matches_list[0];
+  autocomplete_item = shortestMatch ? shortestMatch : text;
+  autocomplete_item = text + autocomplete_item.substr(text.length, autocomplete_item.length);
   autocomplete.textContent = autocomplete_item;
-  // How TF did we even introduce a need for this ".replace", anyway?
-  // .textContent should make this completely irrelevant.
-  searchText.value = autocomplete_item.substr(0, text.length).replace("&amp;", "&");
 }
 
 function addFilter(filter) {
@@ -344,7 +345,7 @@ runOnDocumentLoad(function() {
 
     // Keycode 9 is the tab key
     // Keycode 13 is the enter key
-    if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == default_searchtext) {
+    if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == defaultAutocompleteText) {
       // Keycode 8 is backspace;
       // We do this incase of an error; the search is empty but the user uses it to "go to home".
       if(event.keyCode == 8 && searchText.value == "") {
