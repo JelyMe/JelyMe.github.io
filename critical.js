@@ -45,11 +45,6 @@ function runOnWindowLoad(func) {
   if (ready_state_value >= 3) func();
   else window_load_functions.push(func);
 }
-runOnDocumentLoad(() => {console.log("f");});
-runOnWindowLoad(() => {console.log("g");});
-runOnDocumentLoad(() => {console.log("h");});
-runOnDocumentLoad(() => {console.log("i");});
-runOnWindowLoad(() => {console.log("j");});
 
 // If JS is activated, this will run.
 // If not, then proper CSS is render-blocking, anyway.

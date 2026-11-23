@@ -275,21 +275,18 @@ body {
   row-gap: 4vh;
 }
 
-.search-results::-webkit-scrollbar-track
-{
-	background-color: #f5f5f526;
-	border-radius: 1vw;
+.search-results::-webkit-scrollbar-track {
+  background-color: #f5f5f526;
+  border-radius: 1vw;
 }
 
-.search-results::-webkit-scrollbar
-{
-	width: 0.3vw;
+.search-results::-webkit-scrollbar {
+  width: 0.3vw;
 }
 
-.search-results::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background: var(--scroll-amount);
+.search-results::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: var(--scroll-amount);
 }
 
 .search-results-card {
@@ -529,6 +526,8 @@ body {
 }
 .contributors {
   gap: 0.5vw;
+  margin-top: auto;
+  margin-bottom: 3vh;
 }
 
 .contributors button {
@@ -551,7 +550,7 @@ body {
 
 /* #region GitHub Contributors Screen */
 .github-contribute-screen {
-  display: flex;
+  display: none;
 
   height: 65vh;
   width: 50vw;
@@ -567,7 +566,7 @@ body {
 	
   backdrop-filter: blur(2px);
   
-	border: 2px rgb(78, 78, 78) solid;
+  border: 2px rgb(78, 78, 78) solid;
   border-radius: 2.5vw;
 
   overflow: auto;

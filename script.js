@@ -56,12 +56,11 @@ const debounce = (fn) => {
   } 
 };
 
-var searchResults;// = document.querySelector("#search-results");
-var subjectSelect;// = document.getElementById("subject-select");
+var searchResults;
+var subjectSelect;
 runOnDocumentLoad(function() {
   searchResults = document.getElementById("search-results");
   subjectSelect = document.getElementById("subject-select");
-  //searchResults.addEventListener('scroll', debounce(storeScroll), { passive: true });
   searchResults.addEventListener('scroll', storeScroll, { passive: true});
 
   storeScroll();
@@ -90,12 +89,8 @@ window.addEventListener('load', function() {
       subjectList = data;
       relevant_subject_list = data;
 
-      console.log(subjectList.length);
-
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
-      //console.log(subject);
-      //console.log(subjectSelect);
       // Use JSON.stringify to safely pass the subject string into the onclick handler,
       // and escapeHTML for the button's inner text.
       let subjectButton = document.createElement("button");
@@ -151,7 +146,6 @@ function setAutoCompleteText() {
   if (text.length < previous_search_length || text.length < 2) {
     relevant_subject_list = subjectList;
   }
-  console.log(relevant_subject_list);
   
   if (text.length == 0) {
     // Set a safe default text message
@@ -180,6 +174,8 @@ function setAutoCompleteText() {
   autocomplete_item = matches_list[0];
   autocomplete.textContent = autocomplete_item;
   searchText.value = autocomplete_item.substr(0, text.length).replace("&amp;", "&");
+  //track length so backspace resets matches
+  previous_search_length = text.length;
 }
 
 function addFilter(filter) {
@@ -222,6 +218,9 @@ function extractSearchData(search) {
 }
 
 function showSearchResults() {
+  //wait until index is loaded
+  if (!idx) return;
+
   // Remove current search results
   searchResults.innerHTML = "";
 
@@ -241,11 +240,11 @@ function showSearchResults() {
           subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
         }
 
-	const template = document.getElementById("template-search-card");
+        const template = document.getElementById("template-search-card");
 
         if (subjectExams.length > 0) {
           // Add the exam card buttons for each exam there are for that subject
-	  var elements = [];
+          var elements = [];
           subjectExams.forEach((result) => {
             // Sanitize each dynamic field
             const examNumber = escapeHTML(fullData[result.ref]["number"]);
@@ -257,54 +256,23 @@ function showSearchResults() {
             // For URL parts, use encodeURIComponent
             const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
-	    var card = template.cloneNode(true).content;
-	    //searchResults.appendChild(card);
-	    var headings = card.querySelectorAll("h2");
-	    headings[0].textContent = examNumber;
-	    headings[1].textContent = examLevel;
+            var card = template.cloneNode(true).content;
+            var headings = card.querySelectorAll("h2");
+            headings[0].textContent = examNumber;
+            headings[1].textContent = examLevel;
 
-	    card.querySelector(".standard-info-time-period").textContent = `${startYear}~${endYear}`;
-	    card.querySelector(".standard-info-description").textContent = `${examTitle} | Credits: ${creditsText}`;
+            card.querySelector(".standard-info-time-period").textContent = `${startYear}~${endYear}`;
+            card.querySelector(".standard-info-description").textContent = `${examTitle} | Credits: ${creditsText}`;
 
-	    card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
+            card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
 
-	    elements.push(card);
-
-            /*searchResults.innerHTML += 
-            `<div class="search-results-card flex-c-c">
-              <div class="standard-info flex-c-s flex-column">
-                <div class="standard-info-numbers flex-se-c">
-                  <h1 class="standard-info-id inter-light">
-                    ${examNumber}
-                  </h1>
-                  <h4 class="standard-info-time-period inter-light">
-                  ${startYear}-${endYear}
-                  </h4>
-                </div>
-                <div class="standard-info-description inconsolata">
-                  <p>${examTitle} | Credits: ${creditsText}</p>
-                </div>
-              </div>
-        
-              <div class="split-bar"></div>
-        
-              <div class="standard-level">
-                <h1 class="standard-level-text inter-light">
-                  ${examLevel}
-                </h1>
-              </div>
-        
-	      <!-- Who TF decided to use *buttons* over the *built-for-hyperlink* anchor tags? -->
-              <a class="download-plus flex-c-c" href="https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip">
-              <img src="Images/DownloadIcon.png"></a>
-      
-            </div>`;*/
+            elements.push(card);
           });
 
-	  for (var i = 0; i < elements.length; i++) {
-	    searchResults.append(elements[i]);
-	  }
-          
+          for (var i = 0; i < elements.length; i++) {
+            searchResults.append(elements[i]);
+          }
+
           resolve();
         }
         else if (subjectExams.length === 0) {
@@ -357,7 +325,7 @@ function handleAutocomplete(e) {
     return;
   } 
   searchText.value = autocomplete.textContent;
-  if (previous_search != searchText.value) {
+  if (previous_search != searchText.value || !isShowing(screen.results)) {
     showSearchResults();
     previous_search = searchText.value;
   }
@@ -378,6 +346,9 @@ function handleAutocomplete(e) {
 function search(term){
   autocomplete.textContent = term;
   searchText.value = term;
+  //keep search state in sync
+  previous_search = term;
+  previous_search_length = term.length;
 
   showSearchResults();
 }

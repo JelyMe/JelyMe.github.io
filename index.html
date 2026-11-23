@@ -11,7 +11,7 @@
     
     NCEA New Zealand Past Papers, 2011-2023, lost papers recovered. Exam schedules and papers included!">
     <meta name="keywords"
-	  content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
+          content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
     <!-- CSS -->
     <link rel="stylesheet" href="critical.css">
     <link rel="stylesheet" href="style.css">
@@ -24,21 +24,20 @@
     <script async src="https://unpkg.com/lunr/lunr.js"></script>
     <script src="script.js"></script>
     <script defer async src="screens/screens-compatible.js"></script>
-    <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
   
     <!-- Noscript 
       With noscript, we can't do any fancy CSS fast-loading tech using
       onload="...", which breaks the link in noscript mode,
       so we have a much slower backup here for any users that need it. -->
-    <noscript-->
+    <noscript>
       <!-- In future, noscript could redirect to a noscript page where
-	all of the standards are already laid out, but without the fancy search
-	that OurExams provides. This could also be a button accesible on the
-	main page. -->
+           all of the standards are already laid out, but without the fancy search
+           that OurExams provides. This could also be a button accesible on the
+           main page. -->
       <link rel="stylesheet" href="screens/screens-compatible.css">
       <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
       <link rel="stylesheet" href="scroll/old.css">
-    <!--/noscript -->
+    </noscript>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZERG48HKRJ"></script>
@@ -51,6 +50,7 @@
     </script>
 </head>
 <body class="flex-column">
+  <img src="Images/LoadingWheel.png" alt="Loading Wheel" style="display: none;">
   <div id="bg-scroll-effect"><div class="overlay"></div></div>
 
   <div class="loader-container flex-c-c">
@@ -135,30 +135,27 @@
   <template id="template-search-card">
     <div class="search-results-card flex-c-c marker">
       <div class="standard-info flex-c-s flex-column">
-	<div class="standard-info-numbers flex-se-c">
-	  <h2 class="standard-info-id inter-light">
-	    ${examNumber}
-	  </h2>
-	  <h4 class="standard-info-time-period inter-light">
-	    ${startYear}-${endYear}
-	  </h4>
-	</div>
-	<!--div class="standard-info-description inconsolata"-->
-	  <p class="standard-info-description inconsolata"></p>
-	<!--/div-->
+        <div class="standard-info-numbers flex-se-c">
+          <h2 class="standard-info-id inter-light">
+            ${examNumber}
+          </h2>
+          <h4 class="standard-info-time-period inter-light">
+            ${startYear}-${endYear}
+          </h4>
+        </div>
+        <p class="standard-info-description inconsolata"></p>
       </div>
 
       <div class="split-bar"></div>
 
-      <!--div class="standard-level"-->
-	<h2 class="standard-level inter-light flex-c-c flex-column">
-	  ${examLevel}
-	</h2>
-      <!--/div-->
+      <h2 class="standard-level inter-light flex-c-c flex-column">
+        ${examLevel}
+      </h2>
 
       <!-- Who TF decided to use *buttons* over the *built-for-hyperlink* anchor tags? -->
       <a class="download-plus flex-c-c" href="https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip">
-	<img src="Images/DownloadIcon.png"></a>
+        <img src="Images/DownloadIcon.png">
+      </a>
 
     </div>
   </template>
