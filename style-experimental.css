@@ -12,6 +12,7 @@
 @font-face {
   font-family: Madimi-One;
   src: url("Fonts/Madimi-One/MadimiOne-Regular.ttf");
+  font-display: swap;
 }
 
 @font-face {
@@ -260,7 +261,7 @@ header {
 }
 #subject-not-found>p {
   color: rgb(202, 133, 133);
-  font-family: Madimi-One;
+  font-family: Madimi-One, cursive;
 }
 /* #endregion */
 

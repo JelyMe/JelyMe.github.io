@@ -93,30 +93,27 @@ let fullData;
 let subjectList = [];
 let relevant_subject_list = [];
 
-fetch("./subjects.json")
-  .then((res) => res.json())
-  .then((data)=>{
-    subjectList = data;
-    relevant_subject_list = data;
+fetch("./subjects.json").then((res) => res.json()).then((data)=>{
+  subjectList = data;
+  relevant_subject_list = data;
 
-    var template = document.getElementById("template-subject-selector");
-    for (let index = 0; index < subjectList.length; index++) {
-      const subject = subjectList[index];
-      if (subject == "Earth and Space Science") { continue; }
-      var button = template.cloneNode(true).content;
-      button.querySelector("button").onclick = function() { search(subject); };
-      button.querySelector("p").textContent = subject;
-      subjectSelect.appendChild(button);
-    }
-  });
-fetch("./searchIndex.json")
-  .then((res) => res.json())
-  .then((data) => {
-    // Hopefully, by offsetting this, we avoid "lunr is not defined" but we also
-    // get the benefits of fetching literally as soon as the line of code is
-    // run.
-    runOnWindowLoad(function() {
-      idx = lunr(function () {
+  var template = document.getElementById("template-subject-selector");
+  for (let index = 0; index < subjectList.length; index++) {
+    const subject = subjectList[index];
+    if (subject == "Earth and Space Science") { continue; }
+    var button = template.cloneNode(true).content;
+    button.querySelector("button").onclick = function() { search(subject); };
+    button.querySelector("p").textContent = subject;
+    subjectSelect.appendChild(button);
+  }
+});
+
+fetch("./searchIndex.json").then((res) => res.json()).then((data) => {
+  // Hopefully, by offsetting this, we avoid "lunr is not defined" but we also
+  // get the benefits of fetching literally as soon as the line of code is
+  // run.
+  runOnWindowLoad(function() {
+    idx = lunr(function () {
       this.ref('id');
       this.field('title');
       this.field('subject');
@@ -128,8 +125,8 @@ fetch("./searchIndex.json")
       }, this)
     })
     fullData = data;
-    });
   });
+});
 // #endregion
 
 // #region Searching Logic

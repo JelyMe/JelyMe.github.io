@@ -1,6 +1,3 @@
-* {
-  font-family: inconsolata;
-}
 /* Make sure that nothing appears when not wanted. */
 .screen {
   display: none;

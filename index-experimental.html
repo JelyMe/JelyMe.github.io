@@ -10,25 +10,30 @@
     <meta name="description" content="Our Exams contains all the externals NCEA previously removed.
                 Our Exams lets you search & download papers from 2011~2023, including exam schedules!">
     <meta name="keywords" content="NCEA, NZQA, exam papers, past papers, download, old NCEA papers, New Zealand, subjects, preparation, high school, secondary education, study materials, curriculum, assessments, study guides, study resources, practice papers, education, learning, study aids">
-    <!-- CSS -->
+
+    <!-- Preloading -->
     <link rel="stylesheet" href="critical.css">
+    <script src="critical.js" type="text/javascript"></script>
+    <link rel="preload" href="./subjects.json" as="fetch">
+    <link rel="preload" href="./searchIndex.json" as="fetch">
+
+    <!-- CSS -->
+    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://use.typekit.net/khq6mcg.css">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="style-experimental.css">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="scroll/bg-scroll.css">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="screens/screens.css">
-    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://use.typekit.net/khq6mcg.css">
 
     <!-- JS -->
-    <script src="critical.js" type="text/javascript"></script>
-    <script defer async src="lib/lunr.js" fetchpriority="high"></script>
-    <script defer async src="screens/screens.js"></script>
-    <script defer async src="script-experimental.js"></script>
+    <script async src="lib/lunr.js" fetchpriority="high"></script>
+    <script async src="screens/screens.js"></script>
+    <script async src="script-experimental.js"></script>
     <script defer async src="scroll/bg-scroll.js"></script>
 
     <noscript>
+      <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
       <link rel="stylesheet" href="style-experimental.css">
       <link rel="stylesheet" href="scroll/bg-scroll.css">
       <link rel="stylesheet" href="sreens/screens.css">
-      <link rel="stylesheet" href="https://use.typekit.net/khq6mcg.css">
     </noscript>
 
     <!-- Google tag (gtag.js) -->
