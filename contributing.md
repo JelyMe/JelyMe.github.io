@@ -3,7 +3,8 @@
 Please **only commit to the `dev-branch`**!
 Commits to the `main` branch are immediately rejected.
 
-No build tools are required, though a local server is recommended.
+No build tools are required, though a local server is recommended for ease of
+development. `python -m http.server` will do!
 
 ## Code Conventions
 
