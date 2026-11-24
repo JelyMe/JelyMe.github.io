@@ -17,7 +17,7 @@
 
 @font-face {
   font-family: Inconsolata;
-  src: url("Fonts/Inconsolata/Inconsolata-Regular.otf")
+  src: url("Fonts/Inconsolata/Inconsolata-Regular.otf");
 }
 
 .inter-light {
