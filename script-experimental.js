@@ -91,11 +91,9 @@ let idx;
 let fullData;
 
 let subjectList = [];
-let relevant_subject_list = [];
 
 fetch("./subjects.json").then((res) => res.json()).then((data)=>{
   subjectList = data;
-  relevant_subject_list = data;
 
   var template = document.getElementById("template-subject-selector");
   for (let index = 0; index < subjectList.length; index++) {
@@ -131,18 +129,13 @@ fetch("./searchIndex.json").then((res) => res.json()).then((data) => {
 
 // #region Searching Logic
 
-// Texts in input field
-//const searchText = document.querySelector("#search-text");
-// Use textContent when simply displaying text to avoid HTML injection.
-//const autocomplete = document.querySelector("#autocomplete");
 const minCredits = 0
 const defaultAutocompleteText = "Enter standard number or subject name";
+let previous_search = "";
 
 function setAutoCompleteText() {
   // Use textContent instead of innerHTML for user-supplied text.
   const text = searchText.value;
-
-  relevant_subject_list = subjectList;
 
   if (text.length == 0) {
     // Set a safe default text message
@@ -153,28 +146,22 @@ function setAutoCompleteText() {
     return;
   }
 
-  let delete_list = [];
-  let matches_list = [];
+  let matches = [];
   let shortestMatch;
 
-  for (let i = 0; i < relevant_subject_list.length; i++) {
-    const subject = relevant_subject_list[i];
+  for (let i = 0; i < subjectList.length; i++) {
+    const subject = subjectList[i];
 
     if (subject.toLowerCase().substr(0, text.length) == text.toLowerCase()) {
-      if (!shortestMatch) {
-        shortestMatch = subject;
-      } else if (subject.length < shortestMatch.length) {
+      if (!shortestMatch || subject.length < shortestMatch.length) {
         shortestMatch = subject;
       }
 
-      matches_list.push(subject);
+      matches.push(subject);
     }
-    else delete_list.push(subject);
   }
-  relevant_subject_list = matches_list;
-  console.log(relevant_subject_list);
 
-  matches_list.push(text);
+  matches.push(text);
   autocomplete_item = shortestMatch ? shortestMatch : text;
   autocomplete_item = text + autocomplete_item.substr(text.length, autocomplete_item.length);
   autocomplete.textContent = autocomplete_item;
@@ -228,17 +215,6 @@ function showSearchResults() {
 
   new Promise(
     (resolve, reject) => {
-      // To anyone testing on Firefox: setTimeout just breaks after a while.
-      // IDFK why, but it does. You simply have to create a new tab altogether.
-      // Please refrain from changing this timeout of going on a code rampage in
-      // order to find the source of this bug. It's not fun.
-      // Trust me, even when looking at 3am, you won't realise what's going on
-      // until you try it in another browser and it works fine.
-      // Don't make my mistake. The setTimeout is fine. Open a new tab and close
-      // the old one.
-      //
-      // Curious why there's a setTimeout to begin with? See below the promise,
-      // about 64 lines down.
       setTimeout(() => {
         const { search, minCredits, level } = extractSearchData(searchText.value);
 
@@ -293,34 +269,19 @@ function showSearchResults() {
         resolve();
       }, 0);
       /*
-      We added a 5 millisecond delay because of a behaviour in JavaScript
+      We added a 0 millisecond delay because of a behaviour in JavaScript
       Seems like "tasks" in JavaScript will be blocking, until a certain task is done,
-      JavaScript will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
+      JavaScript will move onto the next task. Thus, adding a 0 millisecond delay to this will allow the loading
       wheel to show
       */
-      /* To explain: in JavaScript - which, note, is a single-threaded language
-       * by default - setTimeout adds the function to a queue that isn't bound
-       * to the function it was called in - this allows us to get funky with it
-       * because it's no longer part of the rest of the code - and thus, it does
-       * not block, because it leaves the blocking function through setTimeout.
-       *
-       * I also changed this delay to 0, because 5ms is still 5ms more than we
-       * need.
-       */
     }
   ).then(
     () => {
-      // It's also fine to do `selectScreen(searchResults);` but it's a bit less
-      // decoupled and gives the suggestion that screen select is tied to searching,
-      // somehow.
-
       // Once exams are found show the search results
       selectScreen(screen.results);
     }
   );
 }
-
-let previous_search = "";
 
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
 runOnDocumentLoad(function() {
@@ -361,6 +322,7 @@ runOnDocumentLoad(function() {
     setAutoCompleteText();
   }, { passive: true });
 });
+
 // Searching for subject exams from clicking the subject buttons
 function search(term){
   autocomplete.textContent = term;
