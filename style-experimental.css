@@ -145,7 +145,8 @@ header {
 }
 
 #filter-tooltip>button:hover,
-#search-bar-wrapper>button:hover{
+#search-bar-wrapper>button:hover,
+#search-bar-wrapper>button:focus {
   filter: invert(36%) sepia(51%) saturate(1092%) hue-rotate(189deg) brightness(99%) contrast(91%);
 }
 

@@ -125,9 +125,17 @@ Remember, we only have externals!</p>
           </a>
         </div>
       </template>
+
+      <template id="template-subject-selector">
+        <button class="card subject-card inter-light miniflex"><p>Loading...</p></button>
+      </template>
+
       <div tabindex="-1" id="search-results" class="screen glass nobg">
         <!-- Populated by JS. -->
       </div>
+      <section tabindex="-1" id="subject-select" name="Subject Selection" class="screen glass nobg">
+        <!-- Populated by JS. -->
+      </section>
 
       <section id="credits" name="Credits" class="screen glass">
         <h1 class="inconsolata">Designed and created by:</h1>
@@ -147,12 +155,6 @@ Remember, we only have externals!</p>
         <button style="display:none;" onclick="toggleScreen(screen.filters);">Secret Button?</button>
       </section>
 
-      <template id="template-subject-selector">
-        <button class="card subject-card inter-light miniflex"><p>Loading...</p></button>
-      </template>
-      <section id="subject-select" name="Subject Selection" class="screen glass nobg">
-        <!-- Populated by JS. -->
-      </section>
       <button onclick="toggleScreen(screen.credits);" id="credits-btn" class="miniflex inter-light navbutton nobg">
         <img src="Images/contributorsIcon.png" alt="Contributors Icon">CONTRIBUTORS</button>
     </div>
