@@ -89,12 +89,12 @@ window.addEventListener('load', function() {
       subjectList = data;
       relevant_subject_list = data;
 
-      console.log(subjectList.length);
-
     for (let index = 0; index < subjectList.length; index++) {
       const subject = subjectList[index];
       if (subject == "Earth and Space Science") { continue; }
 
+      // Use JSON.stringify to safely pass the subject string into the onclick handler,
+      // and escapeHTML for the button's inner text.
       let subjectButton = document.createElement("button");
       subjectButton.classList.add("subject-card", "inter-light", "flex-c-c");
       subjectButton.onclick = function() { search(subject) };
@@ -219,6 +219,10 @@ function extractSearchData(search) {
 }
 
 function showSearchResults() {
+  //wait until index is loaded
+  if (!idx) return;
+
+  // Remove current search results
   searchResults.innerHTML = "";
 
   selectScreen(screen.rswheel);
@@ -254,7 +258,6 @@ function showSearchResults() {
             const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
             var card = template.cloneNode(true).content;
-            //searchResults.appendChild(card);
             var headings = card.querySelectorAll("h2");
             headings[0].textContent = examNumber;
             headings[1].textContent = examLevel;
@@ -307,7 +310,7 @@ function handleAutocomplete(e) {
     return;
   }
   searchText.value = autocomplete.textContent;
-  if (previous_search != searchText.value) {
+  if (previous_search != searchText.value || !isShowing(screen.results)) {
     showSearchResults();
     previous_search = searchText.value;
   }
@@ -323,6 +326,9 @@ function handleAutocomplete(e) {
 function search(term){
   autocomplete.textContent = term;
   searchText.value = term;
+  //keep search state in sync
+  previous_search = term;
+  previous_search_length = term.length;
 
   showSearchResults();
 }
