@@ -14,13 +14,9 @@ runOnDocumentLoad(function() {
     rswheel: document.querySelector(".loading-wheel.flex-c-c"),
     results: document.querySelector("#search-results"),
     snfound: document.querySelector(".subject-not-found-block.flex-c-c.flex-column"),
-    // Not sure about this one, should filters have their own page?
-    //filters: document.querySelector(".screen.glass#filters"),
     subject: document.querySelector("#subject-select"),
 
-    // Fake object, does nothing and makes it so nothing is on screen.
-    // What it *does* do is slot nicely with the screen functions, allowing to
-    // use it as a value without a special "clearScreen" function, handling, etc..
+    // Null Object pattern, does nothing and makes it so nothing is on screen.
     nothing: { style: { display: "none" } }
   };
 

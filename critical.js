@@ -49,10 +49,11 @@ function runOnWindowLoad(func) {
 // If JS is activated, this will run.
 // If not, then proper CSS is render-blocking, anyway.
 // Hide the content.
-runOnDocumentLoad(function() { document.getElementById("fg").style.display = "none"; });
+// runOnDocumentLoad(function() { document.getElementById("fg").style.display = "none"; });
 // Show everything once the window itself has loaded.
-runOnWindowLoad(function() {
-  document.getElementById("fg").style.display = "flex";
-  selectScreen(screen.welcome);
-});
+// runOnWindowLoad(function() {
+//   document.getElementById("fg").style.display = "flex";
+//   selectScreen(screen.welcome);
+// });
 
+runOnWindowLoad(function() { selectScreen(screen.welcome) });
