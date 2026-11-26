@@ -10,25 +10,21 @@ runOnDocumentLoad(function() {
   // Don't edit this manually. Please.
   screen = {
     loading: document.querySelector(".loader-container.flex-c-c"),
-    welcome: document.querySelector(".github-contribute-screen.flex-c-c.flex-column"),
     credits: document.querySelector(".contributors-screen.flex-c-c.flex-column"),
     rswheel: document.querySelector(".loading-wheel.flex-c-c"),
     results: document.querySelector("#search-results"),
     snfound: document.querySelector(".subject-not-found-block.flex-c-c.flex-column"),
-    // Not sure about this one, should filters have their own page?
-    //filters: document.querySelector(".screen.glass#filters"),
     subject: document.querySelector("#subject-select"),
 
-    // Fake object, does nothing and makes it so nothing is on screen.
-    // What it *does* do is slot nicely with the screen functions, allowing to
-    // use it as a value without a special "clearScreen" function, handling, etc..
+    // Null Object pattern, does nothing and makes it so nothing is on screen.
     nothing: { style: { display: "none" } }
   };
 
+  //use empty screen instead of github prompt
+  screen.welcome = screen.nothing;
   screen.credits.style.display = "none";
   current_screen = screen.loading;
   previous_screen = screen.welcome;
-  //selectScreen(screen.welcome);
 });
 
 function selectScreen(screen_selector) {

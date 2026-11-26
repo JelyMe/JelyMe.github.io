@@ -49,7 +49,7 @@ const debounce = (fn) => {
   let frame;
 
   return (...params) => {
-    if (frame) { 
+    if (frame) {
       cancelAnimationFrame(frame);
     }
 
@@ -57,7 +57,7 @@ const debounce = (fn) => {
       fn(...params);
     });
 
-  } 
+  }
 };
 
 var searchResults;
@@ -72,6 +72,9 @@ runOnDocumentLoad(function() {
 });
 
 runOnWindowLoad(function () {
+  document.getElementById("fg").style.display = "flex";
+  searchText.focus();
+
   searchResults.addEventListener('scroll', function(e) {
     var scrollamount = searchResults.scrollTop / searchResults.scrollHeight;
     // `scrollamount ? scrollamount : 0` --> If `scrollamount` is `NaN`, we just return the beginning value (0).
@@ -88,32 +91,27 @@ let idx;
 let fullData;
 
 let subjectList = [];
-let relevant_subject_list = [];
 
-fetch("./subjects.json")
-  .then((res) => res.json())
-  .then((data)=>{
-    subjectList = data;
-    relevant_subject_list = data;
+fetch("./subjects.json").then((res) => res.json()).then((data)=>{
+  subjectList = data;
 
-    var template = document.getElementById("template-subject-selector");
-    for (let index = 0; index < subjectList.length; index++) {
-      const subject = subjectList[index];
-      var button = template.cloneNode(true).content;
-      button.querySelector("button").onclick = function() { search(subject); };
-      button.childNodes[0].textContent = subject;
-      //button.querySelector("h1").textContent = subject;
-      subjectSelect.appendChild(button);
-    }
-  });
-fetch("./searchIndex.json")
-  .then((res) => res.json())
-  .then((data) => {  
-    // Hopefully, by offsetting this, we avoid "lunr is not defined" but we also
-    // get the benefits of fetching literally as soon as the line of code is
-    // run.
-    runOnWindowLoad(function() {
-      idx = lunr(function () {
+  var template = document.getElementById("template-subject-selector");
+  for (let index = 0; index < subjectList.length; index++) {
+    const subject = subjectList[index];
+    if (subject == "Earth and Space Science") { continue; }
+    var button = template.cloneNode(true).content;
+    button.querySelector("button").onclick = function() { search(subject); };
+    button.querySelector("p").textContent = subject;
+    subjectSelect.appendChild(button);
+  }
+});
+
+fetch("./searchIndex.json").then((res) => res.json()).then((data) => {
+  // Hopefully, by offsetting this, we avoid "lunr is not defined" but we also
+  // get the benefits of fetching literally as soon as the line of code is
+  // run.
+  runOnWindowLoad(function() {
+    idx = lunr(function () {
       this.ref('id');
       this.field('title');
       this.field('subject');
@@ -121,66 +119,52 @@ fetch("./searchIndex.json")
       this.field('credits');
 
       data.forEach(function (doc) {
-	this.add(doc)
+        this.add(doc)
       }, this)
     })
     fullData = data;
-    });
   });
+});
 // #endregion
 
 // #region Searching Logic
-// This is everything everywhere all at once made into code.
-// It's going to take a while to fix, even every time I add to it,
-// I end up just monkeypatching instead.
 
-// Texts in input field
-//const searchText = document.querySelector("#search-text");
-// Use textContent when simply displaying text to avoid HTML injection.
-//const autocomplete = document.querySelector("#autocomplete");
 const minCredits = 0
-const default_searchtext = "Enter standard number or subject name";
-let previous_search_length = 0;
+const defaultAutocompleteText = "Enter standard number or subject name";
+let previous_search = "";
 
-// 37 lines of gross...
 function setAutoCompleteText() {
   // Use textContent instead of innerHTML for user-supplied text.
   const text = searchText.value;
 
-  if (text.length < previous_search_length || text.length < 2) {
-    relevant_subject_list = subjectList;
-  }
-  console.log(relevant_subject_list);
-  
   if (text.length == 0) {
     // Set a safe default text message
-    autocomplete.textContent = default_searchtext;
+    autocomplete.textContent = defaultAutocompleteText;
 
-    // This would never be visible without refreshing the page otherwise!!
     selectScreen(screen.welcome);
     previous_search = "";
-    previous_search_length = 0;
     return;
   }
 
-  let delete_list = [];
-  let matches_list = [];
+  let matches = [];
+  let shortestMatch;
 
-  for (let i = 0; i < relevant_subject_list.length; i++) {
-    const subject = relevant_subject_list[i];
+  for (let i = 0; i < subjectList.length; i++) {
+    const subject = subjectList[i];
+
     if (subject.toLowerCase().substr(0, text.length) == text.toLowerCase()) {
-      matches_list.push(subject);
-    }
-    else delete_list.push(subject);
-  }
-  relevant_subject_list = matches_list;
+      if (!shortestMatch || subject.length < shortestMatch.length) {
+        shortestMatch = subject;
+      }
 
-  matches_list.push(text);
-  autocomplete_item = matches_list[0];
+      matches.push(subject);
+    }
+  }
+
+  matches.push(text);
+  autocomplete_item = shortestMatch ? shortestMatch : text;
+  autocomplete_item = text + autocomplete_item.substr(text.length, autocomplete_item.length);
   autocomplete.textContent = autocomplete_item;
-  // How TF did we even introduce a need for this ".replace", anyway?
-  // .textContent should make this completely irrelevant.
-  searchText.value = autocomplete_item.substr(0, text.length).replace("&amp;", "&");
 }
 
 function addFilter(filter) {
@@ -210,7 +194,7 @@ function extractSearchData(search) {
   const level = levelMatch ? levelMatch[1] : null;
   search = search.replace(levelRegex, '').trim();
 
-  // Search query sanitization 
+  // Search query sanitization
   // Adds a plus before each word so that lunr matches it properly
   const sanitizationRegex = /(?<![+-])\b([A-Z][^+\s]+)\b/g;
   search = search.replace(sanitizationRegex, "+$1");
@@ -231,17 +215,6 @@ function showSearchResults() {
 
   new Promise(
     (resolve, reject) => {
-      // To anyone testing on Firefox: setTimeout just breaks after a while.
-      // IDFK why, but it does. You simply have to create a new tab altogether.
-      // Please refrain from changing this timeout of going on a code rampage in
-      // order to find the source of this bug. It's not fun.
-      // Trust me, even when looking at 3am, you won't realise what's going on
-      // until you try it in another browser and it works fine.
-      // Don't make my mistake. The setTimeout is fine. Open a new tab and close
-      // the old one.
-      //
-      // Curious why there's a setTimeout to begin with? See below the promise,
-      // about 64 lines down.
       setTimeout(() => {
         const { search, minCredits, level } = extractSearchData(searchText.value);
 
@@ -254,142 +227,102 @@ function showSearchResults() {
           subjectExams = subjectExams.filter((result) => fullData[result.ref]['level'] == level || fullData[result.ref]['level'] == "All");
         }
 
-	// If there are no exams for that subject, show the error screen (why face emoji)
-	if (subjectExams.length < 1) {
+        // If there are no exams for that subject, show the error screen (why face emoji)
+        if (subjectExams.length < 1) {
           selectScreen(screen.snfound);
-	  return;
-	}
-	var template = document.getElementById("template-search-card");
-	var cards = [];
-	// Add the exam card buttons for each exam there are for that subject
-	console.log(fullData);
-	subjectExams.forEach((result) => {
-	  // No sanitization needed; textContent literally just changes the text, no HTML parsing involved. It's like it sanitizes for us!
-	  // TBF these *could* probably be inlined.
-	  // It saves a few LoC => shorter load speed,
-	  // but isn't too necessary (and is a *little* unergonomic).
-	  //const examNumber = fullData[result.ref]["number"]; // Inline
-	  const startYear = fullData[result.ref]["start-year"]; // Not inline
-	  const endYear = fullData[result.ref]["end-year"]; // Not inline
-	  //const examTitle = fullData[result.ref]["title"]; // Inline
-	  const creditsText = fullData[result.ref]["credits"]; // Not inline
-	  const examLevel = fullData[result.ref]["level"]; // Not inline
+          return;
+        }
+        var template = document.getElementById("template-search-card");
+        var cards = [];
+        // Add the exam card buttons for each exam there are for that subject
+        console.log(fullData);
+        subjectExams.forEach((result) => {
 
-	  // We *do*, however, need to make sure the URL works like we want it so.
-	  // Wcich is why, for URL parts, we use encodeURIComponent.
-	  const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
+          //const examNumber = fullData[result.ref]["number"];
+          const startYear = fullData[result.ref]["start-year"];
+          const endYear = fullData[result.ref]["end-year"];
+          //const examTitle = fullData[result.ref]["title"];
+          const creditsText = fullData[result.ref]["credits"];
+          // const examLevel = fullData[result.ref]["level"];
 
-	  var card = template.cloneNode(true).content;
-	  var headings = card.querySelectorAll("h2");
-	  var details = card.querySelectorAll("b");
-	  headings[0].textContent = fullData[result.ref]["number"];
-	  // "- Credits" is not very nice to see.
-	  if (creditsText === "-") details[0].textContent = "Scholarship";
-	  else details[0].textContent = `${creditsText} Credits`;
-	  details[1].textContent = `${startYear}~${endYear}`;
-	  card.querySelector("p").textContent = fullData[result.ref]["title"];
+          // We *do*, however, need to make sure the URL works like we want it to.
+          // Which is why, for URL parts, we use encodeURIComponent.
+          const examNumberURL = encodeURIComponent(fullData[result.ref]["number"]);
 
-	  //if (examLevel !== "S") headings[1].textContent = examLevel;
-	  headings[1].textContent = examLevel;
-	  card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
-	  cards.push(card);
-	  //searchResults.appendChild(card);
-	});
+          var card = template.cloneNode(true).content;
+          card.querySelector("h2").textContent = fullData[result.ref]["number"];
+          card.querySelector("p").textContent = fullData[result.ref]["title"];
 
-	for (var i = 0; i < cards.length; i++) {
-	  searchResults.appendChild(cards[i]);
-	}
+          card.querySelector(".standard-level").textContent = fullData[result.ref]["level"];
+          card.querySelector(".standard-years").textContent = startYear + "~" + endYear;
+          if (creditsText === "-") card.querySelector(".standard-credits").textContent = "Scholarship";
+          else card.querySelector(".standard-credits").textContent = `${creditsText} Credits`;
 
-	resolve();
+          card.querySelector("a").setAttribute("href", `https://raw.githubusercontent.com/JelyMe/NCEAPapers/main/zipped/${examNumberURL}.zip`);
+          cards.push(card);
+        });
+
+        for (var i = 0; i < cards.length; i++) {
+          searchResults.appendChild(cards[i]);
+        }
+
+        resolve();
       }, 0);
-      /* 
-      We added a 5 millisecond delay because of a behaviour in JavaScript
+      /*
+      We added a 0 millisecond delay because of a behaviour in JavaScript
       Seems like "tasks" in JavaScript will be blocking, until a certain task is done,
-      JavaScript will move onto the next task. Thus, adding a 5 millisecond delay to this will allow the loading
+      JavaScript will move onto the next task. Thus, adding a 0 millisecond delay to this will allow the loading
       wheel to show
       */
-      /* To explain: in JavaScript - which, note, is a single-threaded language
-       * by default - setTimeout adds the function to a queue that isn't bound
-       * to the function it was called in - this allows us to get funky with it
-       * because it's no longer part of the rest of the code - and thus, it does
-       * not block, because it leaves the blocking function through setTimeout.
-       *
-       * I also changed this delay to 0, because 5ms is still 5ms more than we
-       * need.
-       */
     }
   ).then(
     () => {
-      // It's also fine to do `selectScreen(searchResults);` but it's a bit less
-      // decoupled and gives the suggestion that screen select is tied to searching,
-      // somehow.
-
       // Once exams are found show the search results
       selectScreen(screen.results);
     }
   );
 }
 
-const tabKeyCode = 9;
-const enterKeyCode = 13;
-let previous_search = "";
-
 //Stupid tab button, it has to be done on the keydown event because when keyup, the focus will have been shifted
-// WTF dude tab button isn't stupid, it's stunning.
-// Thanks to the tab button I don't need to use my mouse on this site anymore
-// (big win)!
-runOnWindowLoad(function() {
+runOnDocumentLoad(function() {
   searchText.addEventListener('keydown', (event) => {
     /*
     Why we use autocomplete.textContent instead of innerHTML:
     This is because Earth & Space Science has an ampersand, which is displayed
     as &amp; in HTML. If we use autocomplete.innerHTML, then we are comparing
     searchText.value (which is plain) text, with HTML markup. This leads to
-    errors such as when autocompleting for Earth & Space Science, the 
+    errors such as when autocompleting for Earth & Space Science, the
     searchText will be displayed as "Earth &amp; Space Science".
-
-    > Unfun fact! 
-    > This even happens in Steam, somehow. Ever listened to "Giant&apos;s Deep"
-    > by Andrew Prahlow? To avoid this we have to use the raw plain text of
-    > autocomplete. Hence, we use textContent.
     */
-    // Also, imo, `.textContent` is literally just goated.
-    // Did I mention it basically auto-eradicates our XSS problems for us?
-    // Awesome!!!
 
     // Keycode 9 is the tab key
     // Keycode 13 is the enter key
-    if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == default_searchtext) {
+    if (event.keyCode != 9 && event.keyCode != 13 || autocomplete.textContent == defaultAutocompleteText) {
       // Keycode 8 is backspace;
       // We do this incase of an error; the search is empty but the user uses it to "go to home".
       if(event.keyCode == 8 && searchText.value == "") {
-	selectScreen(screen.welcome);
-	setAutoCompleteText();
+        selectScreen(screen.welcome);
+        setAutoCompleteText();
       }
 
       return;
-    } 
+    }
     searchText.value = autocomplete.textContent;
     if (previous_search != searchText.value) {
       showSearchResults();
       previous_search = searchText.value;
       return;
     }
-    // If the current input text is not equal to autoComplete's text, will 
+    // If the current input text is not equal to autoComplete's text, will
     // auto complete.
     searchText.value = autocomplete.textContent;
-
-    // I have a rather lengthy argument, as to why the following code is 
-    // commented, but in short: we don't need it. Users like me are unable to use 
-    // the site **PROPERLY** otherwise.
-    //event.preventDefault();
   });
 
   searchText.addEventListener('input', (event) => {
     setAutoCompleteText();
   }, { passive: true });
-
 });
+
 // Searching for subject exams from clicking the subject buttons
 function search(term){
   autocomplete.textContent = term;
